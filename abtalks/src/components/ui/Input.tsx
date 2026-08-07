@@ -1,19 +1,21 @@
-import React, { forwardRef, InputHTMLAttributes, TextareaHTMLAttributes } from 'react';
+import React, { forwardRef, type InputHTMLAttributes, type TextareaHTMLAttributes } from 'react';
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label?: string;
   error?: string;
   helperText?: string;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   fullWidth?: boolean;
+  inputSize?: 'sm' | 'md' | 'lg';
 }
 
-export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface TextareaProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'size'> {
   label?: string;
   error?: string;
   helperText?: string;
   fullWidth?: boolean;
+  inputSize?: 'sm' | 'md' | 'lg';
 }
 
 const baseInput = `
@@ -28,7 +30,7 @@ const baseInput = `
   disabled:opacity-50 disabled:pointer-events-none
 `;
 
-const inputSizes = {
+const inputSizes: Record<'sm' | 'md' | 'lg', string> = {
   sm: 'px-3 py-1.5 text-xs',
   md: 'px-4 py-2 text-sm',
   lg: 'px-4 py-3 text-base',
@@ -45,7 +47,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       fullWidth = true,
       className = '',
       id,
-      size = 'md',
+      inputSize = 'md',
       ...props
     },
     ref,
@@ -73,7 +75,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           <input
             ref={ref}
             id={inputId}
-            className={`${baseInput} ${inputSizes[size]} ${leftIcon ? 'pl-10' : ''} ${rightIcon ? 'pr-10' : ''} ${error ? 'border-danger-500 focus:ring-danger-500' : ''} ${className}`}
+            className={`${baseInput} ${inputSizes[inputSize as keyof typeof inputSizes]} ${leftIcon ? 'pl-10' : ''} ${rightIcon ? 'pr-10' : ''} ${error ? 'border-danger-500 focus:ring-danger-500' : ''} ${className}`}
             aria-invalid={error ? 'true' : 'false'}
             aria-describedby={errorId || helperId}
             {...props}

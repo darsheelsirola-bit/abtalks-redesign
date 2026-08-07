@@ -1,23 +1,50 @@
-import React from 'react';
-import { Button } from '../../components/ui/Button';
-import { Card } from '../../components/ui/Card';
-import { Badge } from '../../components/ui/Badge';
-import { Progress, CircularProgress } from '../../components/ui/Progress';
-import { userVariants } from '../../data/users';
-import { challenges } from '../../data/challenges';
-import { Github, Linkedin, Flame, Trophy, Target, ChevronRight, CircleCheck, CircleX, AlertCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/Badge';
+import { Progress, CircularProgress } from '@/components/ui/Progress';
+import { Input } from '@/components/ui/Input';
+import { userVariants } from '@/data/users';
+import { challenges } from '@/data/challenges';
+import { GitBranch, Link, Flame, Target, ChevronRight, CircleCheck, CircleX, AlertCircle, Clock, RotateCcw, ShieldCheck, MessageSquare } from 'lucide-react';
 
-// Choose variant for testing; can be swapped via query param later
-const user = userVariants.active;
+// Test with missedPrev variant to demonstrate recovery state
+const user = userVariants.missedPrev;
 const todayChallenge = challenges[user.currentDay - 1];
+
+// Check if yesterday was missed
+const yesterday = user.currentDay - 1;
+const isYesterdayMissed = user.missedDays.includes(yesterday);
+
+// Mock recovery state
+interface RecoveryState {
+  challengeCompleted: boolean;
+  proofSubmitted: boolean;
+  reflection: string;
+  isSubmitted: boolean;
+}
 
 const Dashboard: React.FC = () => {
   const completedCount = user.completedDays.length;
   const missedCount = user.missedDays.length;
   const remaining = user.totalDays - completedCount - missedCount;
   const streak = user.currentStreak;
-  const longest = user.longestStreak;
   const percentile = user.standingPercentile;
+
+  const [recovery, setRecovery] = useState<RecoveryState>({
+    challengeCompleted: user.completedDays.includes(user.currentDay),
+    proofSubmitted: false,
+    reflection: '',
+    isSubmitted: false,
+  });
+
+  const canRecover = recovery.challengeCompleted && recovery.proofSubmitted && recovery.reflection.trim().length >= 20;
+
+  const handleRecoverySubmit = () => {
+    if (canRecover && !recovery.isSubmitted) {
+      setRecovery(prev => ({ ...prev, isSubmitted: true }));
+    }
+  };
 
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 pb-20">
@@ -44,12 +71,111 @@ const Dashboard: React.FC = () => {
             <Badge variant="primary" size="sm" className="hidden sm:inline-flex">
               <Flame className="w-3 h-3 mr-1" />
               {streak}
+              {isYesterdayMissed && !recovery.isSubmitted && (
+                <span className="ml-1 text-xs bg-neutral-200 dark:bg-neutral-700 px-1 rounded">paused</span>
+              )}
             </Badge>
           </div>
         </div>
       </header>
 
       <main className="max-w-screen-xl mx-auto px-4 py-4 space-y-4">
+        {/* Recovery Banner - shows when yesterday was missed and recovery not yet submitted */}
+        {isYesterdayMissed && !recovery.isSubmitted && (
+          <Card variant="outlined" padding="md" className="border-warning-200 dark:border-warning-800 bg-warning-50 dark:bg-warning-900/20 space-y-3">
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-warning-100 dark:bg-warning-900/30 flex items-center justify-center text-warning-600 dark:text-warning-400">
+                <RotateCcw className="w-4 h-4" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="font-medium text-warning-700 dark:text-warning-300">Recovery Day available</h3>
+                <p className="text-sm text-warning-600 dark:text-warning-400 mt-0.5">
+                  You missed Day {yesterday}. Your streak is paused at {streak}. Complete today's challenge, submit proof, and add a brief reflection to restore it.
+                </p>
+              </div>
+              <Badge variant="warning" size="sm" className="flex-shrink-0">
+                <Clock className="w-3 h-3 mr-1" />
+                48h left
+              </Badge>
+            </div>
+
+            {/* Recovery steps */}
+            <div className="space-y-2 pt-2 border-t border-warning-200 dark:border-warning-800">
+              <div className="flex items-center gap-3 text-sm">
+                <div className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium ${
+                  recovery.challengeCompleted ? 'bg-success-500 text-white' : 'bg-neutral-200 dark:bg-neutral-700 text-neutral-500'
+                }`}>
+                  {recovery.challengeCompleted ? <CircleCheck className="w-3 h-3" /> : '1'}
+                </div>
+                <span className={recovery.challengeCompleted ? 'text-success-600 dark:text-success-400' : ''}>
+                  Complete today's challenge
+                </span>
+              </div>
+              <div className="flex items-center gap-3 text-sm">
+                <div className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium ${
+                  recovery.proofSubmitted ? 'bg-success-500 text-white' : 'bg-neutral-200 dark:bg-neutral-700 text-neutral-500'
+                }`}>
+                  {recovery.proofSubmitted ? <CircleCheck className="w-3 h-3" /> : '2'}
+                </div>
+                <span className={recovery.proofSubmitted ? 'text-success-600 dark:text-success-400' : ''}>
+                  Submit GitHub & LinkedIn proof
+                </span>
+              </div>
+              <div className="flex items-start gap-3 text-sm">
+                <div className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium mt-0.5 ${
+                  recovery.reflection.trim().length >= 20 ? 'bg-success-500 text-white' : 'bg-neutral-200 dark:bg-neutral-700 text-neutral-500'
+                }`}>
+                  {recovery.reflection.trim().length >= 20 ? <CircleCheck className="w-3 h-3" /> : '3'}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span className={recovery.reflection.trim().length >= 20 ? 'text-success-600 dark:text-success-400' : ''}>
+                    Add reflection ({recovery.reflection.trim().length}/20 min chars)
+                  </span>
+<Input
+  placeholder="What happened yesterday? What did you learn?"
+  value={recovery.reflection}
+  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRecovery(prev => ({ ...prev, reflection: e.target.value }))}
+  className="mt-1.5"
+  inputSize="sm"
+/>
+                </div>
+              </div>
+            </div>
+
+            {/* Recovery CTA */}
+            <Button
+              size="lg"
+              className="w-full"
+              onClick={handleRecoverySubmit}
+              disabled={!canRecover}
+              variant={canRecover ? 'primary' : 'secondary'}
+            >
+              {recovery.isSubmitted ? (
+                <>
+                  <ShieldCheck className="w-4 h-4 mr-2" />
+                  Streak restored — {streak + 1} day streak
+                </>
+              ) : canRecover ? (
+                <>
+                  <ShieldCheck className="w-4 h-4 mr-2" />
+                  Restore streak to {streak + 1} days
+                </>
+              ) : (
+                <>
+                  <MessageSquare className="w-4 h-4 mr-2" />
+                  Complete all steps to restore streak
+                </>
+              )}
+            </Button>
+
+            {recovery.isSubmitted && (
+              <p className="text-xs text-success-600 dark:text-success-400 text-center">
+                Your streak has been restored. The missed day remains marked, but your streak continues.
+              </p>
+            )}
+          </Card>
+        )}
+
         {/* Today Card - Primary CTA */}
         <Card variant="elevated" padding="lg" className="space-y-4">
           <div className="flex items-start justify-between gap-2">
@@ -68,34 +194,67 @@ const Dashboard: React.FC = () => {
           <p className="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2">{todayChallenge.description}</p>
 
           <div className="flex flex-wrap gap-1">
-            {todayChallenge.tags.map((t) => (
-              <Badge key={t} variant="outline" size="sm">{t}</Badge>
+            {todayChallenge.tags.map((tag: string) => (
+              <Badge key={tag} variant="outline" size="sm">{tag}</Badge>
             ))}
           </div>
 
           <div className="flex items-center gap-3 pt-2">
-            <Button size="lg" className="flex-1" onClick={() => (window.location.href = `/day/${user.currentDay}`)}>
+            <Button
+              size="lg"
+              className="flex-1"
+              onClick={() => (window.location.href = `/day/${user.currentDay}`)}
+            >
               {user.completedDays.includes(user.currentDay) ? 'Continue' : 'Start Day 12'}
               <ChevronRight className="w-4 h-4 ml-1" />
             </Button>
             {/* Proof status mini */}
             <div className="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
               <span className="flex items-center gap-1">
-                <Github className="w-3 h-3" />
-                {user.githubProofStatus}
+                <GitBranch className="w-3 h-3" />
+                {recovery.proofSubmitted ? 'submitted' : user.githubProofStatus}
               </span>
               <span className="flex items-center gap-1">
-                <Linkedin className="w-3 h-3" />
-                {user.linkedinProofStatus}
+                <Link className="w-3 h-3" />
+                {recovery.proofSubmitted ? 'submitted' : user.linkedinProofStatus}
               </span>
             </div>
           </div>
+
+          {/* Quick proof submission for recovery */}
+          {isYesterdayMissed && !recovery.proofSubmitted && !recovery.isSubmitted && (
+            <div className="pt-2 border-t border-neutral-200 dark:border-neutral-800 space-y-2">
+              <p className="text-xs text-neutral-500 dark:text-neutral-400">Submit proof for recovery:</p>
+              <div className="flex gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="flex-1"
+                  onClick={() => setRecovery(prev => ({ ...prev, proofSubmitted: true }))}
+                >
+                  <GitBranch className="w-4 h-4 mr-1" />
+                  GitHub
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="flex-1"
+                  onClick={() => setRecovery(prev => ({ ...prev, proofSubmitted: true }))}
+                >
+                  <Link className="w-4 h-4 mr-1" />
+                  LinkedIn
+                </Button>
+              </div>
+            </div>
+          )}
         </Card>
 
         {/* Quick stats row */}
         <div className="grid grid-cols-3 gap-3">
           <Card variant="outlined" padding="md" className="text-center">
-            <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">{streak}</div>
+            <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
+              {recovery.isSubmitted ? streak + 1 : streak}
+            </div>
             <div className="text-xs text-neutral-500 dark:text-neutral-400">Current streak</div>
           </Card>
           <Card variant="outlined" padding="md" className="text-center">
@@ -128,6 +287,7 @@ const Dashboard: React.FC = () => {
               const isDone = user.completedDays.includes(dayNum);
               const isMissed = user.missedDays.includes(dayNum);
               const isToday = dayNum === user.currentDay;
+              const isYesterdayMissedDay = dayNum === yesterday;
               return (
                 <button
                   key={dayNum}
@@ -138,14 +298,17 @@ const Dashboard: React.FC = () => {
                       ? 'bg-danger-100 dark:bg-danger-900/30 text-danger-600 dark:text-danger-400'
                       : isToday
                       ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 ring-2 ring-primary-500'
+                      : isYesterdayMissedDay && recovery.isSubmitted
+                      ? 'bg-warning-100 dark:bg-warning-900/30 text-warning-600 dark:text-warning-400 ring-2 ring-warning-500'
                       : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-400'
                   }`}
                   disabled
-                  aria-label={`Day ${dayNum} ${isDone ? 'completed' : isMissed ? 'missed' : 'upcoming'}`}
+                  aria-label={`Day ${dayNum} ${isDone ? 'completed' : isMissed ? 'missed' : isYesterdayMissedDay && recovery.isSubmitted ? 'recovered' : 'upcoming'}`}
                 >
                   <span className="font-medium">{dayNum}</span>
                   {isDone && <CircleCheck className="w-3 h-3" />}
-                  {isMissed && <CircleX className="w-3 h-3" />}
+                  {isMissed && !isYesterdayMissedDay && <CircleX className="w-3 h-3" />}
+                  {isYesterdayMissedDay && recovery.isSubmitted && <ShieldCheck className="w-3 h-3" />}
                 </button>
               );
             })}
@@ -166,18 +329,21 @@ const Dashboard: React.FC = () => {
           <Card variant="outlined" padding="md" className="space-y-2">
             <div className="font-medium">Achievements</div>
             <div className="flex flex-wrap gap-1">
-              {user.achievements.map((a) => (
-                <Badge key={a.id} variant="primary" size="sm" dot>{a.name}</Badge>
+              {user.achievements.map((achievement: typeof user.achievements[0]) => (
+                <Badge key={achievement.id} variant="primary" size="sm" dot>{achievement.name}</Badge>
               ))}
-              {user.achievements.length === 0 && (
+              {recovery.isSubmitted && (
+                <Badge key="recovery" variant="success" size="sm" dot>Streak Restored</Badge>
+              )}
+              {user.achievements.length === 0 && !recovery.isSubmitted && (
                 <Badge variant="outline" size="sm">No achievements yet</Badge>
               )}
             </div>
           </Card>
         </div>
 
-        {/* Missed days summary */}
-        {missedCount > 0 && (
+        {/* Missed days summary (only if not recovered) */}
+        {missedCount > 0 && !recovery.isSubmitted && (
           <Card variant="outlined" padding="md" className="border-danger-200 dark:border-danger-800">
             <div className="flex items-center gap-2 text-sm text-danger-600 dark:text-danger-400">
               <AlertCircle className="w-4 h-4 flex-shrink-0" />
@@ -186,9 +352,6 @@ const Dashboard: React.FC = () => {
           </Card>
         )}
       </main>
-
-      {/* Bottom nav (reuse component) */}
-      {/* Imported dynamically to avoid circular deps if needed */}
     </div>
   );
 };

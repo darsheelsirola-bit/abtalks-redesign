@@ -1,4 +1,4 @@
-import { UserProfile, Achievement } from './types';
+import type { UserProfile, Achievement } from './types';
 
 // Shared achievements catalog
 const allAchievements: Achievement[] = [

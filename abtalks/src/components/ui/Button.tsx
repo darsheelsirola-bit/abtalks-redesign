@@ -1,4 +1,4 @@
-import React, { forwardRef, ButtonHTMLAttributes } from 'react';
+import React, { forwardRef, type ButtonHTMLAttributes } from 'react';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
 export type ButtonSize = 'sm' | 'md' | 'lg';
@@ -84,8 +84,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           {rightIcon && <span className="flex-shrink-0">{rightIcon}</span>}
         </>
       )}
-    </button>
-  ),
+</button>
+    );
+  }
 );
 
 Button.displayName = 'Button';

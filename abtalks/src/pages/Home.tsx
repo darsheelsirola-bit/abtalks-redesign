@@ -1,9 +1,9 @@
 import React from 'react';
-import { Button } from '../../components/ui/Button';
-import { Card } from '../../components/ui/Card';
-import { Badge } from '../../components/ui/Badge';
-import { Progress } from '../../components/ui/Progress';
-import { Github, Linkedin, ArrowRight, CheckCircle2, Clock, Target, Users, TrendingUp } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/Badge';
+import { Progress } from '@/components/ui/Progress';
+import { GitBranch, Link, ArrowRight, CheckCircle2, Clock, Target, Users, TrendingUp } from 'lucide-react';
 
 const Home: React.FC = () => {
   return (
@@ -28,9 +28,9 @@ const Home: React.FC = () => {
             Build every day.<br />Prove it publicly.<br />Become visible.
           </h1>
           <p className="text-base md:text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
-            A 60‑day challenge for Indian college students. Ship a tiny project daily, post the commit on GitHub and a reflection on LinkedIn. Graduate with a public portfolio that recruiters can’t ignore.
+            A 60‑day challenge for Indian college students. Ship a tiny project daily, post the commit on GitHub and a reflection on LinkedIn. Graduate with a public portfolio that recruiters can't ignore.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+          <div className="flex flex-col sm:flex_row items-center justify-center gap-3 pt-2">
             <Button size="lg" className="w-full sm:w-auto" onClick={() => (window.location.href = '/dashboard')}>
               Start my 60‑day streak
               <ArrowRight className="w-4 h-4 ml-1" aria-hidden="true" />
@@ -46,9 +46,9 @@ const Home: React.FC = () => {
           <h2 id="loop-title" className="text-2xl font-semibold text-center">The daily loop</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {[
-              { icon: <Target className="w-6 h-6" />, title: 'Learn / Build', desc: 'Pick the day\'s micro‑project (15‑60 min).' },
-              { icon: <Github className="w-6 h-6" />, title: 'Commit', desc: 'Push code to a public GitHub repo.' },
-              { icon: <Linkedin className="w-6 h-6" />, title: 'Share', desc: 'Post a short LinkedIn reflection.' },
+              { icon: <Target className="w-6 h-6" />, title: 'Learn / Build', desc: 'Pick the day\'s micro-project (15-60 min).' },
+              { icon: <GitBranch className="w-6 h-6" />, title: 'Commit', desc: 'Push code to a public GitHub repo.' },
+              { icon: <Link className="w-6 h-6" />, title: 'Share', desc: 'Post a short LinkedIn reflection.' },
               { icon: <ArrowRight className="w-6 h-6 rotate-45" />, title: 'Repeat', desc: 'Streak grows, portfolio compounds.' },
             ].map((step, i) => (
               <Card key={i} variant="outlined" padding="md" className="text-center">
@@ -69,9 +69,9 @@ const Home: React.FC = () => {
                 <CheckCircle2 className="w-6 h-6" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-medium">Day 12 – REST API with Express & TypeScript</h3>
+                <h3 className="font-medium">Day 12 - REST API with Express & TypeScript</h3>
                 <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
-                  Create a tiny Study‑Tracker API: CRUD for sessions (subject, duration, date). Use Express, TS, Zod validation, proper HTTP codes.
+                  Create a tiny Study-Tracker API: CRUD for sessions (subject, duration, date). Use Express, TS, Zod validation, proper HTTP codes.
                 </p>
                 <div className="flex flex-wrap gap-2 mt-2">
                   <Badge variant="primary" size="sm">backend</Badge>
@@ -100,9 +100,9 @@ const Home: React.FC = () => {
           <h2 id="stats-title" className="text-2xl font-semibold text-center">Why 60 days works</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { icon: <Clock className="w-6 h-6" />, value: '15‑60 min', label: 'Daily commitment' },
+              { icon: <Clock className="w-6 h-6" />, value: '15-60 min', label: 'Daily commitment' },
               { icon: <Users className="w-6 h-6" />, value: '10k+', label: 'Students joined' },
-              { icon: <TrendingUp className="w-6 h-6" />, value: '3×', label: 'Portfolio views*' },
+              { icon: <TrendingUp className="w-6 h-6" />, value: '3x', label: 'Portfolio views*' },
               { icon: <Target className="w-6 h-6" />, value: '92%', label: 'Finish rate (internal)' },
             ].map((s, i) => (
               <Card key={i} variant="outlined" padding="md" className="text-center">
@@ -113,11 +113,11 @@ const Home: React.FC = () => {
             ))}
           </div>
           <p className="text-xs text-neutral-500 dark:text-neutral-400 text-center">
-            *Illustrative only – not verified ABTalks metrics.
+            *Illustrative only - not verified ABTalks metrics.
           </p>
         </section>
 
-        {/* Day 1 → 30 → 60 progression */}
+        {/* Day 1 -> 30 -> 60 progression */}
         <section id="progress" className="space-y-6" aria-labelledby="growth-title">
           <h2 id="growth-title" className="text-2xl font-semibold text-center">Your public body of work grows</h2>
           <div className="overflow-x-auto pb-4 -mx-4 px-4">
@@ -131,18 +131,18 @@ const Home: React.FC = () => {
               </thead>
               <tbody className="divide-y divide-neutral-100 dark:divide-neutral-800">
                 <tr>
-                  <td className="py-3 font-medium">Day 1</td>
+                  <td className="py-3 font-medium">Day 1</td>
                   <td>1 tiny repo + 1 LinkedIn post</td>
                   <td>Shows initiative</td>
                 </tr>
                 <tr>
-                  <td className="py-3 font-medium">Day 30</td>
+                  <td className="py-3 font-medium">Day 30</td>
                   <td>30 repos, varied stack, consistent rhythm</td>
                   <td>Demonstrates discipline & breadth</td>
                 </tr>
                 <tr>
-                  <td className="py-3 font-medium">Day 60</td>
-                  <td>60 projects, a searchable portfolio site (auto‑generated)</td>
+                  <td className="py-3 font-medium">Day 60</td>
+                  <td>60 projects, a searchable portfolio site (auto-generated)</td>
                   <td>Strong evidence of shipping habit</td>
                 </tr>
               </tbody>
@@ -154,7 +154,7 @@ const Home: React.FC = () => {
         <section className="text-center space-y-4 pt-4 border-t border-neutral-200 dark:border-neutral-800" aria-labelledby="cta-title">
           <h2 id="cta-title" className="text-2xl font-semibold">Ready to ship daily?</h2>
           <p className="text-neutral-600 dark:text-neutral-400 max-w-md mx-auto">
-            Join thousands of students turning consistency into credibility. No fee, no gatekeepers – just you, code, and proof.
+            Join thousands of students turning consistency into credibility. No fee, no gatekeepers - just you, code, and proof.
           </p>
           <Button size="lg" className="w-full sm:w-auto" onClick={() => (window.location.href = '/dashboard')}>
             Start my 60‑day streak
@@ -165,7 +165,7 @@ const Home: React.FC = () => {
 
       {/* Footer minimal */}
       <footer className="border-t border-neutral-200 dark:border-neutral-800 py-6 px-4 text-center text-xs text-neutral-500 dark:text-neutral-400">
-        © {new Date().getFullYear()} ABTalks · Built for students, by students.
+        © {new Date().getFullYear()} ABTalks - Built for students, by students.
       </footer>
     </div>
   );

@@ -1,4 +1,4 @@
-import { ChallengeDay } from './types';
+import type { ChallengeDay } from './types';
 
 export const challenges: ChallengeDay[] = Array.from({ length: 60 }, (_, i) => {
   const day = i + 1;

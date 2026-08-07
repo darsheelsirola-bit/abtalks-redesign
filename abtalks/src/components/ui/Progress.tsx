@@ -68,7 +68,6 @@ export interface CircularProgressProps {
 export const CircularProgress: React.FC<CircularProgressProps> = ({
   value,
   size = 48,
-  strokeWidth
   strokeWidth = 4,
   variant = 'primary',
   className = '',
