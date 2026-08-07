@@ -4,32 +4,37 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Progress, CircularProgress } from '@/components/ui/Progress';
 import { Input } from '@/components/ui/Input';
-import { userVariants } from '@/data/users';
+import { userVariants, type UserVariantKey } from '@/data/users';
 import { challenges } from '@/data/challenges';
 import { GitBranch, Link, Flame, Target, ChevronRight, CircleCheck, CircleX, AlertCircle, Clock, RotateCcw, ShieldCheck, MessageSquare } from 'lucide-react';
-
-// Test with missedPrev variant to demonstrate recovery state
-const user = userVariants.missedPrev;
-const todayChallenge = challenges[user.currentDay - 1];
-
-// Check if yesterday was missed
-const yesterday = user.currentDay - 1;
-const isYesterdayMissed = user.missedDays.includes(yesterday);
-
-// Mock recovery state
-interface RecoveryState {
-  challengeCompleted: boolean;
-  proofSubmitted: boolean;
-  reflection: string;
-  isSubmitted: boolean;
-}
+import { useSearchParams } from 'react-router-dom';
 
 const Dashboard: React.FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const variantParam = searchParams.get('variant');
+  const variant: UserVariantKey = variantParam && variantParam in userVariants ? variantParam as UserVariantKey : 'active';
+  const user = userVariants[variant];
+  const todayChallenge = challenges[user.currentDay - 1];
+
+  // Check if yesterday was missed
+  const yesterday = user.currentDay - 1;
+  const isYesterdayMissed = user.missedDays.includes(yesterday);
+
   const completedCount = user.completedDays.length;
   const missedCount = user.missedDays.length;
   const remaining = user.totalDays - completedCount - missedCount;
   const streak = user.currentStreak;
   const percentile = user.standingPercentile;
+
+  const isFirstDay = user.currentDay === 1 && completedCount === 0 && streak === 0;
+
+  // Mock recovery state
+  interface RecoveryState {
+    challengeCompleted: boolean;
+    proofSubmitted: boolean;
+    reflection: string;
+    isSubmitted: boolean;
+  }
 
   const [recovery, setRecovery] = useState<RecoveryState>({
     challengeCompleted: user.completedDays.includes(user.currentDay),
@@ -44,6 +49,11 @@ const Dashboard: React.FC = () => {
     if (canRecover && !recovery.isSubmitted) {
       setRecovery(prev => ({ ...prev, isSubmitted: true }));
     }
+  };
+
+  const handleVariantChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newVariant = e.target.value as UserVariantKey;
+    setSearchParams({ variant: newVariant });
   };
 
   return (
@@ -65,12 +75,25 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
           <div className="flex items-center gap-2 text-right">
-            <div className="hidden sm:block text-xs text-neutral-500 dark:text-neutral-400">
-              Top <span className="font-medium">{100 - percentile}%</span>
-            </div>
+            {/* Dev variant selector */}
+            <select
+              value={variant}
+              onChange={handleVariantChange}
+              className="text-xs text-neutral-600 dark:text-neutral-400 bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 rounded px-2 py-1"
+              aria-label="Select mock user variant"
+            >
+              {Object.entries(userVariants).map(([key, u]) => (
+                <option key={key} value={key}>{u.name} – Day {u.currentDay}</option>
+              ))}
+            </select>
+            {!isFirstDay && (
+              <div className="hidden sm:block text-xs text-neutral-500 dark:text-neutral-400">
+                Top <span className="font-medium">{100 - percentile}%</span>
+              </div>
+            )}
             <Badge variant="primary" size="sm" className="hidden sm:inline-flex">
               <Flame className="w-3 h-3 mr-1" />
-              {streak}
+              {isFirstDay ? 'Start streak' : streak}
               {isYesterdayMissed && !recovery.isSubmitted && (
                 <span className="ml-1 text-xs bg-neutral-200 dark:bg-neutral-700 px-1 rounded">paused</span>
               )}
@@ -205,7 +228,7 @@ const Dashboard: React.FC = () => {
               className="flex-1"
               onClick={() => (window.location.href = `/day/${user.currentDay}`)}
             >
-              {user.completedDays.includes(user.currentDay) ? 'Continue' : 'Start Day 12'}
+              {user.completedDays.includes(user.currentDay) ? 'Continue' : `Start Day ${user.currentDay}`}
               <ChevronRight className="w-4 h-4 ml-1" />
             </Button>
             {/* Proof status mini */}
@@ -253,7 +276,14 @@ const Dashboard: React.FC = () => {
         <div className="grid grid-cols-3 gap-3">
           <Card variant="outlined" padding="md" className="text-center">
             <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
-              {recovery.isSubmitted ? streak + 1 : streak}
+              {isFirstDay ? (
+                <>
+                  <span className="block">Day 1</span>
+                  <span className="text-xs font-normal text-neutral-500 dark:text-neutral-400">Start your streak</span>
+                </>
+              ) : (
+                recovery.isSubmitted ? streak + 1 : streak
+              )}
             </div>
             <div className="text-xs text-neutral-500 dark:text-neutral-400">Current streak</div>
           </Card>
@@ -316,31 +346,38 @@ const Dashboard: React.FC = () => {
         </Card>
 
         {/* Standing & achievements */}
-        <div className="grid grid-cols-2 gap-3">
-          <Card variant="outlined" padding="md" className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="font-medium">Standing</span>
-              <Badge variant="primary" size="sm">Top {100 - percentile}%</Badge>
-            </div>
-            <CircularProgress value={percentile} size={56} strokeWidth={5} variant="primary" className="mx-auto" />
-            <p className="text-xs text-neutral-500 dark:text-neutral-400 text-center">Percentile among participants</p>
-          </Card>
+        {!isFirstDay && (
+          <div className="grid grid-cols-2 gap-3">
+            <Card variant="outlined" padding="md" className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="font-medium">Standing</span>
+                <Badge variant="primary" size="sm">Top {100 - percentile}%</Badge>
+              </div>
+              <CircularProgress value={percentile} size={56} strokeWidth={5} variant="primary" className="mx-auto" />
+              <p className="text-xs text-neutral-500 dark:text-neutral-400 text-center">Percentile among participants</p>
+            </Card>
 
-          <Card variant="outlined" padding="md" className="space-y-2">
-            <div className="font-medium">Achievements</div>
-            <div className="flex flex-wrap gap-1">
-              {user.achievements.map((achievement: typeof user.achievements[0]) => (
-                <Badge key={achievement.id} variant="primary" size="sm" dot>{achievement.name}</Badge>
-              ))}
-              {recovery.isSubmitted && (
-                <Badge key="recovery" variant="success" size="sm" dot>Streak Restored</Badge>
-              )}
-              {user.achievements.length === 0 && !recovery.isSubmitted && (
-                <Badge variant="outline" size="sm">No achievements yet</Badge>
-              )}
-            </div>
+            <Card variant="outlined" padding="md" className="space-y-2">
+              <div className="font-medium">Achievements</div>
+              <div className="flex flex-wrap gap-1">
+                {user.achievements.map((achievement: typeof user.achievements[0]) => (
+                  <Badge key={achievement.id} variant="primary" size="sm" dot>{achievement.name}</Badge>
+                ))}
+                {recovery.isSubmitted && (
+                  <Badge key="recovery" variant="success" size="sm" dot>Streak Restored</Badge>
+                )}
+                {user.achievements.length === 0 && !recovery.isSubmitted && (
+                  <Badge variant="outline" size="sm">No achievements yet</Badge>
+                )}
+              </div>
+            </Card>
+          </div>
+        )}
+        {isFirstDay && (
+          <Card variant="outlined" padding="md" className="text-center">
+            <p className="text-sm text-neutral-600 dark:text-neutral-400">Complete Day 1 to unlock your standing and first achievement.</p>
           </Card>
-        </div>
+        )}
 
         {/* Missed days summary (only if not recovered) */}
         {missedCount > 0 && !recovery.isSubmitted && (
