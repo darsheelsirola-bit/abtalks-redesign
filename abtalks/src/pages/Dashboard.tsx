@@ -86,7 +86,7 @@ const Dashboard: React.FC = () => {
                 <option key={key} value={key}>{u.name} – Day {u.currentDay}</option>
               ))}
             </select>
-            {!isFirstDay && (
+            {!isFirstDay && percentile > 0 && (
               <div className="hidden sm:block text-xs text-neutral-500 dark:text-neutral-400">
                 Top <span className="font-medium">{100 - percentile}%</span>
               </div>
@@ -235,11 +235,11 @@ const Dashboard: React.FC = () => {
             <div className="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
               <span className="flex items-center gap-1">
                 <GitBranch className="w-3 h-3" />
-                {recovery.proofSubmitted ? 'submitted' : user.githubProofStatus}
+                {recovery.proofSubmitted ? 'submitted' : (user.githubProofStatus ?? 'pending')}
               </span>
               <span className="flex items-center gap-1">
                 <Link className="w-3 h-3" />
-                {recovery.proofSubmitted ? 'submitted' : user.linkedinProofStatus}
+                {recovery.proofSubmitted ? 'submitted' : (user.linkedinProofStatus ?? 'pending')}
               </span>
             </div>
           </div>
@@ -348,15 +348,16 @@ const Dashboard: React.FC = () => {
         {/* Standing & achievements */}
         {!isFirstDay && (
           <div className="grid grid-cols-2 gap-3">
-            <Card variant="outlined" padding="md" className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="font-medium">Standing</span>
-                <Badge variant="primary" size="sm">Top {100 - percentile}%</Badge>
-              </div>
-              <CircularProgress value={percentile} size={56} strokeWidth={5} variant="primary" className="mx-auto" />
-              <p className="text-xs text-neutral-500 dark:text-neutral-400 text-center">Percentile among participants</p>
-            </Card>
-
+            {percentile > 0 && (
+              <Card variant="outlined" padding="md" className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-medium">Standing</span>
+                  <Badge variant="primary" size="sm">Top {100 - percentile}%</Badge>
+                </div>
+                <CircularProgress value={percentile} size={56} strokeWidth={5} variant="primary" className="mx-auto" />
+                <p className="text-xs text-neutral-500 dark:text-neutral-400 text-center">Percentile among participants</p>
+              </Card>
+            )}
             <Card variant="outlined" padding="md" className="space-y-2">
               <div className="font-medium">Achievements</div>
               <div className="flex flex-wrap gap-1">
