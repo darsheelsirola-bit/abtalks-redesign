@@ -4,7 +4,9 @@ import { StreakRail } from '@/components/ui/StreakRail';
 import { RecoveryPanel } from '@/components/ui/RecoveryPanel';
 import { userVariants, type UserVariantKey } from '@/data/users';
 import { challenges } from '@/data/challenges';
+import { Flame } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
+import { BrandLogo } from '@/components/BrandLogo';
 
 const Dashboard: React.FC = () => {
   const [searchParams, _setSearchParams] = useSearchParams();
@@ -19,10 +21,14 @@ const Dashboard: React.FC = () => {
 
   const completedCount = user.completedDays.length;
   const missedCount = user.missedDays.length;
-  const remaining = user.totalDays - completedCount - missedCount;
   const streak = user.currentStreak;
   const longest = user.longestStreak;
   const percentile = user.standingPercentile;
+
+  // Derived values for consistency
+  const displayedDaysBuilt = user.currentDay;
+  const displayedRemaining = user.totalDays - user.currentDay;
+  const displayedStreak = user.currentStreak;
 
   const isFirstDay = user.currentDay === 1 && completedCount === 0 && streak === 0;
 
@@ -63,13 +69,9 @@ const Dashboard: React.FC = () => {
       <header className="sticky top-0 z-30 bg-surface-900/80 backdrop-blur-sm border-b border-border-subtle shadow-ambient">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="flex items-center gap-2">
-              <span className="text-xl font-bold mono text-brand-lime-500">AB</span>
-              <span className="text-xs text-text-muted uppercase tracking-wider hidden sm:block">TALKS</span>
-            </div>
+            <BrandLogo size="md" showText />
             <div className="hidden sm:block text-text-secondary">
-              <span className="font-mono font-medium">DAY {user.currentDay}</span>
-              <span className="text-text-muted">/ {user.totalDays}</span>
+              <span className="font-mono font-medium tabular-nums">DAY {user.currentDay} / {user.totalDays}</span>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -88,9 +90,9 @@ const Dashboard: React.FC = () => {
             )}
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1.5 px-3 py-1.5 bg-surface-750 rounded-lg border border-border/30 shadow-raised">
-                <span className="text-lg" aria-hidden="true">🔥</span>
-                <span className="font-mono font-bold text-brand-orange-500">
-                  {isFirstDay ? '—' : streak}
+                <Flame className="w-4 h-4 text-brand-orange-500" aria-hidden="true" />
+                <span className="font-mono font-bold tabular-nums text-brand-orange-500">
+                  {isFirstDay ? '—' : displayedStreak}
                 </span>
               </div>
             </div>
@@ -118,7 +120,7 @@ const Dashboard: React.FC = () => {
                 <span className="text-text-secondary hidden sm:inline">of {user.totalDays}</span>
               </div>
               <p className="text-sm text-text-muted mt-1">
-                {completedCount} days built. {remaining} to go.
+                {displayedDaysBuilt} days built. {displayedRemaining} to go.
               </p>
             </div>
             <div className="flex-shrink-0 text-right hidden sm:block">
@@ -148,15 +150,15 @@ const Dashboard: React.FC = () => {
           {/* Stats Row - 3 cards with depth */}
           <div className="grid grid-cols-3 gap-3 pt-4 border-t border-border/50">
             <div className="card-raised p-4 text-center shadow-raised">
-              <p className="text-2xl font-bold mono text-brand-orange-500">{streak || '—'}</p>
+              <p className="text-2xl font-bold mono text-brand-orange-500">{displayedStreak}</p>
               <p className="text-xs text-text-muted">Streak</p>
             </div>
             <div className="card-raised p-4 text-center shadow-raised">
-              <p className="text-2xl font-bold mono text-text-primary">{completedCount}</p>
+              <p className="text-2xl font-bold mono text-text-primary">{displayedDaysBuilt}</p>
               <p className="text-xs text-text-muted">Completed</p>
             </div>
             <div className="card-raised p-4 text-center shadow-raised">
-              <p className="text-2xl font-bold mono text-text-secondary">{remaining}</p>
+              <p className="text-2xl font-bold mono text-text-secondary">{displayedRemaining}</p>
               <p className="text-xs text-text-muted">Remaining</p>
             </div>
           </div>
