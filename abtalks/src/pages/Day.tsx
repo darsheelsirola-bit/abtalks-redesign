@@ -143,7 +143,7 @@ const Day12: React.FC = () => {
               <GitBranch className="w-5 h-5 text-neutral-600 dark:text-neutral-400" />
               <h3 className="font-medium">GitHub proof</h3>
             </div>
-            <p className="text-xs text-neutral-500 dark:text-neutral-400">
+            <p id="github-hint" className="text-xs text-neutral-500 dark:text-neutral-400">
               Paste the repository URL or a direct commit link (e.g. https://github.com/you/study-tracker-api/commit/a1b2c3d).
             </p>
             <div className="flex gap-2">
@@ -192,7 +192,7 @@ const Day12: React.FC = () => {
               <Link className="w-5 h-5 text-neutral-600 dark:text-neutral-400" />
               <h3 className="font-medium">LinkedIn proof</h3>
             </div>
-            <p className="text-xs text-neutral-500 dark:text-neutral-400">
+            <p id="linkedin-hint" className="text-xs text-neutral-500 dark:text-neutral-400">
               Paste the URL of your LinkedIn post reflecting on today's build (e.g. https://www.linkedin.com/posts/you_activity-123456).
             </p>
             <div className="flex gap-2">
@@ -202,6 +202,7 @@ const Day12: React.FC = () => {
                 onChange={(e) => { setLinkedinUrl(e.target.value); setLinkedinStatus('idle'); }}
                 className="flex-1 min-w-0"
                 inputSize="sm"
+                aria-describedby="linkedin-hint"
                 aria-label="LinkedIn post URL"
               />
               <Button
