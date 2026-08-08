@@ -192,7 +192,7 @@ const Dashboard: React.FC = () => {
             </Button>
 
             {recovery.isSubmitted && (
-              <p className="text-xs text-success-600 dark:text-success-400 text-center">
+              <p className="text-xs text-success-600 dark:text-success-400 text-center animate-fade-in-up">
                 Your streak has been restored. The missed day remains marked, but your streak continues.
               </p>
             )}
@@ -365,7 +365,7 @@ const Dashboard: React.FC = () => {
                   <Badge key={achievement.id} variant="primary" size="sm" dot>{achievement.name}</Badge>
                 ))}
                 {recovery.isSubmitted && (
-                  <Badge key="recovery" variant="success" size="sm" dot>Streak Restored</Badge>
+                  <Badge key="recovery" variant="success" size="sm" dot className="animate-fade-in-up">Streak Restored</Badge>
                 )}
                 {user.achievements.length === 0 && !recovery.isSubmitted && (
                   <Badge variant="outline" size="sm">No achievements yet</Badge>

@@ -159,6 +159,7 @@ const Day12: React.FC = () => {
               onClick={handleGithubSubmit}
               disabled={githubStatus === 'validating' || githubStatus === 'success'}
               aria-label={githubStatus === 'success' ? 'GitHub proof submitted' : 'Submit GitHub proof'}
+              className={githubStatus === 'validating' ? 'animate-pulse-soft' : ''}
             >
               {githubStatus === 'validating' && <span className="animate-spin">⏳</span>}
               {githubStatus === 'success' ? 'Submitted' : 'Submit'}
@@ -170,7 +171,7 @@ const Day12: React.FC = () => {
             </p>
           )}
           {githubStatus === 'success' && githubData && (
-            <div className="bg-success-50 dark:bg-success-900/20 border border-success-200 dark:border-success-800 rounded-md p-3 text-xs space-y-1">
+            <div className="bg-success-50 dark:bg-success-900/20 border border-success-200 dark:border-success-800 rounded-md p-3 text-xs space-y-1 animate-fade-in-up">
               <p className="font-medium text-success-700 dark:text-success-300">Parsed commit info</p>
               <p><span className="font-medium">Repo:</span> {githubData.repo}</p>
               <p><span className="font-medium">Commit:</span> {githubData.commit}</p>
@@ -205,6 +206,7 @@ const Day12: React.FC = () => {
               onClick={handleLinkedinSubmit}
               disabled={linkedinStatus === 'validating' || linkedinStatus === 'success'}
               aria-label={linkedinStatus === 'success' ? 'LinkedIn proof submitted' : 'Submit LinkedIn proof'}
+              className={linkedinStatus === 'validating' ? 'animate-pulse-soft' : ''}
             >
               {linkedinStatus === 'validating' && <span className="animate-spin">⏳</span>}
               {linkedinStatus === 'success' ? 'Submitted' : 'Submit'}
@@ -216,7 +218,7 @@ const Day12: React.FC = () => {
             </p>
           )}
           {linkedinStatus === 'success' && (
-            <p className="text-xs text-success-600 dark:text-success-400 flex items-center gap-1">
+            <p className="text-xs text-success-600 dark:text-success-400 flex items-center gap-1 animate-fade-in-up">
               <CheckCircle2 className="w-3 h-3" /> Proof recorded.
             </p>
           )}
@@ -225,7 +227,7 @@ const Day12: React.FC = () => {
         {/* Completion CTA */}
         <Card variant="elevated" padding="lg" className="space-y-3 text-center">
           {isCompleted ? (
-            <div className="space-y-2">
+            <div className="space-y-2 animate-fade-in-up">
               <div className="mx-auto w-16 h-16 rounded-full bg-success-100 dark:bg-success-900/30 flex items-center justify-center text-success-600 dark:text-success-400">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
