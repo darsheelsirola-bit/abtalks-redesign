@@ -10,7 +10,7 @@ const Home: React.FC = () => {
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100">
       {/* Header */}
       <header className="sticky top-0 z-40 bg-white/80 dark:bg-neutral-950/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 supports-[backdrop-filter]:dark:bg-neutral-950/60 border-b border-neutral-200 dark:border-neutral-800">
-        <div className="max-w-screen-xl mx-auto px-4 py-3 flex items-center justify-between">
+        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <span className="text-lg font-semibold tracking-tight text-primary-600 dark:text-primary-400">ABTalks</span>
           <nav className="hidden md:flex items-center gap-4 text-sm text-neutral-600 dark:text-neutral-400">
             <a href="#how" className="hover:text-primary-600 dark:hover:text-primary-400">How it works</a>
@@ -21,7 +21,7 @@ const Home: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-screen-xl mx-auto px-4 py-6 md:py-12 pb-6 pb-[env(safe-area-inset-bottom)] space-y-10 md:space-y-16">
+      <main className="max-w-5xl mx-auto px-4 py-6 md:py-12 lg:py-20 lg:px-8 pb-6 pb-[env(safe-area-inset-bottom)] space-y-10 md:space-y-16 lg:space-y-20">
         {/* Hero */}
         <section className="text-center space-y-4 md:space-y-6" aria-labelledby="hero-title">
           <h1 id="hero-title" className="text-3xl md:text-4xl font-bold tracking-tight leading-tight">
