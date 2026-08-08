@@ -16,6 +16,10 @@
     perspective: 1000px;
   }
 
+  #how, #proof, #progress {
+    scroll-margin-top: 100px;
+  }
+
   body {
     @apply bg-surface-950 text-text-primary antialiased;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
