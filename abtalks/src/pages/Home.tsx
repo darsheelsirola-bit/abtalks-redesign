@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { Flame } from 'lucide-react';
+import { WorkflowSection } from '@/components/WorkflowSection';
 
 const Home: React.FC = () => {
   return (
@@ -65,77 +66,10 @@ const Home: React.FC = () => {
               See Day 12 Mission
             </button>
           </div>
-        </section>
+</section>
 
-        {/* The Loop - Visual Flow with depth */}
-        <section id="how" className="space-y-10 animate-slide-up-fade" style={{ animationDelay: '400ms' }} aria-labelledby="loop-title">
-          <div className="text-center mb-10">
-            <p className="text-sm text-text-muted uppercase tracking-wider mb-3">THE LOOP</p>
-            <h2 id="loop-title" className="text-4xl lg:text-5xl font-extrabold text-text-primary tracking-tight">BUILD → COMMIT → SHARE → REPEAT</h2>
-          </div>
-
-          <div className="relative">
-            {/* Vertical connector line */}
-            <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-white/20 via-white/10 to-transparent -translate-x-1/2" aria-hidden="true" />
-            
-            <div className="space-y-10 animate-stagger-in">
-              {[
-                { 
-                  icon: <span className="w-7 h-7" style={{backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'14\' height=\'14\' viewBox=\'0 0 14 14\'%3E%3Ccircle cx=\'7\' cy=\'7\' r=\'7\' fill=\'%2378e800\'/%3E%3C/svg%3E")'}} aria-hidden="true"></span>, 
-                  title: 'BUILD', 
-                  desc: 'Pick the day\'s micro-project (15–60 min). Ship something real.',
-                  bg: 'bg-white/5',
-                  border: 'border-white/10'
-                },
-                { 
-                  icon: <span className="w-7 h-7" style={{backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'14\' height=\'14\' viewBox=\'0 0 14 14\'%3E%3Cpath d=\'M7 0C3.13 0 0 3.13 0 7s3.13 7 7 7 7-3.13 7-7-3.13-7-7S10.87 0 7 0zm0 12.5C3.96 12.5 1.5 10.04 1.5 7S3.96 1.5 7 1.5 12.5 3.96 12.5 7 10.04 12.5 7 12.5zm-2-5v-2h2v2h-2zm0-4v-2h2v2h-2z\' fill=\'%2324292e\'/%3E%3C/svg%3E")'}} aria-hidden="true"></span>, 
-                  title: 'COMMIT', 
-                  desc: 'Push code to a public GitHub repo. Evidence exists.',
-                  bg: 'bg-white/5',
-                  border: 'border-white/10'
-                },
-                { 
-                  icon: <span className="w-7 h-7" style={{backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'14\' height=\'14\' viewBox=\'0 0 14 14\'%3E%3Cpath d=\'M12.5 0h-11C.67 0 0 .67 0 1.5v11c0 .83.67 1.5 1.5 1.5h11c.83 0 1.5-.67 1.5-1.5v-11C14 .67 13.33 0 12.5 0zM11 11H3V3h8v8z\' fill=\'%230077b5\'/%3E%3C/svg%3E")'}} aria-hidden="true"></span>, 
-                  title: 'SHARE', 
-                  desc: 'Post a short LinkedIn reflection. Make it visible.',
-                  bg: 'bg-white/5',
-                  border: 'border-white/10'
-                },
-                { 
-                  icon: <Flame className="w-7 h-7 text-brand-orange-500" aria-hidden="true" />, 
-                  title: 'REPEAT', 
-                  desc: 'Streak grows. Portfolio compounds. Day 60 arrives.',
-                  bg: 'bg-white/5',
-                  border: 'border-white/10'
-                },
-              ].map((step, i) => (
-                <div key={i} className="relative flex items-start gap-4 lg:flex-row lg:items-center animate-slide-up-fade" style={{ animationDelay: `${100 + i * 100}ms` }}>
-                  {/* Connector dot */}
-                  <div className="absolute left-1/2 top-4 w-3 h-3 rounded-full border-4 -translate-x-1/2 z-10 bg-surface-950 border-white/20" aria-hidden="true" />
-                  
-                  <div className={`flex-1 ${i % 2 === 0 ? 'lg:pr-10 text-right' : 'lg:pl-10 lg:ml-auto'} min-w-[300px]`}>
-                    <div className={`p-6 lg:p-8 rounded-2xl border transition-all duration-fast hover:shadow-floating hover:-translate-y-1 bg-white/5 border-white/10 card-floating`}>
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className="w-14 h-14 rounded-xl flex items-center justify-center text-white bg-white/10">
-                          {step.icon}
-                        </div>
-                        <div>
-                          <h3 className="font-bold text-text-primary text-xl lg:text-2xl">{step.title}</h3>
-                          <p className="text-base text-text-secondary mt-2">{step.desc}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Arrow between steps */}
-                  {i < 3 && (
-                    <div className="absolute left-1/2 top-24 w-px h-20 bg-gradient-to-b from-transparent to-surface-600 -translate-x-1/2" aria-hidden="true" />
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* The Loop - Workflow Section */}
+        <WorkflowSection />
 
         {/* Live Challenge Preview - Floating card */}
         <section id="proof" className="space-y-8 animate-slide-up-fade" style={{ animationDelay: '500ms' }} aria-labelledby="preview-title">
