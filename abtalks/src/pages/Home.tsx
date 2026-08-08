@@ -35,7 +35,7 @@ const Home: React.FC = () => {
               Start my 60‑day streak
               <ArrowRight className="w-4 h-4 ml-1" aria-hidden="true" />
             </Button>
-            <Button variant="ghost" size="lg" className="w-full sm:w-auto">
+            <Button variant="ghost" size="lg" className="w-full sm:w-auto" onClick={() => (window.location.href = '/day/12')}>
               See day 12 challenge
             </Button>
           </div>

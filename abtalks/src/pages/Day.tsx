@@ -152,6 +152,7 @@ const Day12: React.FC = () => {
               className="flex-1"
               inputSize="sm"
               aria-describedby="github-hint"
+              aria-label="GitHub repository or commit URL"
             />
             <Button
               size="sm"
@@ -199,6 +200,7 @@ const Day12: React.FC = () => {
               onChange={(e) => { setLinkedinUrl(e.target.value); setLinkedinStatus('idle'); }}
               className="flex-1"
               inputSize="sm"
+              aria-label="LinkedIn post URL"
             />
             <Button
               size="sm"

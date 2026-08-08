@@ -11,6 +11,7 @@ import { useSearchParams } from 'react-router-dom';
 
 const Dashboard: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  void setSearchParams;
   const variantParam = searchParams.get('variant');
   const variant: UserVariantKey = variantParam && variantParam in userVariants ? variantParam as UserVariantKey : 'active';
   const user = userVariants[variant];
@@ -51,6 +52,15 @@ const Dashboard: React.FC = () => {
     }
   };
 
+  const formatProof = (status: string) => {
+    switch (status) {
+      case 'verified': return 'Verified';
+      case 'submitted': return 'Submitted';
+      case 'rejected': return 'Rejected';
+      default: return 'Not submitted';
+    }
+  };
+
   const handleVariantChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newVariant = e.target.value as UserVariantKey;
     setSearchParams({ variant: newVariant });
@@ -75,17 +85,19 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
           <div className="flex items-center gap-2 text-right">
-            {/* Dev variant selector */}
-            <select
-              value={variant}
-              onChange={handleVariantChange}
-              className="text-xs text-neutral-600 dark:text-neutral-400 bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 rounded px-2 py-1"
-              aria-label="Select mock user variant"
-            >
-              {Object.entries(userVariants).map(([key, u]) => (
-                <option key={key} value={key}>{u.name} – Day {u.currentDay}</option>
-              ))}
-            </select>
+            {/* Dev variant selector (only in development) */}
+            {import.meta.env.DEV && (
+              <select
+                value={variant}
+                onChange={handleVariantChange}
+                className="text-xs text-neutral-600 dark:text-neutral-400 bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 rounded px-2 py-1"
+                aria-label="Select mock user variant"
+              >
+                {Object.entries(userVariants).map(([key, u]) => (
+                  <option key={key} value={key}>{u.name} – Day {u.currentDay}</option>
+                ))}
+              </select>
+            )}
             {!isFirstDay && percentile > 0 && (
               <div className="hidden sm:block text-xs text-neutral-500 dark:text-neutral-400">
                 Top <span className="font-medium">{100 - percentile}%</span>
@@ -235,11 +247,11 @@ const Dashboard: React.FC = () => {
             <div className="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
               <span className="flex items-center gap-1">
                 <GitBranch className="w-3 h-3" />
-                {recovery.proofSubmitted ? 'submitted' : (user.githubProofStatus ?? 'pending')}
+                {recovery.proofSubmitted ? 'Submitted' : formatProof(user.githubProofStatus ?? 'pending')}
               </span>
               <span className="flex items-center gap-1">
                 <Link className="w-3 h-3" />
-                {recovery.proofSubmitted ? 'submitted' : (user.linkedinProofStatus ?? 'pending')}
+                {recovery.proofSubmitted ? 'Submitted' : formatProof(user.linkedinProofStatus ?? 'pending')}
               </span>
             </div>
           </div>
