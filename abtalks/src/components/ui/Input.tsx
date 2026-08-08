@@ -20,20 +20,21 @@ export interface TextareaProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaE
 
 const baseInput = `
   w-full
-  bg-white dark:bg-neutral-900
-  text-neutral-900 dark:text-neutral-100
-  border border-neutral-300 dark:border-neutral-700
-  rounded-md
-  placeholder:text-neutral-400 dark:placeholder:text-neutral-500
-  transition-colors duration-fast
-  focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent
-  disabled:opacity-50 disabled:pointer-events-none
+  bg-surface-800
+  text-text-primary
+  border border-border
+  rounded-lg
+  placeholder:text-text-muted
+  transition-all duration-fast
+  focus:outline-none focus:ring-2 focus:ring-brand-lime-500 focus:border-brand-lime-500
+  disabled:opacity-40 disabled:pointer-events-none
+  error:border-danger-500 focus:ring-danger-500
 `;
 
-const inputSizes: Record<'sm' | 'md' | 'lg', string> = {
-  sm: 'px-3 py-1.5 text-xs',
-  md: 'px-4 py-2 text-sm',
-  lg: 'px-4 py-3 text-base',
+const inputSizes = {
+  sm: 'px-3 py-2 text-sm',
+  md: 'px-4 py-2.5 text-base',
+  lg: 'px-4 py-3 text-lg',
 };
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -61,38 +62,38 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1.5"
+            className="block text-sm font-medium text-text-secondary mb-2"
           >
             {label}
           </label>
         )}
         <div className="relative">
           {leftIcon && (
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-neutral-400 dark:text-neutral-500">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-text-muted">
               {leftIcon}
             </div>
           )}
           <input
             ref={ref}
             id={inputId}
-            className={`${baseInput} ${inputSizes[inputSize as keyof typeof inputSizes]} ${leftIcon ? 'pl-10' : ''} ${rightIcon ? 'pr-10' : ''} ${error ? 'border-danger-500 focus:ring-danger-500' : ''} ${className}`}
+            className={`${baseInput} ${inputSizes[inputSize]} ${leftIcon ? 'pl-10' : ''} ${rightIcon ? 'pr-10' : ''} ${className}`}
             aria-invalid={error ? 'true' : 'false'}
             aria-describedby={errorId || helperId}
             {...props}
           />
           {rightIcon && (
-            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-neutral-400 dark:text-neutral-500">
+            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-text-muted">
               {rightIcon}
             </div>
           )}
         </div>
         {error && (
-          <p id={errorId} className="mt-1.5 text-xs text-danger-600 dark:text-danger-400" role="alert">
+          <p id={errorId} className="mt-1.5 text-xs text-danger-500" role="alert">
             {error}
           </p>
         )}
         {helperText && !error && (
-          <p id={helperId} className="mt-1.5 text-xs text-neutral-500 dark:text-neutral-400">
+          <p id={helperId} className="mt-1.5 text-xs text-text-muted">
             {helperText}
           </p>
         )}
@@ -126,7 +127,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         {label && (
           <label
             htmlFor={textareaId}
-            className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1.5"
+            className="block text-sm font-medium text-text-secondary mb-2"
           >
             {label}
           </label>
@@ -135,18 +136,18 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           ref={ref}
           id={textareaId}
           rows={rows}
-          className={`${baseInput} ${inputSizes.md} resize-y min-h-[80px] ${error ? 'border-danger-500 focus:ring-danger-500' : ''} ${className}`}
+          className={`${baseInput} ${inputSizes.md} resize-y min-h-[80px] ${className}`}
           aria-invalid={error ? 'true' : 'false'}
           aria-describedby={errorId || helperId}
           {...props}
         />
         {error && (
-          <p id={errorId} className="mt-1.5 text-xs text-danger-600 dark:text-danger-400" role="alert">
+          <p id={errorId} className="mt-1.5 text-xs text-danger-500" role="alert">
             {error}
           </p>
         )}
         {helperText && !error && (
-          <p id={helperId} className="mt-1.5 text-xs text-neutral-500 dark:text-neutral-400">
+          <p id={helperId} className="mt-1.5 text-xs text-text-muted">
             {helperText}
           </p>
         )}

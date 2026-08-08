@@ -3,7 +3,7 @@ import React from 'react';
 export interface ProgressProps {
   value: number; // 0-100
   max?: number;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   variant?: 'primary' | 'success' | 'warning' | 'danger';
   showLabel?: boolean;
   label?: string;
@@ -25,28 +25,29 @@ export const Progress: React.FC<ProgressProps> = ({
   const percent = Math.round((clamped / max) * 100);
 
   const sizeStyles = {
+    xs: 'h-0.5',
     sm: 'h-1',
     md: 'h-2',
     lg: 'h-3',
   };
 
   const variantColors = {
-    primary: 'bg-primary-500',
-    success: 'bg-success-500',
-    warning: 'bg-warning-500',
+    primary: 'bg-brand-lime-500',
+    success: 'bg-brand-lime-500',
+    warning: 'bg-brand-orange-500',
     danger: 'bg-danger-500',
   };
 
   return (
     <div className={`w-full ${className}`} role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100} aria-label={ariaLabel}>
-      <div className={`relative overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800 ${sizeStyles[size]}`}>
+      <div className={`relative overflow-hidden rounded-full bg-surface-600 ${sizeStyles[size]}`}>
         <div
           className={`${variantColors[variant]} h-full rounded-full transition-all duration-normal ease-out`}
           style={{ width: `${percent}%` }}
         />
       </div>
       {(showLabel || label) && (
-        <div className="flex items-center justify-between mt-1.5 text-xs text-neutral-600 dark:text-neutral-400">
+        <div className="flex items-center justify-between mt-2 text-xs text-text-muted mono">
           <span>{label ?? ''}</span>
           <span aria-hidden="true">{percent}%</span>
         </div>
@@ -79,9 +80,9 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
   const offset = circumference * (1 - clamped / 100);
 
   const variantColors = {
-    primary: 'text-primary-500',
-    success: 'text-success-500',
-    warning: 'text-warning-500',
+    primary: 'text-brand-lime-500',
+    success: 'text-brand-lime-500',
+    warning: 'text-brand-orange-500',
     danger: 'text-danger-500',
   };
 
@@ -94,7 +95,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
       aria-label={ariaLabel ?? `Progress ${clamped}%`}
     >
       <circle
-        className="text-neutral-200 dark:text-neutral-700"
+        className="text-surface-600"
         strokeWidth={strokeWidth}
         stroke="currentColor"
         fill="transparent"

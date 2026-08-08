@@ -1,17 +1,18 @@
 import React from 'react';
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: 'default' | 'elevated' | 'outlined';
-  padding?: 'none' | 'sm' | 'md' | 'lg';
+  variant?: 'default' | 'elevated' | 'outlined' | 'panel';
+  padding?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
   hover?: boolean;
 }
 
-const base = 'rounded-lg';
+const base = 'rounded-xl';
 
 const variantStyles = {
-  default: 'bg-white dark:bg-neutral-900',
-  elevated: 'bg-white dark:bg-neutral-900 shadow-elevated',
-  outlined: 'bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800',
+  default: 'bg-surface-800',
+  elevated: 'bg-surface-800 shadow-elevated',
+  outlined: 'bg-surface-800 border border-border',
+  panel: 'bg-surface-700/50 backdrop-blur-sm border border-border/50',
 };
 
 const paddingStyles = {
@@ -19,6 +20,7 @@ const paddingStyles = {
   sm: 'p-3',
   md: 'p-4',
   lg: 'p-6',
+  xl: 'p-8',
 };
 
 export const Card: React.FC<CardProps> = ({
@@ -31,7 +33,7 @@ export const Card: React.FC<CardProps> = ({
 }) => {
   return (
     <div
-      className={`${base} ${variantStyles[variant]} ${paddingStyles[padding]} ${hover ? 'transition-shadow duration-fast hover:shadow-elevated cursor-pointer' : ''} ${className}`}
+      className={`${base} ${variantStyles[variant]} ${paddingStyles[padding]} ${hover ? 'transition-all duration-fast hover:shadow-elevated hover:-translate-y-0.5 cursor-pointer' : ''} ${className}`}
       {...props}
     >
       {children}
@@ -44,7 +46,7 @@ export const CardHeader: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   className = '',
   ...props
 }) => (
-  <div className={`mb-3 ${className}`} {...props}>{children}</div>
+  <div className={`mb-4 ${className}`} {...props}>{children}</div>
 );
 
 export const CardTitle: React.FC<React.HTMLAttributes<HTMLHeadingElement>> = ({
@@ -52,7 +54,7 @@ export const CardTitle: React.FC<React.HTMLAttributes<HTMLHeadingElement>> = ({
   className = '',
   ...props
 }) => (
-  <h3 className={`text-lg font-semibold text-neutral-900 dark:text-neutral-100 ${className}`} {...props}>
+  <h3 className={`text-lg font-semibold text-text-primary ${className}`} {...props}>
     {children}
   </h3>
 );
@@ -62,7 +64,7 @@ export const CardDescription: React.FC<React.HTMLAttributes<HTMLParagraphElement
   className = '',
   ...props
 }) => (
-  <p className={`text-sm text-neutral-500 dark:text-neutral-400 mt-1 ${className}`} {...props}>
+  <p className={`text-sm text-text-secondary mt-1 ${className}`} {...props}>
     {children}
   </p>
 );
@@ -78,7 +80,7 @@ export const CardFooter: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   className = '',
   ...props
 }) => (
-  <div className={`mt-4 pt-4 border-t border-neutral-100 dark:border-neutral-800 flex items-center gap-2 ${className}`} {...props}>
+  <div className={`mt-6 pt-4 border-t border-border flex items-center gap-2 ${className}`} {...props}>
     {children}
   </div>
 );
