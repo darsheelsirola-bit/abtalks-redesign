@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { Flame } from 'lucide-react';
+import { Code2 } from 'lucide-react';
 import { WorkflowSection } from '@/components/WorkflowSection';
 
 const Home: React.FC = () => {
@@ -80,8 +81,8 @@ const Home: React.FC = () => {
 
           <div className="card-floating p-6 lg:p-8 animate-slide-up-fade" style={{ animationDelay: '100ms' }}>
             <div className="flex items-start gap-5 mb-6">
-              <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center shadow-[0_0_12px_rgba(120,232,0,0.2)]">
-                <span className="w-8 h-8 text-brand-lime-500" aria-hidden="true">✓</span>
+              <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-surface-700/50 flex items-center justify-center border border-white/10">
+                <Code2 className="w-8 h-8 text-white" aria-hidden="true" />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-3">
@@ -121,15 +122,15 @@ const Home: React.FC = () => {
             </div>
 
             <div className="w-full">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs text-text-muted uppercase tracking-wider mono">CHALLENGE PROGRESS</span>
+                <span className="text-sm font-semibold mono text-white">20%</span>
+              </div>
               <div className="relative h-2.5 bg-surface-700 rounded-full overflow-hidden progress-3d">
                 <div
                   className="h-full bg-brand-lime-500 rounded-full transition-all duration-normal ease-out"
                   style={{ width: '20%' }}
                 />
-              </div>
-              <div className="flex justify-between mt-3 text-sm text-text-muted mono">
-                <span>0%</span>
-                <span>20%</span>
               </div>
             </div>
           </div>
