@@ -64,7 +64,7 @@ const Day12: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 pb-24">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 pb-24 pb-[env(safe-area-inset-bottom)] overflow-x-hidden">
       {/* Top bar */}
       <header className="sticky top-0 z-30 bg-white/80 dark:bg-neutral-950/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 supports-[backdrop-filter]:dark:bg-neutral-950/60 border-b border-neutral-200 dark:border-neutral-800">
         <div className="max-w-screen-xl mx-auto px-4 py-3 flex items-center gap-3">
@@ -149,7 +149,7 @@ const Day12: React.FC = () => {
               placeholder="https://github.com/..."
               value={githubUrl}
               onChange={(e) => { setGithubUrl(e.target.value); setGithubStatus('idle'); }}
-              className="flex-1"
+              className="flex-1 min-w-0"
               inputSize="sm"
               aria-describedby="github-hint"
               aria-label="GitHub repository or commit URL"
@@ -198,7 +198,7 @@ const Day12: React.FC = () => {
               placeholder="https://www.linkedin.com/posts/..."
               value={linkedinUrl}
               onChange={(e) => { setLinkedinUrl(e.target.value); setLinkedinStatus('idle'); }}
-              className="flex-1"
+              className="flex-1 min-w-0"
               inputSize="sm"
               aria-label="LinkedIn post URL"
             />

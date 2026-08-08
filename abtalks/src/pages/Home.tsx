@@ -21,7 +21,7 @@ const Home: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-screen-xl mx-auto px-4 py-6 md:py-12 space-y-10 md:space-y-16">
+      <main className="max-w-screen-xl mx-auto px-4 py-6 md:py-12 pb-6 pb-[env(safe-area-inset-bottom)] space-y-10 md:space-y-16">
         {/* Hero */}
         <section className="text-center space-y-4 md:space-y-6" aria-labelledby="hero-title">
           <h1 id="hero-title" className="text-3xl md:text-4xl font-bold tracking-tight leading-tight">
