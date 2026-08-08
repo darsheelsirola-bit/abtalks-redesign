@@ -10,8 +10,7 @@ import { GitBranch, Link, Flame, Target, ChevronRight, CircleCheck, CircleX, Ale
 import { useSearchParams } from 'react-router-dom';
 
 const Dashboard: React.FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  void setSearchParams;
+  const [searchParams, _setSearchParams] = useSearchParams();
   const variantParam = searchParams.get('variant');
   const variant: UserVariantKey = variantParam && variantParam in userVariants ? variantParam as UserVariantKey : 'active';
   const user = userVariants[variant];
@@ -63,7 +62,7 @@ const Dashboard: React.FC = () => {
 
   const handleVariantChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newVariant = e.target.value as UserVariantKey;
-    setSearchParams({ variant: newVariant });
+    _setSearchParams({ variant: newVariant });
   };
 
   return (
