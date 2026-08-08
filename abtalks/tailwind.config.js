@@ -37,13 +37,16 @@ export default {
             950: '#431407',
           },
         },
-        // Dark surfaces - near-black charcoal
+        // Dark surfaces - layered near-black charcoal for 3D depth
         surface: {
-          950: '#050505',  // Deepest background
-          900: '#0d0d0d',  // Main background
-          800: '#141414',  // Elevated surfaces
-          700: '#1c1c1c',  // Cards/panels
-          600: '#262626',  // Borders/dividers
+          950: '#030303',  // Deepest background (page background)
+          900: '#090909',  // Main background
+          850: '#0c0c0c',  // Recessed sections
+          800: '#111111',  // Base panels
+          750: '#151515',  // Raised panels
+          700: '#1a1a1a',  // Interactive elements
+          650: '#222222',  // Elevated cards
+          600: '#2a2a2a',  // Borders/dividers
           500: '#3d3d3d',  // Muted elements
         },
         // Text hierarchy
@@ -53,7 +56,7 @@ export default {
           muted: '#737373',        // Subtle/disabled
           inverse: '#050505',      // For on-accent text
         },
-        // Semantic - using brand colors
+        // Semantic - using brand colors (restrained)
         success: {
           500: '#78e800',  // Brand lime
           600: '#5ec700',
@@ -66,10 +69,12 @@ export default {
           500: '#ef4444',
           600: '#dc2626',
         },
-        // Border
+        // Border - subtle
         border: {
           DEFAULT: '#262626',
           muted: '#1c1c1c',
+          subtle: '#181818',
+          highlight: '#333333',  // Top edge highlight
         },
       },
       fontFamily: {
@@ -77,7 +82,7 @@ export default {
         mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
       },
       fontSize: {
-        // Mobile-first scale for 390px
+        // Mobile-first scale for 390px - refined for better hierarchy
         '2xs': ['0.625rem', { lineHeight: '1rem', letterSpacing: '0.02em' }],     // 10px
         xs: ['0.75rem', { lineHeight: '1.25rem', letterSpacing: '0.01em' }],       // 12px
         sm: ['0.8125rem', { lineHeight: '1.375rem', letterSpacing: '0.01em' }],    // 13px
@@ -95,48 +100,74 @@ export default {
       },
       spacing: {
         0: '0',
-        1: '0.25rem',   // 4px
-        2: '0.5rem',    // 8px
-        3: '0.75rem',   // 12px
-        4: '1rem',      // 16px
-        5: '1.25rem',   // 20px
-        6: '1.5rem',    // 24px
-        7: '1.75rem',   // 28px
-        8: '2rem',      // 32px
-        9: '2.25rem',   // 36px
-        10: '2.5rem',   // 40px
-        12: '3rem',     // 48px
-        14: '3.5rem',   // 56px
-        16: '4rem',     // 64px
+        0.5: '0.125rem',   // 2px
+        1: '0.25rem',      // 4px
+        1.5: '0.375rem',   // 6px
+        2: '0.5rem',       // 8px
+        2.5: '0.625rem',   // 10px
+        3: '0.75rem',      // 12px
+        3.5: '0.875rem',   // 14px
+        4: '1rem',         // 16px
+        5: '1.25rem',      // 20px
+        6: '1.5rem',       // 24px
+        7: '1.75rem',      // 28px
+        8: '2rem',         // 32px
+        9: '2.25rem',      // 36px
+        10: '2.5rem',      // 40px
+        12: '3rem',        // 48px
+        14: '3.5rem',      // 56px
+        16: '4rem',        // 64px
+        18: '4.5rem',      // 72px
+        20: '5rem',        // 80px
+        24: '6rem',        // 96px
       },
       borderRadius: {
         none: '0',
-        sm: '0.375rem',   // 6px
-        DEFAULT: '0.625rem', // 10px
-        md: '0.75rem',    // 12px
-        lg: '0.875rem',   // 14px
-        xl: '1rem',       // 16px
-        '2xl': '1.25rem', // 20px
+        xs: '0.25rem',     // 4px
+        sm: '0.375rem',    // 6px
+        DEFAULT: '0.5rem', // 8px
+        md: '0.625rem',    // 10px
+        lg: '0.75rem',     // 12px
+        xl: '0.875rem',    // 14px
+        '2xl': '1rem',     // 16px
+        '3xl': '1.5rem',   // 24px
         full: '9999px',
       },
       boxShadow: {
-        'surface': '0 1px 2px 0 rgb(0 0 0 / 0.3)',
-        'elevated': '0 4px 12px -2px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3)',
-        'panel': '0 2px 8px -2px rgb(0 0 0 / 0.4)',
-        'focus': '0 0 0 2px #78e800, 0 0 0 4px rgba(120, 232, 0, 0.15)',
-        'glow-lime': '0 0 24px rgba(120, 232, 0, 0.25), 0 0 48px rgba(120, 232, 0, 0.1)',
-        'glow-orange': '0 0 24px rgba(249, 115, 22, 0.25), 0 0 48px rgba(249, 115, 22, 0.1)',
+        // Layered shadow system for 3D depth
+        'ambient': '0 0 0 1px rgba(255,255,255,0.02), 0 1px 1px rgba(0,0,0,0.4)',
+        'surface': '0 1px 2px rgba(0,0,0,0.3), 0 1px 3px rgba(0,0,0,0.2)',
+        'raised': '0 2px 4px rgba(0,0,0,0.3), 0 4px 8px rgba(0,0,0,0.2), 0 8px 16px rgba(0,0,0,0.1)',
+        'elevated': '0 4px 12px -2px rgba(0,0,0,0.4), 0 2px 4px -2px rgba(0,0,0,0.3)',
+        'floating': '0 8px 24px -4px rgba(0,0,0,0.4), 0 4px 12px -2px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.03)',
+        'inner': 'inset 0 1px 1px rgba(255,255,255,0.03), inset 0 -1px 1px rgba(0,0,0,0.3)',
+        'inner-deep': 'inset 0 2px 4px rgba(0,0,0,0.4), inset 0 -1px 1px rgba(0,0,0,0.2)',
+        'focus': '0 0 0 2px #78e800, 0 0 0 4px rgba(120, 232, 0, 0.1)',
+        'focus-inner': 'inset 0 0 0 2px #78e800',
+        // Edge highlight for 3D effect
+        'edge-highlight': 'inset 0 1px 0 rgba(255,255,255,0.06)',
+        'edge-highlight-strong': 'inset 0 1px 0 rgba(255,255,255,0.1)',
       },
       transitionDuration: {
         'instant': '50ms',
         'fast': '120ms',
         'normal': '200ms',
         'slow': '300ms',
+        'slow-spring': '400ms',
       },
       transitionTimingFunction: {
         'ease-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
         'ease-in-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
         'spring': 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+        'snap': 'cubic-bezier(0.16, 1, 0.3, 1)',
+      },
+      // Custom properties for 3D transforms
+      transformStyle: {
+        'preserve-3d': 'preserve-3d',
+      },
+      perspective: {
+        '1000': '1000px',
+        '2000': '2000px',
       },
     },
   },

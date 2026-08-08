@@ -4,7 +4,6 @@ import { StreakRail } from '@/components/ui/StreakRail';
 import { RecoveryPanel } from '@/components/ui/RecoveryPanel';
 import { userVariants, type UserVariantKey } from '@/data/users';
 import { challenges } from '@/data/challenges';
-import { Flame } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 
 const Dashboard: React.FC = () => {
@@ -60,8 +59,8 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="page">
-      {/* Compact Header */}
-      <header className="sticky top-0 z-30 bg-surface-900/80 backdrop-blur-sm border-b border-border">
+      {/* Compact Header with depth */}
+      <header className="sticky top-0 z-30 bg-surface-900/80 backdrop-blur-sm border-b border-border-subtle shadow-ambient">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0">
             <div className="flex items-center gap-2">
@@ -88,8 +87,8 @@ const Dashboard: React.FC = () => {
               </select>
             )}
             <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-surface-700 rounded-lg">
-                <Flame className="w-4 h-4 text-brand-orange-500" aria-hidden="true" />
+              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-surface-750 rounded-lg border border-border/30 shadow-raised">
+                <span className="text-lg" aria-hidden="true">🔥</span>
                 <span className="font-mono font-bold text-brand-orange-500">
                   {isFirstDay ? '—' : streak}
                 </span>
@@ -109,8 +108,8 @@ const Dashboard: React.FC = () => {
           onDismiss={() => setShowRecovery(false)}
         />
 
-        {/* Primary Status Band */}
-        <div className="bg-surface-700/40 border border-border/50 rounded-xl p-5">
+        {/* Primary Status Band - Floating panel */}
+        <div className="card-floating p-5 animate-slide-up-fade">
           <div className="flex items-start justify-between gap-4 mb-5">
             <div className="min-w-0">
               <p className="text-xs text-text-muted uppercase tracking-wider mb-1">Current Status</p>
@@ -128,14 +127,15 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* Progress Rail */}
-          <div className="relative h-2 bg-surface-600 rounded-full overflow-hidden mb-4">
+          {/* Progress Rail - 3D */}
+          <div className="relative h-2.5 bg-surface-700 rounded-full overflow-hidden mb-4 shadow-inner-deep">
             <div
-              className="h-full bg-brand-lime-500 rounded-full transition-all duration-normal ease-out"
+              className="h-full bg-brand-lime-500 rounded-full transition-all duration-normal ease-out shadow-[0_1px_2px_rgba(0,0,0,0.3),0_0_8px_rgba(120,232,0,0.3)]"
               style={{ width: `${user.completionPercentage}%` }}
             />
+            {/* Today marker */}
             <div
-              className="absolute top-1/2 -translate-y-1/2 w-0.5 h-3 bg-brand-lime-500 animate-pulse-subtle"
+              className="absolute top-1/2 -translate-y-1/2 w-0.5 h-3.5 bg-brand-lime-500 animate-pulse-subtle shadow-[0_0_8px_rgba(120,232,0,0.5)]"
               style={{ left: `${Math.min(((user.currentDay - 1) / user.totalDays) * 100, 100)}%` }}
               aria-hidden="true"
             />
@@ -145,25 +145,25 @@ const Dashboard: React.FC = () => {
             <span>Day {user.totalDays}</span>
           </div>
 
-          {/* Stats Row */}
+          {/* Stats Row - 3 cards with depth */}
           <div className="grid grid-cols-3 gap-3 pt-4 border-t border-border/50">
-            <div className="text-center">
+            <div className="card-raised p-4 text-center shadow-raised">
               <p className="text-2xl font-bold mono text-brand-orange-500">{streak || '—'}</p>
               <p className="text-xs text-text-muted">Streak</p>
             </div>
-            <div className="text-center">
+            <div className="card-raised p-4 text-center shadow-raised">
               <p className="text-2xl font-bold mono text-text-primary">{completedCount}</p>
               <p className="text-xs text-text-muted">Completed</p>
             </div>
-            <div className="text-center">
+            <div className="card-raised p-4 text-center shadow-raised">
               <p className="text-2xl font-bold mono text-text-secondary">{remaining}</p>
               <p className="text-xs text-text-muted">Remaining</p>
             </div>
           </div>
         </div>
 
-        {/* Today's Mission - Primary CTA */}
-        <div className="relative bg-surface-700/60 border border-border/50 backdrop-blur-sm rounded-xl p-5">
+        {/* Today's Mission - Primary CTA - Floating card */}
+        <div className="card-floating p-5 animate-slide-up-fade" style={{ animationDelay: '50ms' }}>
           {/* Header */}
           <div className="flex items-start justify-between gap-3 mb-4">
             <div className="min-w-0">
@@ -173,7 +173,7 @@ const Dashboard: React.FC = () => {
               </div>
               <h2 className="text-xl font-bold text-text-primary leading-tight">{todayChallenge.title}</h2>
             </div>
-            <span className="px-3 py-1.5 bg-brand-orange-500/15 text-brand-orange-500 text-xs font-mono rounded-lg border border-brand-orange-500/30 flex items-center gap-1">
+            <span className="px-3 py-1.5 bg-white/10 text-white text-xs font-mono rounded-lg border border-white/20 flex items-center gap-1">
               <span style={{fontFamily: 'monospace'}}>{todayChallenge.estimatedMinutes} MIN</span>
             </span>
           </div>
@@ -184,17 +184,17 @@ const Dashboard: React.FC = () => {
           {/* Tags */}
           <div className="flex flex-wrap gap-1.5 mb-5">
             {todayChallenge.tags.map((tag) => (
-              <span key={tag} className="px-2.5 py-1 text-xs bg-transparent text-text-secondary border border-border rounded-full">
+              <span key={tag} className="px-2.5 py-1 text-xs bg-transparent text-text-secondary border border-border/50 rounded-full">
                 {tag}
               </span>
             ))}
           </div>
 
-          {/* CTA */}
+          {/* CTA - Primary button with depth */}
           <button
             type="button"
             onClick={() => window.location.href = `/day/${user.currentDay}`}
-            className="group w-full px-6 py-4 rounded-lg font-medium text-base transition-all duration-fast focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime-500 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-900 active:scale-[0.98] bg-brand-lime-500 text-surface-950 hover:bg-brand-lime-400 active:bg-brand-lime-600 shadow-glow-lime"
+            className="group w-full px-6 py-4 rounded-lg font-medium text-base transition-all duration-fast focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime-500 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-950 active:scale-[0.98] active:translate-y-0.5 bg-white text-black hover:bg-gray-200 active:bg-gray-300 shadow-[0_4px_12px_-2px_rgba(0,0,0,0.4),0_2px_4px_-2px_rgba(0,0,0,0.3),0_0_0_1px_rgba(120,232,0,0.3)] hover:shadow-[0_8px_24px_-4px_rgba(0,0,0,0.5),0_4px_12px_-2px_rgba(0,0,0,0.3),0_0_0_1px_rgba(120,232,0,0.4)] hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0.5 transition-all duration-fast"
           >
             <span className="flex items-center justify-center gap-2">
               {user.completedDays.includes(user.currentDay) ? (
@@ -217,14 +217,14 @@ const Dashboard: React.FC = () => {
               <div className="flex items-center gap-2 text-xs">
                 <span className="w-3.5 h-3.5 github-icon" aria-hidden="true"></span>
                 <div className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-text-muted" aria-hidden="true"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-surface-600" aria-hidden="true"></span>
                   <span className="text-text-secondary">Not submitted</span>
                 </div>
               </div>
               <div className="flex items-center gap-2 text-xs">
                 <span className="w-3.5 h-3.5 linkedin-icon" aria-hidden="true"></span>
                 <div className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-text-muted" aria-hidden="true"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-surface-600" aria-hidden="true"></span>
                   <span className="text-text-secondary">Not submitted</span>
                 </div>
               </div>
@@ -232,7 +232,7 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Challenge Progress Grid */}
+        {/* Challenge Progress Grid - 3D grid */}
         <ChallengeProgress
           currentDay={user.currentDay}
           completedDays={user.completedDays}
@@ -240,8 +240,8 @@ const Dashboard: React.FC = () => {
           totalDays={user.totalDays}
         />
 
-        {/* Streak Rail */}
-        <div className="bg-surface-700/40 border border-border/50 rounded-xl p-5">
+        {/* Streak Rail - 3D */}
+        <div className="card-raised p-5 shadow-raised animate-slide-up-fade" style={{ animationDelay: '100ms' }}>
           <StreakRail
             currentStreak={streak}
             longestStreak={longest}
@@ -251,9 +251,9 @@ const Dashboard: React.FC = () => {
           />
         </div>
 
-        {/* Achievements & Standing */}
+        {/* Achievements & Standing - Side by side with depth */}
         <div className="grid lg:grid-cols-2 gap-4">
-          <div className="bg-surface-700/40 border border-border/50 rounded-xl p-5">
+          <div className="card-raised p-5 shadow-raised animate-slide-up-fade" style={{ animationDelay: '150ms' }}>
             <div className="flex items-center justify-between mb-4">
               <div>
                 <p className="text-xs text-text-muted uppercase tracking-wider mb-1">Achievements</p>
@@ -274,17 +274,15 @@ const Dashboard: React.FC = () => {
                 return (
                   <div
                     key={achievement.id}
-                    className={`flex items-center gap-4 p-4 rounded-xl transition-all duration-fast ${
-                      isUnlocked
-                        ? 'bg-surface-700/60 border border-brand-lime-500/20'
-                        : 'bg-surface-600/40 border border-border'
-                    }`}
+                    className={`flex items-center gap-4 p-4 rounded-xl transition-all duration-fast ${isUnlocked
+                      ? 'card-raised border border-brand-lime-500/20'
+                      : 'card-recessed border border-border/50'}`}
                   >
                     <div
                       className={`flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center ${
                         isUnlocked
-                          ? 'bg-brand-lime-500/15 text-brand-lime-500'
-                          : 'bg-surface-600/50 text-text-muted'
+                          ? 'bg-brand-lime-500/15 text-brand-lime-500 shadow-[0_0_12px_rgba(120,232,0,0.2)]'
+                          : 'card-recessed text-text-muted'
                       }`}
                       aria-hidden="true"
                     >
@@ -298,12 +296,12 @@ const Dashboard: React.FC = () => {
                           {achievement.name}
                         </h4>
                         {isUnlocked && unlockedAt && (
-                          <span className="text-xs text-text-muted mono bg-surface-600 px-2 py-0.5 rounded">
+                          <span className="text-xs text-text-muted mono card-recessed px-2 py-0.5 rounded">
                             {new Date(unlockedAt).toLocaleDateString()}
                           </span>
                         )}
                         {!isUnlocked && (
-                          <span className="text-xs text-text-muted bg-surface-600 px-2 py-0.5 rounded">Locked</span>
+                          <span className="text-xs text-text-muted card-recessed px-2 py-0.5 rounded">Locked</span>
                         )}
                       </div>
                       <p className="text-sm text-text-secondary mt-1">{achievement.description}</p>
@@ -317,7 +315,7 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-surface-700/40 border border-border/50 rounded-xl p-5">
+          <div className="card-raised p-5 shadow-raised animate-slide-up-fade" style={{ animationDelay: '200ms' }}>
             <div className="flex items-center justify-between mb-4">
               <div>
                 <p className="text-xs text-text-muted uppercase tracking-wider mb-1">Your Standing</p>
@@ -345,6 +343,7 @@ const Dashboard: React.FC = () => {
                     strokeDasharray={2 * Math.PI * 28}
                     strokeDashoffset={2 * Math.PI * 28 * (1 - percentile / 100)}
                     strokeLinecap="round"
+                    style={{ filter: 'drop-shadow(0 0 8px rgba(120, 232, 0, 0.3))' }}
                   />
                 </svg>
               </div>
@@ -359,9 +358,9 @@ const Dashboard: React.FC = () => {
 
         {/* Missed Days Summary */}
         {missedCount > 0 && !recovery.isSubmitted && (
-          <div className="bg-danger-500/10 border border-danger-500/20 rounded-xl p-4">
-            <div className="flex items-center gap-2 text-sm text-danger-500">
-              <span className="text-danger-500" aria-hidden="true">⚠</span>
+          <div className="card-recessed p-4 border border-red-800/30 bg-red-900/20 shadow-inner-deep animate-slide-up-fade">
+            <div className="flex items-center gap-2 text-sm text-red-400">
+              <span className="text-red-400" aria-hidden="true">⚠</span>
               <span>Missed {missedCount} day{missedCount > 1 ? 's' : ''}: {user.missedDays.join(', ')}</span>
             </div>
           </div>
@@ -369,7 +368,7 @@ const Dashboard: React.FC = () => {
 
         {/* Dev Variant Selector (bottom, dev only) */}
         {import.meta.env.DEV && (
-          <div className="fixed bottom-4 right-4 z-50">
+          <div className="fixed bottom-4 right-4 z-50 card-raised p-2 shadow-floating">
             <select
               value={variant}
               onChange={handleVariantChange}

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Trophy, Flame, Zap, ShieldCheck, Lock, Award } from 'lucide-react';
 
 interface Achievement {
   id: string;
@@ -14,29 +13,15 @@ interface AchievementListProps {
   className?: string;
 }
 
-const iconComponents: Record<string, React.ReactNode> = {
-  GitBranch: <Trophy className="w-5 h-5" />,
-  Flame: <Flame className="w-5 h-5" />,
-  Trophy: <Award className="w-5 h-5" />,
-  Zap: <Zap className="w-5 h-5" />,
-  ShieldCheck: <ShieldCheck className="w-5 h-5" />,
-};
-
-interface AchievementListProps {
-  achievements: Achievement[];
-  className?: string;
-}
-
 export const AchievementList: React.FC<AchievementListProps> = ({
   achievements,
   className = '',
 }) => {
   const allAchievements = [
-    { id: 'first-commit', name: 'First Commit', description: 'Submit proof for your very first day.', icon: 'GitBranch' },
-    { id: 'week-warrior', name: 'Week Warrior', description: 'Complete 7 days in a row.', icon: 'Flame' },
-    { id: 'halfway-hero', name: 'Halfway Hero', description: 'Reach day 30.', icon: 'Trophy' },
-    { id: 'streak-master', name: 'Streak Master', description: 'Achieve a 14-day streak.', icon: 'Zap' },
-    { id: 'streak-restored', name: 'Streak Restored', description: 'Recovered a missed day through recovery.', icon: 'ShieldCheck' },
+    { id: 'first-commit', name: 'First Commit', description: 'Submit proof for your very first day.', icon: 'Trophy', unlockedAt: '2024-11-01' },
+    { id: 'week-warrior', name: 'Week Warrior', description: 'Complete 7 days in a row.', icon: 'Flame', unlockedAt: '2024-11-07' },
+    { id: 'halfway-hero', name: 'Halfway Hero', description: 'Reach day 30.', icon: 'Trophy', unlockedAt: '2024-11-30' },
+    { id: 'streak-master', name: 'Streak Master', description: 'Achieve a 14-day streak.', icon: 'Zap', unlockedAt: undefined },
   ];
 
   return (
@@ -51,27 +36,26 @@ export const AchievementList: React.FC<AchievementListProps> = ({
       <div className="space-y-2">
         {allAchievements.map((achievement) => {
           const isUnlocked = achievements.some(a => a.id === achievement.id);
-          const Icon = iconComponents[achievement.icon] || <Trophy className="w-5 h-5" />;
           const unlockedAt = achievements.find(a => a.id === achievement.id)?.unlockedAt;
 
           return (
             <div
               key={achievement.id}
-              className={`flex items-center gap-4 p-4 rounded-xl transition-all duration-fast ${
-                isUnlocked
-                  ? 'bg-surface-700/60 border border-brand-lime-500/20'
-                  : 'bg-surface-600/40 border border-border'
-              }`}
+              className={`flex items-center gap-4 p-4 rounded-xl transition-all duration-fast ${isUnlocked
+                ? 'card-raised border border-brand-lime-500/20 shadow-raised'
+                : 'card-recessed border border-border/50'}`}
             >
               <div
                 className={`flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center ${
                   isUnlocked
-                    ? 'bg-brand-lime-500/15 text-brand-lime-500'
-                    : 'bg-surface-600/50 text-text-muted'
+                    ? 'bg-brand-lime-500/15 text-brand-lime-500 shadow-[0_0_12px_rgba(120,232,0,0.2)]'
+                    : 'card-recessed text-text-muted'
                 }`}
                 aria-hidden="true"
               >
-                {Icon}
+                {achievement.icon === 'Trophy' && <span className="text-xl">🏆</span>}
+                {achievement.icon === 'Flame' && <span className="text-xl">🔥</span>}
+                {achievement.icon === 'Zap' && <span className="text-xl">⚡</span>}
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
@@ -79,18 +63,18 @@ export const AchievementList: React.FC<AchievementListProps> = ({
                     {achievement.name}
                   </h4>
                   {isUnlocked && unlockedAt && (
-                    <span className="text-xs text-text-muted mono bg-surface-600 px-2 py-0.5 rounded">
+                    <span className="text-xs text-text-muted mono card-recessed px-2 py-0.5 rounded">
                       {new Date(unlockedAt).toLocaleDateString()}
                     </span>
                   )}
                   {!isUnlocked && (
-                    <span className="text-xs text-text-muted bg-surface-600 px-2 py-0.5 rounded">Locked</span>
+                    <span className="text-xs text-text-muted card-recessed px-2 py-0.5 rounded">Locked</span>
                   )}
                 </div>
                 <p className="text-sm text-text-secondary mt-1">{achievement.description}</p>
               </div>
               {!isUnlocked && (
-                <Lock className="w-5 h-5 text-text-muted" aria-hidden="true" />
+                <span className="w-5 h-5 text-text-muted" aria-hidden="true">🔒</span>
               )}
             </div>
           );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flame, CalendarDays } from 'lucide-react';
+import { CalendarDays } from 'lucide-react';
 
 interface StreakRailProps {
   currentStreak: number;
@@ -27,12 +27,12 @@ export const StreakRail: React.FC<StreakRailProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-brand-orange-500/15 flex items-center justify-center">
-            <Flame className="w-5 h-5 text-brand-orange-500" aria-hidden="true" />
+          <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center shadow-[0_0_12px_rgba(249,115,22,0.2)]">
+            <span className="text-xl" aria-hidden="true">🔥</span>
           </div>
           <div>
             <p className="text-xs text-text-muted uppercase tracking-wider">Current Streak</p>
-            <p className="text-3xl font-bold mono text-brand-orange-500">{currentStreak}</p>
+            <p className="text-3xl font-bold mono text-white">{currentStreak}</p>
             <p className="text-xs text-text-muted">Days Straight</p>
           </div>
         </div>
@@ -42,7 +42,7 @@ export const StreakRail: React.FC<StreakRailProps> = ({
         </div>
       </div>
 
-      {/* Streak Rail */}
+      {/* Streak Rail - 3D cells */}
       <div className="overflow-x-auto pb-2">
         <div className="flex gap-1.5 min-w-max">
           {Array.from({ length: 14 }, (_, i) => {
@@ -53,11 +53,11 @@ export const StreakRail: React.FC<StreakRailProps> = ({
             const isFuture = dayNum > currentDay;
 
             const getDayClass = () => {
-              if (isFuture) return 'bg-surface-600/30';
-              if (isCompleted) return 'bg-brand-lime-500';
-              if (isMissed) return 'bg-danger-500/20 border border-danger-500/50';
-              if (isToday) return 'bg-surface-700 ring-2 ring-brand-lime-500 animate-pulse-subtle';
-              return 'bg-surface-600/50';
+              if (isFuture) return 'streak-cell-3d bg-surface-700/30';
+              if (isCompleted) return 'streak-cell-3d completed';
+              if (isMissed) return 'streak-cell-3d missed';
+              if (isToday) return 'streak-cell-3d today';
+              return 'streak-cell-3d bg-surface-700/50';
             };
 
             const getContent = () => {
@@ -81,7 +81,7 @@ export const StreakRail: React.FC<StreakRailProps> = ({
       </div>
 
       {/* Stats */}
-      <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
+      <div className="flex items-center justify-between mt-4 pt-4 border-t border-border/50">
         <div className="flex items-center gap-2 text-sm text-text-secondary">
           <CalendarDays className="w-4 h-4 text-text-muted" aria-hidden="true" />
           <span>{completedDays.length} completed</span>

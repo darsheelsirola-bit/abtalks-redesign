@@ -31,23 +31,25 @@ export const Progress: React.FC<ProgressProps> = ({
     lg: 'h-3',
   };
 
+  const isDark = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
+  
   const variantColors = {
-    primary: 'bg-brand-lime-500',
-    success: 'bg-brand-lime-500',
-    warning: 'bg-brand-orange-500',
-    danger: 'bg-danger-500',
+    primary: isDark ? 'bg-white' : 'bg-black',
+    success: 'bg-green-400',
+    warning: 'bg-yellow-400',
+    danger: 'bg-red-400',
   };
 
   return (
     <div className={`w-full ${className}`} role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100} aria-label={ariaLabel}>
-      <div className={`relative overflow-hidden rounded-full bg-surface-600 ${sizeStyles[size]}`}>
+      <div className={`relative overflow-hidden rounded-full bg-surface-700 progress-3d ${sizeStyles[size]}`}>
         <div
           className={`${variantColors[variant]} h-full rounded-full transition-all duration-normal ease-out`}
           style={{ width: `${percent}%` }}
         />
       </div>
       {(showLabel || label) && (
-        <div className="flex items-center justify-between mt-2 text-xs text-text-muted mono">
+        <div className="flex items-center justify-between mt-1.5 text-xs text-text-muted mono">
           <span>{label ?? ''}</span>
           <span aria-hidden="true">{percent}%</span>
         </div>
@@ -80,10 +82,10 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
   const offset = circumference * (1 - clamped / 100);
 
   const variantColors = {
-    primary: 'text-brand-lime-500',
-    success: 'text-brand-lime-500',
-    warning: 'text-brand-orange-500',
-    danger: 'text-danger-500',
+    primary: 'text-white dark:text-white',
+    success: 'text-green-400 dark:text-green-400',
+    warning: 'text-yellow-400 dark:text-yellow-400',
+    danger: 'text-red-400 dark:text-red-400',
   };
 
   return (
@@ -95,7 +97,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
       aria-label={ariaLabel ?? `Progress ${clamped}%`}
     >
       <circle
-        className="text-surface-600"
+        className="text-surface-600 dark:text-gray-700"
         strokeWidth={strokeWidth}
         stroke="currentColor"
         fill="transparent"
@@ -114,6 +116,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
         cy={size / 2}
         strokeDasharray={circumference}
         strokeDashoffset={offset}
+        style={{ filter: 'drop-shadow(0 0 4px currentColor)' }}
       />
     </svg>
   );

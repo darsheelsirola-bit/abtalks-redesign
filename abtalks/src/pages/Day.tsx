@@ -63,13 +63,13 @@ const Day12: React.FC = () => {
 
   return (
     <div className="page">
-      {/* Top Bar */}
-      <header className="sticky top-0 z-30 bg-surface-900/80 backdrop-blur-sm border-b border-border">
+      {/* Top Bar - with depth */}
+      <header className="sticky top-0 z-30 bg-surface-900/80 backdrop-blur-sm border-b border-border-subtle shadow-ambient">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center gap-3">
           <button
             type="button"
             onClick={() => window.history.back()}
-            className="p-2 rounded-lg bg-surface-800 hover:bg-surface-700 transition-colors text-text-secondary hover:text-text-primary"
+            className="p-2 rounded-lg card-raised hover:shadow-raised transition-all duration-fast text-text-secondary hover:text-text-primary"
             aria-label="Back to dashboard"
           >
             <ArrowLeft className="w-5 h-5" aria-hidden="true" />
@@ -77,7 +77,7 @@ const Day12: React.FC = () => {
           <div className="flex-1 flex items-center justify-center gap-3">
             <div className="text-center">
               <p className="text-xs text-text-muted uppercase tracking-wider">Day 12 of 60</p>
-              <Progress value={12} max={60} size="xs" variant="primary" className="mt-1 w-32 mx-auto" />
+              <Progress value={12} max={60} size="xs" variant="primary" className="mt-1 w-32 mx-auto progress-3d" />
             </div>
             <div className="w-10" />
           </div>
@@ -86,9 +86,9 @@ const Day12: React.FC = () => {
 
       <main className="max-w-5xl mx-auto px-4 py-4 space-y-5 lg:grid lg:grid-cols-2 lg:gap-6 lg:py-8">
         {/* Left Column - Mission */}
-        <div className="space-y-4 lg:order-1">
-          {/* Mission Header */}
-          <div className="bg-surface-700/40 border border-border/50 rounded-xl p-5">
+        <div className="space-y-4 lg:order-1 animate-slide-up-fade">
+          {/* Mission Header - Floating card */}
+          <div className="card-floating p-5 animate-slide-up-fade" style={{ animationDelay: '50ms' }}>
             <div className="flex items-start justify-between gap-3 mb-4">
               <div className="min-w-0">
                 <div className="flex items-center gap-2 text-xs text-text-muted mb-2">
@@ -97,7 +97,7 @@ const Day12: React.FC = () => {
                 <h1 className="text-2xl font-bold text-text-primary leading-tight">REST API WITH EXPRESS + TYPESCRIPT</h1>
               </div>
               <div className="flex-shrink-0 flex items-center gap-2">
-                <span className="px-3 py-1.5 bg-brand-orange-500/15 text-brand-orange-500 text-xs font-mono rounded-lg border border-brand-orange-500/30 flex items-center gap-1">
+                <span className="px-3 py-1.5 bg-white/10 text-white text-xs font-mono rounded-lg border border-white/20 flex items-center gap-1">
                   <span style={{fontFamily: 'monospace'}}>60 MIN</span>
                 </span>
               </div>
@@ -134,16 +134,16 @@ const Day12: React.FC = () => {
                 <span className="w-4 h-4 text-text-muted" aria-hidden="true">💡</span>
                 <span>Hint / Details</span>
               </summary>
-              <div className="mt-3 p-4 bg-surface-700/50 rounded-lg text-sm text-text-secondary space-y-2">
-                <p>Use <code className="bg-surface-600 px-1.5 py-0.5 rounded font-mono text-xs">express.Router()</code> for modular routes.</p>
-                <p>Zod schema: <code className="bg-surface-600 px-1.5 py-0.5 rounded font-mono text-xs">{zodSchema}</code></p>
-                <p>Return <code className="bg-surface-600 px-1.5 py-0.5 rounded font-mono text-xs">res.status(201).json(session)</code> on create.</p>
+              <div className="mt-3 p-4 card-recessed rounded-lg text-sm text-text-secondary space-y-2">
+                <p>Use <code className="card-recessed px-1.5 py-0.5 rounded font-mono text-xs">express.Router()</code> for modular routes.</p>
+                <p>Zod schema: <code className="card-recessed px-1.5 py-0.5 rounded font-mono text-xs">{zodSchema}</code></p>
+                <p>Return <code className="card-recessed px-1.5 py-0.5 rounded font-mono text-xs">res.status(201).json(session)</code> on create.</p>
               </div>
             </details>
           </div>
 
-          {/* Ship Requirements */}
-          <div className="bg-surface-700/40 border border-border/50 rounded-xl p-5">
+          {/* Ship Requirements - Floating cards */}
+          <div className="card-floating p-5 animate-slide-up-fade" style={{ animationDelay: '100ms' }}>
             <div className="flex items-center justify-between mb-4">
               <div>
                 <p className="text-xs text-text-muted uppercase tracking-wider mb-1">Ship Requirements</p>
@@ -152,7 +152,7 @@ const Day12: React.FC = () => {
             </div>
             <ol className="space-y-3" role="list">
               {checklist.map((item, i) => (
-                <li key={i} className="flex items-start gap-3 p-3 rounded-lg bg-surface-700/50">
+                <li key={i} className="flex items-start gap-3 p-3 rounded-lg card-raised shadow-raised">
                   <span className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-lime-500/15 text-brand-lime-500 flex items-center justify-center font-mono font-bold text-sm">
                     {(i + 1).toString().padStart(2, '0')}
                   </span>
@@ -164,11 +164,11 @@ const Day12: React.FC = () => {
         </div>
 
         {/* Right Column - Proof & Complete */}
-        <div className="space-y-4 lg:order-2">
-          {/* GitHub Proof */}
-          <div className="bg-surface-700/40 border border-border/50 rounded-xl p-5">
+        <div className="space-y-4 lg:order-2 animate-slide-up-fade" style={{ animationDelay: '100ms' }}>
+          {/* GitHub Proof - Floating card */}
+          <div className="card-floating p-5">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-surface-700 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-lg card-raised flex items-center justify-center shadow-raised">
                 <GitBranch className="w-5 h-5 text-text-secondary" aria-hidden="true" />
               </div>
               <div>
@@ -184,7 +184,7 @@ const Day12: React.FC = () => {
                 placeholder="https://github.com/..."
                 value={githubUrl}
                 onChange={(e) => { setGithubUrl(e.target.value); setGithubStatus('idle'); }}
-                className="flex-1 min-w-0"
+                className="flex-1 min-w-0 input-depth"
                 inputSize="sm"
                 aria-describedby="github-hint"
                 aria-label="GitHub repository or commit URL"
@@ -195,27 +195,27 @@ const Day12: React.FC = () => {
                 onClick={handleGithubSubmit}
                 disabled={githubStatus === 'validating' || githubStatus === 'success'}
                 aria-label={githubStatus === 'success' ? 'GitHub proof submitted' : 'Submit GitHub proof'}
-                className={githubStatus === 'validating' ? 'animate-pulse-subtle' : ''}
+                className={githubStatus === 'validating' ? 'animate-pulse' : ''}
               >
                 {githubStatus === 'validating' && <span className="animate-spin">⏳</span>}
                 {githubStatus === 'success' ? 'Verified' : 'Verify'}
               </Button>
             </div>
             {githubStatus === 'error' && (
-              <p className="text-xs text-danger-500 flex items-center gap-1 mb-3" role="alert">
+              <p className="text-xs text-red-400 flex items-center gap-1 mb-3" role="alert">
                 <AlertCircle className="w-3 h-3" aria-hidden="true" /> Invalid GitHub URL. Use repo or commit link.
               </p>
             )}
             {githubStatus === 'success' && githubData && (
-              <div className="bg-brand-lime-500/10 border border-brand-lime-500/20 rounded-lg p-4 animate-fade-in-up">
+              <div className="card-raised p-4 animate-scale-in border border-brand-lime-500/30 bg-white/5">
                 <div className="flex items-center gap-2 mb-2">
                   <CheckCircle2 className="w-5 h-5 text-brand-lime-500" aria-hidden="true" />
                   <span className="font-medium text-brand-lime-500">Proof Verified</span>
                 </div>
-                <div className="space-y-1 text-xs text-text-secondary font-mono">
-                  <div><span className="text-text-muted">Repo:</span> {githubData.repo}</div>
-                  <div><span className="text-text-muted">Commit:</span> {githubData.commit}</div>
-                  <div><span className="text-text-muted">Files:</span> {githubData.files} changed</div>
+                <div className="space-y-1 text-xs text-gray-300 font-mono">
+                  <div><span className="text-gray-500">Repo:</span> {githubData.repo}</div>
+                  <div><span className="text-gray-500">Commit:</span> {githubData.commit}</div>
+                  <div><span className="text-gray-500">Files:</span> {githubData.files} changed</div>
                 </div>
                 <Button variant="ghost" size="sm" className="mt-3" onClick={() => window.open(`https://github.com/${githubData.repo}`, '_blank')}>
                   <ExternalLink className="w-3.5 h-3.5 mr-1" aria-hidden="true" /> View on GitHub
@@ -223,16 +223,16 @@ const Day12: React.FC = () => {
               </div>
             )}
             {githubStatus === 'validating' && (
-              <p className="text-xs text-brand-orange-500 flex items-center gap-1 animate-pulse-subtle">
+              <p className="text-xs text-brand-orange-500 flex items-center gap-1 animate-pulse">
                 Verifying commit...
               </p>
             )}
           </div>
 
-          {/* LinkedIn Proof */}
-          <div className="bg-surface-700/40 border border-border/50 rounded-xl p-5">
+          {/* LinkedIn Proof - Floating card */}
+          <div className="card-floating p-5 animate-slide-up-fade" style={{ animationDelay: '100ms' }}>
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-surface-700 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-lg card-raised flex items-center justify-center shadow-raised">
                 <Link className="w-5 h-5 text-text-secondary" aria-hidden="true" />
               </div>
               <div>
@@ -248,7 +248,7 @@ const Day12: React.FC = () => {
                 placeholder="https://www.linkedin.com/posts/..."
                 value={linkedinUrl}
                 onChange={(e) => { setLinkedinUrl(e.target.value); setLinkedinStatus('idle'); }}
-                className="flex-1 min-w-0"
+                className="flex-1 min-w-0 input-depth"
                 inputSize="sm"
                 aria-label="LinkedIn post URL"
               />
@@ -258,19 +258,19 @@ const Day12: React.FC = () => {
                 onClick={handleLinkedinSubmit}
                 disabled={linkedinStatus === 'validating' || linkedinStatus === 'success'}
                 aria-label={linkedinStatus === 'success' ? 'LinkedIn proof submitted' : 'Submit LinkedIn proof'}
-                className={linkedinStatus === 'validating' ? 'animate-pulse-subtle' : ''}
+                className={linkedinStatus === 'validating' ? 'animate-pulse' : ''}
               >
                 {linkedinStatus === 'validating' && <span className="animate-spin">⏳</span>}
                 {linkedinStatus === 'success' ? 'Verified' : 'Verify'}
               </Button>
             </div>
             {linkedinStatus === 'error' && (
-              <p className="text-xs text-danger-500 flex items-center gap-1 mb-3" role="alert">
+              <p className="text-xs text-red-400 flex items-center gap-1 mb-3" role="alert">
                 <AlertCircle className="w-3 h-3" aria-hidden="true" /> Invalid LinkedIn post URL.
               </p>
             )}
             {linkedinStatus === 'success' && (
-              <div className="bg-brand-lime-500/10 border border-brand-lime-500/20 rounded-lg p-4 animate-fade-in-up">
+              <div className="card-raised p-4 animate-scale-in border border-brand-lime-500/30 bg-white/5">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-brand-lime-500" aria-hidden="true" />
                   <span className="font-medium text-brand-lime-500">Proof Verified</span>
@@ -278,17 +278,17 @@ const Day12: React.FC = () => {
               </div>
             )}
             {linkedinStatus === 'validating' && (
-              <p className="text-xs text-brand-orange-500 flex items-center gap-1 animate-pulse-subtle">
+              <p className="text-xs text-brand-orange-500 flex items-center gap-1 animate-pulse">
                 Verifying post...
               </p>
             )}
           </div>
 
-          {/* Complete CTA */}
-          <div className="bg-surface-700/40 border border-border/50 rounded-xl p-5">
+          {/* Complete CTA - Floating card */}
+          <div className="card-floating p-5 animate-slide-up-fade" style={{ animationDelay: '150ms' }}>
             {isCompleted ? (
-              <div className="text-center space-y-4 animate-fade-in-up">
-                <div className="mx-auto w-20 h-20 rounded-full bg-brand-lime-500/15 flex items-center justify-center">
+              <div className="text-center space-y-4 animate-scale-in">
+                <div className="mx-auto w-20 h-20 rounded-full bg-white/10 flex items-center justify-center shadow-[0_0_24px_rgba(120,232,0,0.3)]">
                   <CheckCircle className="w-10 h-10 text-brand-lime-500" aria-hidden="true" />
                 </div>
                 <h2 className="text-xl font-bold text-text-primary">DAY 12 COMPLETED!</h2>

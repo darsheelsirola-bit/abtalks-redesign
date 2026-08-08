@@ -1,6 +1,6 @@
 import React from 'react';
 
-export type BadgeVariant = 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'outline' | 'lime' | 'orange';
+export type BadgeVariant = 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'outline' | 'subtle';
 export type BadgeSize = 'xs' | 'sm' | 'md';
 
 interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
@@ -11,18 +11,27 @@ interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 
 const base = 'inline-flex items-center font-medium rounded-full';
 
-const variantStyles: Record<BadgeVariant, string> = {
-  default: 'bg-surface-600 text-text-secondary',
-  primary: 'bg-brand-lime-500/15 text-brand-lime-500 border border-brand-lime-500/30',
-  success: 'bg-brand-lime-500/15 text-brand-lime-500 border border-brand-lime-500/30',
-  warning: 'bg-brand-orange-500/15 text-brand-orange-500 border border-brand-orange-500/30',
-  danger: 'bg-danger-500/15 text-danger-500 border border-danger-500/30',
-  outline: 'bg-transparent text-text-secondary border border-border',
-  lime: 'bg-brand-lime-500 text-surface-950',
-  orange: 'bg-brand-orange-500 text-surface-950',
+const variantStyles = {
+  default: 'bg-surface-700 text-gray-200',
+  primary: 'bg-white/10 text-white border border-white/20',
+  success: 'bg-green-900/30 text-green-300 border border-green-800',
+  warning: 'bg-yellow-900/30 text-yellow-300 border border-yellow-800',
+  danger: 'bg-red-900/30 text-red-300 border border-red-800',
+  outline: 'bg-transparent text-gray-400 border border-surface-600',
+  subtle: 'bg-white/5 text-white/60',
 };
 
-const sizeStyles: Record<BadgeSize, string> = {
+const variantStylesLight = {
+  default: 'bg-gray-200 text-gray-700',
+  primary: 'bg-gray-100 text-gray-900 border border-gray-300',
+  success: 'bg-green-100 text-green-800 border border-green-300',
+  warning: 'bg-yellow-100 text-yellow-800 border border-yellow-300',
+  danger: 'bg-red-100 text-red-800 border border-red-300',
+  outline: 'bg-transparent text-gray-600 border border-gray-300',
+  subtle: 'bg-gray-100 text-gray-600',
+};
+
+const sizeStyles: Record<'xs' | 'sm' | 'md', string> = {
   xs: 'px-2 py-0.5 text-xs gap-1',
   sm: 'px-2.5 py-1 text-xs gap-1.5',
   md: 'px-3 py-1.5 text-sm gap-2',
@@ -36,18 +45,23 @@ export const Badge: React.FC<BadgeProps> = ({
   className = '',
   ...props
 }) => {
+  const isDark = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
+  const variantClass = isDark ? variantStyles[variant] : variantStylesLight[variant];
+
   return (
-    <span className={`${base} ${variantStyles[variant]} ${sizeStyles[size]} ${className}`} {...props}>
+    <span className={`${base} ${variantClass} ${sizeStyles[size]} ${className}`} {...props}>
       {dot && (
         <span
           className={`w-1.5 h-1.5 rounded-full ${
-            variant === 'success' || variant === 'lime'
-              ? 'bg-brand-lime-500'
-              : variant === 'warning' || variant === 'orange'
-              ? 'bg-brand-orange-500'
+            variant === 'success'
+              ? 'bg-green-400'
+              : variant === 'warning'
+              ? 'bg-yellow-400'
               : variant === 'danger'
-              ? 'bg-danger-500'
-              : 'bg-text-muted'
+              ? 'bg-red-400'
+              : variant === 'primary'
+              ? 'bg-white'
+              : 'bg-gray-500'
           }`}
           aria-hidden="true"
         />
@@ -56,3 +70,5 @@ export const Badge: React.FC<BadgeProps> = ({
     </span>
   );
 };
+
+export default Badge;
