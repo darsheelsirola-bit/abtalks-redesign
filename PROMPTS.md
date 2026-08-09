@@ -9,13 +9,13 @@ This file documents how AI coding tools were used during the development of the 
 - Later prompts were recoverable from Codex attachments or this session. When the complete original was available, its full text is preserved under `Exact Prompt`.
 - From Stage 16 onward, every project-work instruction is appended verbatim before the task is finished. Corrections are recorded separately instead of replacing failed attempts.
 - No prompt date is claimed. The former log used 2025 dates, but Git history for this repository begins in August 2026, so the unsupported prompt dates were removed.
-- Only tools supported by the available evidence are named. Early entries use “AI coding assistant” because the exact product could not be verified; later work used Codex.
+- Early development used `Nemotron 3 Ultra 550B A55B`, as identified by the user. Later work used Codex.
 
 ---
 
 ## Stage 01 — Foundation and project structure
 
-**Tool:** AI coding assistant (exact product unavailable)
+**Tool:** Nemotron 3 Ultra 550B A55B
 
 **Reconstructed Summary**
 
@@ -50,7 +50,7 @@ The initial architecture, routes, design primitives, and mock-data foundation we
 
 ## Stage 02 — Landing page, dashboard, and Recovery Day
 
-**Tool:** AI coding assistant (exact product unavailable)
+**Tool:** Nemotron 3 Ultra 550B A55B
 
 **Reconstructed Summary**
 
@@ -81,7 +81,7 @@ The core marketing and student-home experiences worked with mock state. Recovery
 
 ## Stage 03 — Challenge-day proof workflow
 
-**Tool:** AI coding assistant (exact product unavailable)
+**Tool:** Nemotron 3 Ultra 550B A55B
 
 **Reconstructed Summary**
 
@@ -108,7 +108,7 @@ The daily task-to-proof-to-completion workflow became functional using local sta
 
 ## Stage 04 — Edge cases, responsiveness, accessibility, and build cleanup
 
-**Tool:** AI coding assistant (exact product unavailable)
+**Tool:** Nemotron 3 Ultra 550B A55B
 
 **Reconstructed Summary**
 
@@ -145,7 +145,7 @@ The app handled missing/empty data more gracefully and was explicitly optimized 
 
 ## Stage 05 — Early documentation and SPA deployment support
 
-**Tool:** AI coding assistant (exact product unavailable)
+**Tool:** Nemotron 3 Ultra 550B A55B
 
 **Reconstructed Summary**
 
@@ -3582,6 +3582,30 @@ The completed exact-prompt logging-policy update was prepared for commit, includ
 ### Result
 
 The documentation update was committed and pushed after the prompt entry was added. The commit is reported in the task response rather than predicted inside the commit that creates it.
+
+---
+
+## Stage 18 — Correct the historical AI tool and prompt-log count
+
+**Tool:** Codex
+
+**Exact Prompt**
+
+```text
+also the past ai assistant is `Nemotron 3 Ultra 550B A55B and make sure to delete 1 promts md as there are 2 
+```
+
+### What changed
+
+The previously unknown early AI tool was updated to the user-confirmed `Nemotron 3 Ultra 550B A55B`. The repository was searched for duplicate prompt logs.
+
+### Files changed
+
+- `PROMPTS.md`
+
+### Result
+
+Only one `PROMPTS.md` exists on the current branch: the canonical root-level file. The former `abtalks/PROMPTS.md` duplicate had already been deleted during consolidation, so no second deletion was necessary.
 
 ---
 
