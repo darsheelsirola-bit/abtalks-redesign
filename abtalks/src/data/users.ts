@@ -1,4 +1,5 @@
 import type { UserProfile, Achievement } from './types';
+import { calculateCurrentStreak, calculateLongestStreak } from '@/utils/streak';
 
 // Shared achievements catalog
 const allAchievements: Achievement[] = [
@@ -6,7 +7,7 @@ const allAchievements: Achievement[] = [
     id: 'first-commit',
     name: 'First Commit',
     description: 'Submit proof for your very first day.',
-    icon: 'GitBranch',
+    icon: 'Trophy',
     unlockedAt: '2024-11-01',
   },
   {
@@ -20,7 +21,7 @@ const allAchievements: Achievement[] = [
     id: 'halfway-hero',
     name: 'Halfway Hero',
     description: 'Reach day 30.',
-    icon: 'Trophy',
+    icon: 'Milestone',
     unlockedAt: '2024-11-30',
   },
   {
@@ -38,27 +39,15 @@ function derive(profile: Partial<UserProfile>): UserProfile {
   const missed = profile.missedDays ?? [];
   const total = 60;
   const completionPercentage = Math.round((completed.length / total) * 100);
-  // simple streak calc: consecutive days up to currentDay
-  let streak = 0;
-  for (let d = profile.currentDay ?? 1; d >= 1; d--) {
-    if (completed.includes(d)) streak++;
-    else break;
-  }
-  // longest streak naive
-  let longest = 0;
-  let temp = 0;
-  for (let d = 1; d <= (profile.currentDay ?? 1); d++) {
-    if (completed.includes(d)) {
-      temp++;
-      longest = Math.max(longest, temp);
-    } else temp = 0;
-  }
+  const currentDay = profile.currentDay ?? 1;
+  const streak = calculateCurrentStreak(completed, missed, currentDay);
+  const longest = calculateLongestStreak(completed);
 
   return {
     id: profile.id ?? 'u1',
     name: profile.name ?? 'Student',
     avatar: profile.avatar,
-    currentDay: profile.currentDay ?? 1,
+    currentDay,
     totalDays: total,
     completedDays: completed,
     missedDays: missed,

@@ -4,10 +4,10 @@ import { StreakRail } from '@/components/ui/StreakRail';
 import { RecoveryPanel } from '@/components/ui/RecoveryPanel';
 import { userVariants, type UserVariantKey } from '@/data/users';
 import { challenges } from '@/data/challenges';
-import { ArrowUpRight, Code2, Flame, GitBranch, LockKeyhole, Share2, Trophy, Zap } from 'lucide-react';
+import { ArrowUpRight, Code2, Flame, GitBranch, LockKeyhole, Milestone, Share2, Trophy, Zap } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import { BrandLogo } from '@/components/BrandLogo';
-import { calculateCurrentStreak } from '@/utils/streak';
+import { calculateCurrentStreak, calculateLongestStreak } from '@/utils/streak';
 
 const Dashboard: React.FC = () => {
   const [searchParams, _setSearchParams] = useSearchParams();
@@ -29,13 +29,12 @@ const Dashboard: React.FC = () => {
   // Derived values from single source of truth
   const completedCount = completedDays.length;
   const missedCount = user.missedDays.length;
-  const streak = calculateCurrentStreak(completedDays);
+  const streak = calculateCurrentStreak(completedDays, user.missedDays, user.currentDay);
   const completionPercentage = Math.round((completedCount / user.totalDays) * 100);
-  const longest = user.longestStreak;
+  const longest = calculateLongestStreak(completedDays);
   const percentile = user.standingPercentile;
   const weeklyGain = ({ active: 3, firstDay: 0, missedPrev: 1, emptyProfile: 2 } as const)[variant];
 
-  const isFirstDay = user.currentDay === 1 && completedCount === 0 && streak === 0;
   const showStanding = user.currentDay > 1;
 
   // Mock recovery state
@@ -118,7 +117,7 @@ const Dashboard: React.FC = () => {
               <div className="flex items-center gap-1.5 px-3 py-1.5 bg-surface-750 rounded-lg border border-border/30 shadow-raised">
                 <Flame className="w-4 h-4 text-brand-orange-500" aria-hidden="true" />
                 <span className="font-mono font-bold tabular-nums text-brand-orange-500">
-                  {isFirstDay ? '—' : displayedStreak}
+                  {displayedStreak}
                 </span>
               </div>
             </div>
@@ -178,18 +177,18 @@ const Dashboard: React.FC = () => {
           </div>
 
           {/* Stats Row - 3 cards with depth */}
-          <div className="grid grid-cols-3 gap-3 pt-4 border-t border-border/50">
-            <div className="card-raised p-4 text-center shadow-raised">
-              <p className="text-2xl font-bold mono text-brand-orange-500">{displayedStreak}</p>
-              <p className="text-xs text-text-muted">Streak</p>
+          <div className="grid grid-cols-3 gap-2 sm:gap-3 pt-4 border-t border-border/50">
+            <div className="card-raised min-h-24 p-3 sm:p-4 text-center shadow-raised flex flex-col items-center justify-center">
+              <p className="text-2xl leading-none font-bold mono tabular-nums text-brand-orange-500">{displayedStreak}</p>
+              <p className="mt-2 text-xs leading-none text-text-muted">Streak</p>
             </div>
-            <div className="card-raised p-4 text-center shadow-raised">
-              <p className="text-2xl font-bold mono text-text-primary">{completedCount}</p>
-              <p className="text-xs text-text-muted">Completed</p>
+            <div className="card-raised min-h-24 p-3 sm:p-4 text-center shadow-raised flex flex-col items-center justify-center">
+              <p className="text-2xl leading-none font-bold mono tabular-nums text-text-primary">{completedCount}</p>
+              <p className="mt-2 text-xs leading-none text-text-muted">Completed</p>
             </div>
-            <div className="card-raised p-4 text-center shadow-raised">
-              <p className="text-2xl font-bold mono text-text-secondary">{user.totalDays - completedCount}</p>
-              <p className="text-xs text-text-muted">Remaining</p>
+            <div className="card-raised min-h-24 p-3 sm:p-4 text-center shadow-raised flex flex-col items-center justify-center">
+              <p className="text-2xl leading-none font-bold mono tabular-nums text-text-secondary">{user.totalDays - completedCount}</p>
+              <p className="mt-2 text-xs leading-none text-text-muted">Remaining</p>
             </div>
           </div>
         </div>
@@ -298,7 +297,7 @@ const Dashboard: React.FC = () => {
               {[
                 { id: 'first-commit', name: 'First Commit', description: 'Submit proof for your very first day.', icon: 'Trophy', unlockedAt: '2024-11-01' },
                 { id: 'week-warrior', name: 'Week Warrior', description: 'Complete 7 days in a row.', icon: 'Flame', unlockedAt: '2024-11-07' },
-                { id: 'halfway-hero', name: 'Halfway Hero', description: 'Reach day 30.', icon: 'Trophy', unlockedAt: '2024-11-30' },
+                { id: 'halfway-hero', name: 'Halfway Hero', description: 'Reach day 30.', icon: 'Milestone', unlockedAt: '2024-11-30' },
                 { id: 'streak-master', name: 'Streak Master', description: 'Achieve a 14-day streak.', icon: 'Zap', unlockedAt: undefined },
               ].map((achievement) => {
                 const isUnlocked = user.achievements.some(a => a.id === achievement.id);
@@ -307,7 +306,7 @@ const Dashboard: React.FC = () => {
                 return (
                   <div
                     key={achievement.id}
-                    className={`flex items-center gap-4 p-4 rounded-xl transition-all duration-fast ${isUnlocked
+                    className={`grid h-32 sm:h-24 grid-cols-[3rem_minmax(0,1fr)_1.25rem] items-center gap-4 p-4 rounded-xl transition-all duration-fast ${isUnlocked
                       ? 'card-raised border border-brand-lime-500/20'
                       : 'card-recessed border border-border/50'}`}
                   >
@@ -321,10 +320,11 @@ const Dashboard: React.FC = () => {
                     >
                       {achievement.icon === 'Trophy' && <Trophy className="w-5 h-5" />}
                       {achievement.icon === 'Flame' && <Flame className="w-5 h-5" />}
+                      {achievement.icon === 'Milestone' && <Milestone className="w-5 h-5" />}
                       {achievement.icon === 'Zap' && <Zap className="w-5 h-5" />}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-start justify-between gap-2">
                         <h4 className={`font-semibold ${isUnlocked ? 'text-text-primary' : 'text-text-muted'}`}>
                           {achievement.name}
                         </h4>
@@ -339,9 +339,9 @@ const Dashboard: React.FC = () => {
                       </div>
                       <p className="text-sm text-text-secondary mt-1">{achievement.description}</p>
                     </div>
-                    {!isUnlocked && (
-                      <LockKeyhole className="w-5 h-5 text-text-muted" aria-hidden="true" />
-                    )}
+                    {isUnlocked
+                      ? <span className="w-5 h-5" aria-hidden="true" />
+                      : <LockKeyhole className="w-5 h-5 text-text-muted" aria-hidden="true" />}
                   </div>
                 );
               })}

@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface BrandLogoProps {
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'day' | 'lg';
   showText?: boolean;
 }
 
@@ -9,6 +9,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({ size = 'md' }) => {
   const sizeClasses = {
     sm: 'w-[72px] h-10',
     md: 'w-24 h-12',
+    day: 'w-[108px] h-[54px]',
     lg: 'w-32 h-16',
   };
 

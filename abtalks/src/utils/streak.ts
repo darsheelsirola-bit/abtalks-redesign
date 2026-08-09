@@ -1,32 +1,41 @@
-export function calculateCurrentStreak(completedDays: number[]): number {
-  if (!completedDays.length) return 0;
+export function calculateCurrentStreak(
+  completedDays: number[],
+  missedDays: number[],
+  currentDay: number,
+): number {
+  if (currentDay < 1 || completedDays.length === 0) return 0;
 
-  // Sort ascending
-  const sorted = [...completedDays].sort((a, b) => a - b);
-  let streak = 1;
-  let maxStreak = 1;
+  const completed = new Set(completedDays);
+  const missed = new Set(missedDays);
+  const anchorDay = completed.has(currentDay) ? currentDay : currentDay - 1;
 
-  for (let i = 1; i < sorted.length; i++) {
-    if (sorted[i] === sorted[i - 1] + 1) {
-      streak++;
-      if (streak > maxStreak) maxStreak = streak;
-    } else {
-      streak = 1;
-    }
+  if (anchorDay < 1 || missed.has(anchorDay) || !completed.has(anchorDay)) return 0;
+
+  let streak = 0;
+  for (let day = anchorDay; day >= 1; day--) {
+    if (missed.has(day) || !completed.has(day)) break;
+    streak++;
   }
 
-  // The current streak is the length of the trailing consecutive completed days up to the most recent completed day.
-  // Determine the most recent completed day (max)
-  const maxDay = sorted[sorted.length - 1];
-  // Count backwards from maxDay how many consecutive days are present
-  let currentStreak = 0;
-  let day = maxDay;
-  const completedSet = new Set(sorted);
-  while (completedSet.has(day)) {
-    currentStreak++;
-    day--;
+  return streak;
+}
+
+export function calculateLongestStreak(completedDays: number[]): number {
+  const sortedDays = [...new Set(completedDays)]
+    .filter(day => day >= 1)
+    .sort((a, b) => a - b);
+
+  let longest = 0;
+  let run = 0;
+  let previousDay = 0;
+
+  for (const day of sortedDays) {
+    run = day === previousDay + 1 ? run + 1 : 1;
+    longest = Math.max(longest, run);
+    previousDay = day;
   }
-  return currentStreak;
+
+  return longest;
 }
 
 export function deriveDashboardValues(user: {
@@ -37,7 +46,8 @@ export function deriveDashboardValues(user: {
 }) {
   const completedCount = user.completedDays.length;
   const remaining = user.totalDays - user.completedDays.length;
-  const streak = calculateCurrentStreak(user.completedDays);
+  const streak = calculateCurrentStreak(user.completedDays, user.missedDays, user.currentDay);
+  const longestStreak = calculateLongestStreak(user.completedDays);
   const completionPercentage = Math.round((user.completedDays.length / user.totalDays) * 100);
 
   return {
@@ -46,6 +56,7 @@ export function deriveDashboardValues(user: {
     completedCount,
     remaining,
     streak,
+    longestStreak,
     completionPercentage,
   };
 }

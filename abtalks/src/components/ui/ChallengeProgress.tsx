@@ -37,15 +37,15 @@ export const ChallengeProgress: React.FC<ChallengeProgressProps> = ({
   const getDayClass = (state: string) => {
     switch (state) {
       case 'completed':
-        return 'bg-brand-lime-500';
+        return 'bg-brand-lime-500 border-brand-lime-500';
       case 'today':
-        return 'bg-surface-700 ring-2 ring-brand-lime-500 animate-pulse-subtle';
+        return 'bg-surface-700 border-brand-lime-500 shadow-[0_0_0_1px_rgba(120,232,0,0.45)] animate-pulse-subtle';
       case 'missed':
-        return 'bg-danger-500/20 border border-danger-500/50';
+        return 'bg-danger-500/20 border-danger-500/50';
       case 'upcoming':
-        return 'bg-surface-600/50';
+        return 'bg-surface-600/50 border-surface-600/20';
       default:
-        return 'bg-surface-600/30';
+        return 'bg-surface-600/30 border-surface-600/20';
     }
   };
 
@@ -61,33 +61,6 @@ export const ChallengeProgress: React.FC<ChallengeProgressProps> = ({
         return null;
     }
   };
-
-  const weeks = Array.from({ length: WEEKS }, (_, w) => {
-    const days = Array.from({ length: DAYS_PER_WEEK }, (_, d) => {
-      const dayNum = w * DAYS_PER_WEEK + d + 1;
-      if (dayNum > totalDays) return null;
-      const state = getDayState(dayNum);
-      return (
-        <button
-          key={dayNum}
-          type="button"
-          disabled
-          className={`relative w-7 h-7 rounded flex items-center justify-center transition-all duration-fast ${getDayClass(state)}`}
-          aria-label={`Day ${dayNum}: ${state}`}
-        >
-          {getDayContent(state)}
-        </button>
-      );
-    });
-    return (
-      <div key={w} className="flex items-center gap-1.5">
-        <span className="w-6 text-right text-text-muted mono text-xs font-medium pr-1">
-          W{w + 1}
-        </span>
-        <div className="flex gap-1.5">{days}</div>
-      </div>
-    );
-  });
 
   const completedCount = completedDays.length;
 
@@ -129,31 +102,33 @@ export const ChallengeProgress: React.FC<ChallengeProgressProps> = ({
       </div>
 
       {/* 60-day grid */}
-      <div className="space-y-1.5" role="img" aria-label={`${completedCount} of ${totalDays} days completed`}>
-        {weeks.map((_, i) => (
-          <div key={i} className="flex items-center gap-1.5">
-            <span className="w-6 text-right text-text-muted mono text-xs font-medium pr-1">
-              W{i + 1}
+      <div
+        className="grid grid-cols-[1.5rem_repeat(7,1.75rem)] gap-1.5"
+        role="img"
+        aria-label={`${completedCount} of ${totalDays} days completed`}
+      >
+        {Array.from({ length: WEEKS }, (_, weekIndex) => (
+          <React.Fragment key={weekIndex}>
+            <span className="h-7 text-right text-text-muted mono text-xs font-medium leading-7 pr-1">
+              W{weekIndex + 1}
             </span>
-            <div className="flex gap-1.5">
-              {Array.from({ length: DAYS_PER_WEEK }, (_, d) => {
-                const dayNum = i * DAYS_PER_WEEK + d + 1;
-                if (dayNum > totalDays) return <div key={dayNum} className="w-7 h-7" />;
-                const state = getDayState(dayNum);
-                return (
-                  <button
-                    key={dayNum}
-                    type="button"
-                    disabled
-                    className={`relative w-7 h-7 rounded flex items-center justify-center transition-all duration-fast ${getDayClass(state)}`}
-                    aria-label={`Day ${dayNum}: ${state}`}
-                  >
-                    {getDayContent(state)}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+            {Array.from({ length: DAYS_PER_WEEK }, (_, dayIndex) => {
+              const dayNum = weekIndex * DAYS_PER_WEEK + dayIndex + 1;
+              if (dayNum > totalDays) return <span key={dayNum} className="size-7" aria-hidden="true" />;
+              const state = getDayState(dayNum);
+              return (
+                <button
+                  key={dayNum}
+                  type="button"
+                  disabled
+                  className={`relative size-7 box-border rounded-md border flex items-center justify-center transition-colors duration-fast ${getDayClass(state)}`}
+                  aria-label={`Day ${dayNum}: ${state}`}
+                >
+                  {getDayContent(state)}
+                </button>
+              );
+            })}
+          </React.Fragment>
         ))}
       </div>
 

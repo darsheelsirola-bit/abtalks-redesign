@@ -4,13 +4,15 @@ import { Badge } from '@/components/ui/Badge';
 import { Progress } from '@/components/ui/Progress';
 import { Input } from '@/components/ui/Input';
 import { ArrowLeft, GitBranch, Link, CheckCircle2, AlertCircle, CheckCircle, ExternalLink, Lightbulb } from 'lucide-react';
-import { Link as RouterLink, useParams, useSearchParams } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { challenges } from '@/data/challenges';
+import { BrandLogo } from '@/components/BrandLogo';
 
 const zodSchema = "z.object({ subject: z.string().min(1), duration: z.number().positive(), date: z.string().datetime() })";
 
 const Day: React.FC = () => {
   const { day } = useParams();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const parsedDay = Number(day);
   const dayNumber = Number.isInteger(parsedDay) && parsedDay >= 1 && parsedDay <= 60 ? parsedDay : 12;
@@ -19,7 +21,6 @@ const Day: React.FC = () => {
   const variant = requestedVariant && ['active', 'firstDay', 'missedPrev', 'emptyProfile'].includes(requestedVariant)
     ? requestedVariant
     : 'active';
-  const dashboardHref = `/dashboard?variant=${variant}`;
   const [githubUrl, setGithubUrl] = useState('');
   const [linkedinUrl, setLinkedinUrl] = useState('');
   const [githubStatus, setGithubStatus] = useState<'idle' | 'validating' | 'success' | 'error'>('idle');
@@ -77,20 +78,19 @@ const Day: React.FC = () => {
     <div className="page">
       {/* Top Bar - with depth */}
       <header className="sticky top-0 z-30 bg-surface-900/80 backdrop-blur-sm border-b border-border-subtle shadow-ambient">
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-5 py-3 flex items-center">
+        <div className="max-w-6xl mx-auto px-4 sm:px-5 py-2 grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 sm:gap-4">
+          <BrandLogo size="day" showText />
           <RouterLink
-            to={dashboardHref}
-            className="min-h-11 px-3 rounded-lg card-raised hover:shadow-raised transition-all duration-fast text-text-secondary hover:text-text-primary inline-flex items-center gap-2"
+            to="/dashboard"
+            className="justify-self-start min-h-11 px-2.5 sm:px-3 rounded-lg card-raised hover:shadow-raised transition-all duration-fast text-text-secondary hover:text-text-primary inline-flex items-center gap-1.5 sm:gap-2"
             aria-label="Back to dashboard"
           >
-            <ArrowLeft className="w-5 h-5" aria-hidden="true" />
+            <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
             <span className="text-sm font-medium">Dashboard</span>
           </RouterLink>
-          <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center">
-            <div className="text-center">
-              <p className="text-xs text-text-muted uppercase tracking-wider">Day {dayNumber} of 60</p>
-              <Progress value={dayNumber} max={60} size="xs" variant="primary" className="mt-1 w-32 mx-auto progress-3d" />
-            </div>
+          <div className="justify-self-end text-right">
+            <p className="text-xs font-mono tabular-nums text-text-muted uppercase tracking-wider whitespace-nowrap">Day {dayNumber} / 60</p>
+            <Progress value={dayNumber} max={60} size="xs" variant="primary" className="hidden sm:block mt-1 w-28 progress-3d" />
           </div>
         </div>
       </header>
@@ -298,9 +298,6 @@ const Day: React.FC = () => {
                 </div>
                 <h2 className="text-xl font-bold text-text-primary">DAY {dayNumber} COMPLETED!</h2>
                 <p className="text-text-secondary">Your streak continues. See you tomorrow.</p>
-                <Button size="xl" fullWidth onClick={() => window.location.href = dashboardHref}>
-                  Back to Dashboard
-                </Button>
               </div>
             ) : (
               <div className="space-y-4">
@@ -327,6 +324,14 @@ const Day: React.FC = () => {
                 )}
               </div>
             )}
+            <button
+              type="button"
+              onClick={() => navigate('/dashboard')}
+              className="mt-4 min-h-12 w-full rounded-lg border border-border bg-transparent px-5 text-sm font-medium text-text-primary transition-colors hover:bg-surface-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime-500 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-950 inline-flex items-center justify-center gap-2"
+            >
+              <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+              Back to Dashboard
+            </button>
           </div>
         </div>
       </main>

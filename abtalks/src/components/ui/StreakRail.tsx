@@ -25,20 +25,21 @@ export const StreakRail: React.FC<StreakRailProps> = ({
   return (
     <div className={className}>
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center shadow-[0_0_12px_rgba(249,115,22,0.2)]">
-            <Flame className="w-5 h-5 text-brand-orange-500" aria-hidden="true" />
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        <div className="min-w-0 min-h-28 rounded-lg border border-border/50 bg-surface-800/50 p-4 flex flex-col justify-center">
+          <p className="text-xs text-text-muted uppercase tracking-wider">Current Streak</p>
+          <div className="h-10 flex items-center gap-2">
+            <Flame className="w-5 h-5 shrink-0 text-brand-orange-500" aria-hidden="true" />
+            <p className="text-3xl leading-none font-bold mono tabular-nums text-white">{currentStreak}</p>
           </div>
-          <div>
-            <p className="text-xs text-text-muted uppercase tracking-wider">Current Streak</p>
-            <p className="text-3xl font-bold mono text-white">{currentStreak}</p>
-            <p className="text-xs text-text-muted">Days Straight</p>
-          </div>
+          <p className="text-xs text-text-muted">Days Straight</p>
         </div>
-        <div className="text-right">
-          <p className="text-xs text-text-muted uppercase tracking-wider">Longest</p>
-          <p className="text-xl font-bold mono text-text-secondary">{longestStreak}</p>
+        <div className="min-w-0 min-h-28 rounded-lg border border-border/50 bg-surface-800/50 p-4 flex flex-col justify-center">
+          <p className="text-xs text-text-muted uppercase tracking-wider">Longest Streak</p>
+          <div className="h-10 flex items-center">
+            <p className="text-3xl leading-none font-bold mono tabular-nums text-text-secondary">{longestStreak}</p>
+          </div>
+          <p className="text-xs text-text-muted">Days Straight</p>
         </div>
       </div>
 
