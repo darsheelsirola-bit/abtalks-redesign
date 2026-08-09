@@ -36,6 +36,7 @@ const Dashboard: React.FC = () => {
   const weeklyGain = ({ active: 3, firstDay: 0, missedPrev: 1, emptyProfile: 2 } as const)[variant];
 
   const isFirstDay = user.currentDay === 1 && completedCount === 0 && streak === 0;
+  const showStanding = user.currentDay > 1;
 
   // Mock recovery state
   interface RecoveryState {
@@ -78,8 +79,8 @@ const Dashboard: React.FC = () => {
     rejected: { label: 'Needs revision', dot: 'bg-danger-500' },
   })[status];
 
-  const githubProof = proofPresentation(user.githubProofStatus);
-  const linkedinProof = proofPresentation(user.linkedinProofStatus);
+  const githubProof = proofPresentation(locallyCompleted ? 'verified' : user.githubProofStatus);
+  const linkedinProof = proofPresentation(locallyCompleted ? 'verified' : user.linkedinProofStatus);
 
   const handleVariantChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newVariant = e.target.value as UserVariantKey;
@@ -149,7 +150,7 @@ const Dashboard: React.FC = () => {
                 <span className="text-text-secondary hidden sm:inline">of {user.totalDays}</span>
               </div>
               <p className="text-sm text-text-muted mt-1">
-                {completedCount} days completed. {user.totalDays - completedCount} to go.
+                {completedCount} {completedCount === 1 ? 'day' : 'days'} completed. {user.totalDays - completedCount} to go.
               </p>
             </div>
             <div className="flex-shrink-0 text-right hidden sm:block">
@@ -284,7 +285,7 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Achievements & Standing - Side by side with depth */}
-        <div className={`order-4 grid gap-4 ${isFirstDay ? '' : 'lg:grid-cols-2'}`}>
+        <div className={`order-4 grid gap-4 ${showStanding ? 'lg:grid-cols-2' : ''}`}>
           <div className="card-raised p-5 shadow-raised animate-slide-up-fade" style={{ animationDelay: '150ms' }}>
             <div className="flex items-center justify-between mb-4">
               <div>
@@ -347,7 +348,7 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
 
-          {!isFirstDay && <div className="card-raised p-5 shadow-raised animate-slide-up-fade" style={{ animationDelay: '200ms' }}>
+          {showStanding && <div className="card-raised p-5 shadow-raised animate-slide-up-fade" style={{ animationDelay: '200ms' }}>
             <div className="flex items-center justify-between mb-4">
               <div>
                 <p className="text-xs text-text-muted uppercase tracking-wider mb-1">Your Standing</p>

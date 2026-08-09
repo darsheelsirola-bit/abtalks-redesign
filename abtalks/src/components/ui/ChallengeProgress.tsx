@@ -27,8 +27,8 @@ export const ChallengeProgress: React.FC<ChallengeProgressProps> = ({
 
   const getDayState = (day: number) => {
     if (day > totalDays) return 'empty';
-    if (isToday(day)) return 'today';
     if (isCompleted(day)) return 'completed';
+    if (isToday(day)) return 'today';
     if (isMissed(day)) return 'missed';
     if (isUpcoming(day)) return 'upcoming';
     return 'empty';

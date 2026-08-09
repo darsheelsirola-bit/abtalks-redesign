@@ -68,7 +68,7 @@ const Day: React.FC = () => {
   const isDayTwelve = dayNumber === 12;
   const learningObjectives = isDayTwelve
     ? ['Build a RESTful API with Express & TypeScript', 'Validate input with Zod schemas', 'Return correct HTTP status codes', 'Structure routes & controllers cleanly']
-    : [`Practice ${challenge.tags.join(' and ')} in a focused build`, 'Finish a working version within the estimated time', 'Commit the result with a clear message', 'Explain one learning in your public reflection'];
+    : ['Apply the challenge\'s core skills in a focused build', 'Finish a working version within the estimated time', 'Commit the result with a clear message', 'Explain one learning in your public reflection'];
   const checklist = isDayTwelve
     ? ['Express server runs on localhost:3000', 'GET /sessions returns array', 'POST /sessions creates session with validation', 'GET /sessions/:id returns single session', 'PATCH /sessions/:id updates session', 'DELETE /sessions/:id removes session', 'Zod schema validates subject, duration, date', 'Proper 201, 400, 404 status codes']
     : ['Project runs locally without errors', 'Core behavior matches the challenge prompt', 'Code is committed to a public GitHub repository', 'LinkedIn reflection explains what you built and learned'];

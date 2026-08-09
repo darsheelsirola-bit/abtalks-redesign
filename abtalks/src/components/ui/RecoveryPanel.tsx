@@ -50,24 +50,33 @@ export const RecoveryPanel: React.FC<RecoveryPanelProps> = ({
         <div className="flex items-start justify-between gap-3 mb-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-brand-orange-500/15 flex items-center justify-center">
-              <TriangleAlert className="w-5 h-5 text-brand-orange-500" aria-hidden="true" />
+              {isSubmitted
+                ? <Check className="w-5 h-5 text-brand-lime-500" aria-hidden="true" />
+                : <TriangleAlert className="w-5 h-5 text-brand-orange-500" aria-hidden="true" />}
             </div>
             <div>
-              <p className="text-xs text-text-muted uppercase tracking-wider">Streak Paused</p>
-              <h3 className="text-lg font-bold text-text-primary">Day {missedDay} Missed</h3>
+              <p className="text-xs text-text-muted uppercase tracking-wider">
+                {isSubmitted ? 'Recovery Complete' : 'Streak Paused'}
+              </p>
+              <h3 className="text-lg font-bold text-text-primary">
+                {isSubmitted ? 'Streak Restored' : `Day ${missedDay} Missed`}
+              </h3>
             </div>
           </div>
-          <div className="text-right">
+          {!isSubmitted && <div className="text-right">
             <span className="px-3 py-1.5 bg-brand-orange-500/15 text-brand-orange-500 text-xs font-mono rounded-lg border border-brand-orange-500/30">
               <span style={{fontFamily: 'monospace'}}>{formatTime(timeLeft)}</span> left
             </span>
-          </div>
+          </div>}
         </div>
 
         {/* Context */}
         <p className="text-sm text-text-secondary mb-5">
-          Your <span className="font-medium text-brand-orange-500">{currentStreak}-day streak</span> is paused.
-          Complete today's build, submit both proofs, and add a reflection to recover it.
+          {isSubmitted ? (
+            <>Your <span className="font-medium text-brand-lime-500">{currentStreak + 1}-day streak</span> is active again.</>
+          ) : (
+            <>Your <span className="font-medium text-brand-orange-500">{currentStreak}-day streak</span> is paused. Complete today's build, submit both proofs, and add a reflection to recover it.</>
+          )}
         </p>
 
         {/* Recovery Steps */}
