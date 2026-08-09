@@ -5,25 +5,20 @@ interface BrandLogoProps {
   showText?: boolean;
 }
 
-export const BrandLogo: React.FC<BrandLogoProps> = ({ size = 'md', showText = true }) => {
+export const BrandLogo: React.FC<BrandLogoProps> = ({ size = 'md' }) => {
   const sizeClasses = {
-    sm: 'w-[51px] h-8',
-    md: 'w-16 h-10',
-    lg: 'w-[77px] h-12',
+    sm: 'w-[72px] h-10',
+    md: 'w-24 h-12',
+    lg: 'w-32 h-16',
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center">
       <img
         src="/ab-logo.png"
         alt="AB"
         className={`${sizeClasses[size] || sizeClasses.md} object-contain shrink-0`}
       />
-      {showText && (
-        <span className="text-xs text-text-muted uppercase tracking-wider hidden sm:block font-medium text-text-secondary">
-          TALKS
-        </span>
-      )}
     </div>
   );
 };
