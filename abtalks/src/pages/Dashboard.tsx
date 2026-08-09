@@ -3,8 +3,8 @@ import { ChallengeProgress } from '@/components/ui/ChallengeProgress';
 import { RecoveryPanel } from '@/components/ui/RecoveryPanel';
 import { userVariants, type UserVariantKey } from '@/data/users';
 import { challenges } from '@/data/challenges';
-import { ArrowUpRight, Code2, Flame, GitBranch, LockKeyhole, Milestone, Share2, Trophy, Zap } from 'lucide-react';
-import { useSearchParams } from 'react-router-dom';
+import { ArrowUpRight, Code2, Flame, GitBranch, House, LockKeyhole, Milestone, Share2, Trophy, Zap } from 'lucide-react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { BrandLogo } from '@/components/BrandLogo';
 import { calculateCurrentStreak, calculateLongestStreak } from '@/utils/streak';
 
@@ -99,6 +99,14 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <Link
+              to="/"
+              className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border/30 bg-surface-750 px-3 text-sm font-medium text-text-secondary shadow-raised transition-all duration-fast hover:text-brand-lime-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime-500 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-950"
+              aria-label="Back to home"
+            >
+              <House className="h-4 w-4" aria-hidden="true" />
+              <span>Home</span>
+            </Link>
             {/* Dev variant selector (only in development) */}
             {import.meta.env.DEV && (
               <select

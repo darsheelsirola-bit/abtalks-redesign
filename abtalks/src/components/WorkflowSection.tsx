@@ -77,7 +77,7 @@ export const WorkflowSection: React.FC = () => {
             <div className="col-start-2 flex items-center justify-center relative z-10">
               <div className="relative">
                 <div className="absolute left-1/2 top-0 bottom-0 w-0.5 -translate-x-1/2 bg-gradient-to-b from-surface-600 via-surface-600/50 to-transparent" aria-hidden="true" />
-                <div className="relative w-3 h-3 rounded-full bg-surface-600 ring-2 ring-surface-950" aria-hidden="true" />
+                <div className="relative w-3 h-3 rounded-full bg-brand-lime-500 ring-2 ring-brand-lime-500/20 shadow-[0_0_12px_rgba(120,232,0,0.8)]" aria-hidden="true" />
               </div>
             </div>
             {/* empty right */}
@@ -89,7 +89,7 @@ export const WorkflowSection: React.FC = () => {
             <div className="col-start-2 flex items-center justify-center relative z-10">
               <div className="relative">
                 <div className="absolute left-1/2 top-0 bottom-0 w-0.5 -translate-x-1/2 bg-gradient-to-b from-surface-600 via-surface-600/50 to-transparent" aria-hidden="true" />
-                <div className="relative w-3 h-3 rounded-full bg-surface-600 ring-2 ring-surface-950" aria-hidden="true" />
+                <div className="relative w-3 h-3 rounded-full bg-brand-lime-500 ring-2 ring-brand-lime-500/20 shadow-[0_0_12px_rgba(120,232,0,0.8)]" aria-hidden="true" />
               </div>
             </div>
             <div className="col-start-3 relative">
@@ -104,7 +104,7 @@ export const WorkflowSection: React.FC = () => {
             <div className="col-start-2 flex items-center justify-center relative z-10">
               <div className="relative">
                 <div className="absolute left-1/2 top-0 bottom-0 w-0.5 -translate-x-1/2 bg-gradient-to-b from-surface-600 via-surface-600/50 to-transparent" aria-hidden="true" />
-                <div className="relative w-3 h-3 rounded-full bg-surface-600 ring-2 ring-surface-950" aria-hidden="true" />
+                <div className="relative w-3 h-3 rounded-full bg-brand-lime-500 ring-2 ring-brand-lime-500/20 shadow-[0_0_12px_rgba(120,232,0,0.8)]" aria-hidden="true" />
               </div>
             </div>
             <div className="col-start-3" />
@@ -115,7 +115,7 @@ export const WorkflowSection: React.FC = () => {
             <div className="col-start-2 flex items-center justify-center relative z-10">
               <div className="relative">
                 <div className="absolute left-1/2 top-0 bottom-0 w-0.5 -translate-x-1/2 bg-gradient-to-b from-surface-600 via-surface-600/50 to-transparent" aria-hidden="true" />
-                <div className="relative w-3 h-3 rounded-full bg-surface-600 ring-2 ring-surface-950" aria-hidden="true" />
+                <div className="relative w-3 h-3 rounded-full bg-brand-lime-500 ring-2 ring-brand-lime-500/20 shadow-[0_0_12px_rgba(120,232,0,0.8)]" aria-hidden="true" />
               </div>
             </div>
             <div className="col-start-3 relative">
@@ -131,7 +131,7 @@ export const WorkflowSection: React.FC = () => {
               <React.Fragment key={step.id}>
                 {/* Rail node */}
                 <div className="col-start-1 flex items-center justify-center relative">
-                  <div className="relative w-3 h-3 rounded-full bg-surface-600 ring-2 ring-surface-950" aria-hidden="true" />
+                  <div className="relative w-3 h-3 rounded-full bg-brand-lime-500 ring-2 ring-brand-lime-500/20 shadow-[0_0_12px_rgba(120,232,0,0.8)]" aria-hidden="true" />
                   {index < 3 && (
                     <div className="absolute top-full bottom-0 left-1/2 w-0.5 -translate-x-1/2 bg-gradient-to-b from-surface-600 to-transparent" aria-hidden="true" />
                   )}
