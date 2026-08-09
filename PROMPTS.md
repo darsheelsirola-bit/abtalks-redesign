@@ -149,7 +149,7 @@ The app handled missing/empty data more gracefully and was explicitly optimized 
 
 **Reconstructed Summary**
 
-> **Recovered summary — exact original wording unavailable:** Improve the prompt log for submission and add Vercel SPA routing support so direct navigation to client-side routes works.
+> **Reconstructed Summary — not a verbatim prompt:** Audit the existing AI-usage log for submission readiness, then configure a Vercel SPA rewrite so direct visits to React Router routes resolve through `index.html`.
 
 ### What happened
 
@@ -3606,6 +3606,30 @@ The previously unknown early AI tool was updated to the user-confirmed `Nemotron
 ### Result
 
 Only one `PROMPTS.md` exists on the current branch: the canonical root-level file. The former `abtalks/PROMPTS.md` duplicate had already been deleted during consolidation, so no second deletion was necessary.
+
+---
+
+## Stage 19 — Refine a reconstructed historical entry
+
+**Tool:** Codex
+
+**Exact Prompt**
+
+```text
+make sure to remove whatever is written in the ss from the file and write an promt u would think is best tht fits it there instead
+```
+
+### What changed
+
+The reconstructed Stage 05 wording shown in the screenshot was removed. It was replaced with a clearer reconstruction describing the verified documentation audit and Vercel SPA rewrite work, while remaining explicitly labeled as non-verbatim rather than being presented as an invented exact prompt.
+
+### Files changed
+
+- `PROMPTS.md`
+
+### Result
+
+The historical entry is clearer and still follows the authenticity policy: unverifiable wording remains reconstructed, while this new instruction is preserved exactly.
 
 ---
 
