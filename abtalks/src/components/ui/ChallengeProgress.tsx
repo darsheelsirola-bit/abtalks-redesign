@@ -1,11 +1,13 @@
 import React from 'react';
-import { CircleCheck, CircleX } from 'lucide-react';
+import { CircleCheck, CircleX, Flame } from 'lucide-react';
 
 interface ChallengeProgressProps {
   currentDay: number;
   completedDays: number[];
   missedDays: number[];
   totalDays: number;
+  currentStreak: number;
+  longestStreak: number;
   className?: string;
 }
 
@@ -14,6 +16,8 @@ export const ChallengeProgress: React.FC<ChallengeProgressProps> = ({
   completedDays,
   missedDays,
   totalDays,
+  currentStreak,
+  longestStreak,
   className = '',
 }) => {
   const isCompleted = (day: number) => completedDays.includes(day);
@@ -87,6 +91,27 @@ export const ChallengeProgress: React.FC<ChallengeProgressProps> = ({
         </div>
       </div>
 
+      {/* Streak summary */}
+      <div className="mb-5 grid grid-cols-2 gap-3">
+        <div className="flex min-h-20 min-w-0 items-center gap-3 rounded-lg border border-border/50 bg-surface-800/50 px-4 py-3">
+          <Flame className="h-5 w-5 shrink-0 text-brand-orange-500" aria-hidden="true" />
+          <div className="min-w-0">
+            <p className="text-[11px] uppercase tracking-wider text-text-muted">Current streak</p>
+            <p className="mono text-xl font-bold leading-tight text-white">
+              {currentStreak} <span className="text-xs font-normal text-text-muted">days</span>
+            </p>
+          </div>
+        </div>
+        <div className="flex min-h-20 min-w-0 items-center px-4 py-3 rounded-lg border border-border/50 bg-surface-800/50">
+          <div className="min-w-0">
+            <p className="text-[11px] uppercase tracking-wider text-text-muted">Longest streak</p>
+            <p className="mono text-xl font-bold leading-tight text-text-primary">
+              {longestStreak} <span className="text-xs font-normal text-text-muted">days</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Progress bar */}
       <div className="mb-6">
         <div className="relative h-2 bg-surface-600 rounded-full overflow-hidden">
@@ -109,7 +134,7 @@ export const ChallengeProgress: React.FC<ChallengeProgressProps> = ({
 
       {/* 60-day grid */}
       <div
-        className="grid w-fit max-w-full mx-auto grid-cols-[repeat(6,minmax(0,2.75rem))] gap-2 md:grid-cols-[repeat(8,minmax(0,2.75rem))] md:gap-2.5 lg:grid-cols-[repeat(10,minmax(0,2.75rem))] lg:gap-3"
+        className="grid w-fit max-w-full mx-auto grid-cols-[repeat(6,minmax(0,2.75rem))] gap-2.5 md:grid-cols-[repeat(8,minmax(0,2.75rem))] md:gap-3 lg:grid-cols-[repeat(10,minmax(0,2.75rem))] lg:gap-3.5"
         role="img"
         aria-label={`${completedCount} of ${totalDays} days completed`}
       >

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { ChallengeProgress } from '@/components/ui/ChallengeProgress';
-import { StreakRail } from '@/components/ui/StreakRail';
 import { RecoveryPanel } from '@/components/ui/RecoveryPanel';
 import { userVariants, type UserVariantKey } from '@/data/users';
 import { challenges } from '@/data/challenges';
@@ -269,20 +268,10 @@ const Dashboard: React.FC = () => {
           completedDays={completedDays}
           missedDays={user.missedDays}
           totalDays={user.totalDays}
+          currentStreak={displayedStreak}
+          longestStreak={displayedLongest}
           className="order-4"
         />
-
-        {/* Streak Rail - 3D */}
-        <div className="order-4 card-raised p-5 shadow-raised animate-slide-up-fade" style={{ animationDelay: '100ms' }}>
-          <StreakRail
-            currentStreak={displayedStreak}
-            longestStreak={displayedLongest}
-            currentDay={user.currentDay}
-            totalDays={user.totalDays}
-            completedDays={completedDays}
-            missedDays={user.missedDays}
-          />
-        </div>
 
         {/* Achievements & Standing - Side by side with depth */}
         <div className={`order-4 grid gap-4 ${showStanding ? 'lg:grid-cols-2' : ''}`}>
