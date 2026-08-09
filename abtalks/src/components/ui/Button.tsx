@@ -24,17 +24,9 @@ const variantStyles = {
   outline: 'bg-transparent text-white border border-border hover:bg-surface-800 active:bg-surface-700',
 };
 
-const variantStylesLight = {
-  primary: 'bg-black text-white hover:bg-gray-800 active:bg-gray-900',
-  secondary: 'bg-gray-100 text-black hover:bg-gray-200 active:bg-gray-300 border border-gray-300',
-  ghost: 'bg-transparent text-black hover:bg-gray-100 active:bg-gray-200',
-  danger: 'bg-red-600 text-white hover:bg-red-500 active:bg-red-700',
-  outline: 'bg-transparent text-black border border-gray-300 hover:bg-gray-100 active:bg-gray-200',
-};
-
 const sizeStyles: Record<ButtonSize, string> = {
-  sm: 'px-3 py-1.5 text-xs gap-1.5',
-  md: 'px-4 py-2 text-sm gap-2',
+  sm: 'px-3 py-1.5 text-xs gap-1.5 min-h-11',
+  md: 'px-4 py-2 text-sm gap-2 min-h-11',
   lg: 'px-6 py-3 text-base gap-2.5',
   xl: 'px-8 py-4 text-lg gap-3',
 };
@@ -56,10 +48,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref,
   ) => {
-    const isDark = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
     const isDisabled = disabled || isLoading;
-
-    const variantClass = isDark ? variantStyles[variant] : variantStylesLight[variant];
+    const variantClass = variantStyles[variant];
     const depthClass = depth ? 'btn-depth' : '';
 
     return (

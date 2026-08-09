@@ -7,6 +7,7 @@ import { challenges } from '@/data/challenges';
 import { Flame } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import { BrandLogo } from '@/components/BrandLogo';
+import { calculateCurrentStreak } from '@/utils/streak';
 
 const Dashboard: React.FC = () => {
   const [searchParams, _setSearchParams] = useSearchParams();
@@ -19,18 +20,15 @@ const Dashboard: React.FC = () => {
   const yesterday = user.currentDay - 1;
   const isYesterdayMissed = user.missedDays.includes(yesterday);
 
+  // Derived values from single source of truth
   const completedCount = user.completedDays.length;
   const missedCount = user.missedDays.length;
-  const streak = user.currentStreak;
+  const streak = calculateCurrentStreak(user.completedDays);
+  const completionPercentage = Math.round((completedCount / user.totalDays) * 100);
   const longest = user.longestStreak;
   const percentile = user.standingPercentile;
 
-  // Derived values for consistency
-  const displayedDaysBuilt = user.currentDay;
-  const displayedRemaining = user.totalDays - user.currentDay;
-  const displayedStreak = user.currentStreak;
-
-  const isFirstDay = user.currentDay === 1 && completedCount === 0 && streak === 0;
+const isFirstDay = user.currentDay === 1 && completedCount === 0 && streak === 0;
 
   // Mock recovery state
   interface RecoveryState {
@@ -71,7 +69,9 @@ const Dashboard: React.FC = () => {
           <div className="flex items-center gap-3 min-w-0">
             <BrandLogo size="md" showText />
             <div className="hidden sm:block text-text-secondary">
-              <span className="font-mono font-medium tabular-nums">DAY {user.currentDay} / {user.totalDays}</span>
+              <span className="font-mono font-medium tabular-nums text-text-secondary">
+                DAY <span className="text-text-primary">{user.currentDay}</span> <span className="text-text-muted">/ {user.totalDays}</span>
+              </span>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -92,7 +92,7 @@ const Dashboard: React.FC = () => {
               <div className="flex items-center gap-1.5 px-3 py-1.5 bg-surface-750 rounded-lg border border-border/30 shadow-raised">
                 <Flame className="w-4 h-4 text-brand-orange-500" aria-hidden="true" />
                 <span className="font-mono font-bold tabular-nums text-brand-orange-500">
-                  {isFirstDay ? '—' : displayedStreak}
+                  {isFirstDay ? '—' : streak}
                 </span>
               </div>
             </div>
@@ -100,18 +100,22 @@ const Dashboard: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 py-4 space-y-6">
+      <main className="max-w-6xl mx-auto px-4 sm:px-5 py-4 lg:py-8 flex flex-col gap-5 lg:gap-6">
         {/* Recovery Panel */}
-        <RecoveryPanel
-          isVisible={showRecovery}
-          missedDay={yesterday}
-          currentStreak={streak}
-          onRecover={handleRecoverySubmit}
-          onDismiss={() => setShowRecovery(false)}
-        />
+        {showRecovery && (
+          <div className="order-1">
+            <RecoveryPanel
+              isVisible
+              missedDay={yesterday}
+              currentStreak={streak}
+              onRecover={handleRecoverySubmit}
+              onDismiss={() => setShowRecovery(false)}
+            />
+          </div>
+        )}
 
         {/* Primary Status Band - Floating panel */}
-        <div className="card-floating p-5 animate-slide-up-fade">
+        <div className="order-3 card-raised p-5 animate-slide-up-fade">
           <div className="flex items-start justify-between gap-4 mb-5">
             <div className="min-w-0">
               <p className="text-xs text-text-muted uppercase tracking-wider mb-1">Current Status</p>
@@ -120,11 +124,11 @@ const Dashboard: React.FC = () => {
                 <span className="text-text-secondary hidden sm:inline">of {user.totalDays}</span>
               </div>
               <p className="text-sm text-text-muted mt-1">
-                {displayedDaysBuilt} days built. {displayedRemaining} to go.
+                {completedCount} days completed. {user.totalDays - completedCount} to go.
               </p>
             </div>
             <div className="flex-shrink-0 text-right hidden sm:block">
-              <p className="text-2xl font-bold mono text-brand-lime-500">{user.completionPercentage}%</p>
+              <p className="text-2xl font-bold mono text-brand-lime-500">{completionPercentage}%</p>
               <p className="text-xs text-text-muted">Complete</p>
             </div>
           </div>
@@ -133,7 +137,7 @@ const Dashboard: React.FC = () => {
           <div className="relative h-2.5 bg-surface-700 rounded-full overflow-hidden mb-4 shadow-inner-deep">
             <div
               className="h-full bg-brand-lime-500 rounded-full transition-all duration-normal ease-out shadow-[0_1px_2px_rgba(0,0,0,0.3),0_0_8px_rgba(120,232,0,0.3)]"
-              style={{ width: `${user.completionPercentage}%` }}
+              style={{ width: `${completionPercentage}%` }}
             />
             {/* Today marker */}
             <div
@@ -150,22 +154,22 @@ const Dashboard: React.FC = () => {
           {/* Stats Row - 3 cards with depth */}
           <div className="grid grid-cols-3 gap-3 pt-4 border-t border-border/50">
             <div className="card-raised p-4 text-center shadow-raised">
-              <p className="text-2xl font-bold mono text-brand-orange-500">{displayedStreak}</p>
+              <p className="text-2xl font-bold mono text-brand-orange-500">{streak}</p>
               <p className="text-xs text-text-muted">Streak</p>
             </div>
             <div className="card-raised p-4 text-center shadow-raised">
-              <p className="text-2xl font-bold mono text-text-primary">{displayedDaysBuilt}</p>
+              <p className="text-2xl font-bold mono text-text-primary">{completedCount}</p>
               <p className="text-xs text-text-muted">Completed</p>
             </div>
             <div className="card-raised p-4 text-center shadow-raised">
-              <p className="text-2xl font-bold mono text-text-secondary">{displayedRemaining}</p>
+              <p className="text-2xl font-bold mono text-text-secondary">{user.totalDays - completedCount}</p>
               <p className="text-xs text-text-muted">Remaining</p>
             </div>
           </div>
         </div>
 
         {/* Today's Mission - Primary CTA - Floating card */}
-        <div className="card-floating p-5 animate-slide-up-fade" style={{ animationDelay: '50ms' }}>
+        <div className="order-2 card-floating p-5 animate-slide-up-fade border-brand-lime-500/25" style={{ animationDelay: '50ms' }}>
           {/* Header */}
           <div className="flex items-start justify-between gap-3 mb-4">
             <div className="min-w-0">
@@ -173,7 +177,7 @@ const Dashboard: React.FC = () => {
                 <span className="w-3.5 h-3.5" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'14\' height=\'14\' viewBox=\'0 0 14 14\'%3E%3Ccircle cx=\'7\' cy=\'7\' r=\'7\' fill=\'%2378e800\'/%3E%3C/svg%3E")' }} aria-hidden="true"></span>
                 <span className="font-mono font-medium text-brand-lime-500">DAY {todayChallenge.day}</span>
               </div>
-              <h2 className="text-xl font-bold text-text-primary leading-tight">{todayChallenge.title}</h2>
+              <h1 className="text-xl sm:text-2xl font-bold text-text-primary leading-tight tracking-[-0.02em]">{todayChallenge.title}</h1>
             </div>
             <span className="px-3 py-1.5 bg-white/10 text-white text-xs font-mono rounded-lg border border-white/20 flex items-center gap-1">
               <span style={{fontFamily: 'monospace'}}>{todayChallenge.estimatedMinutes} MIN</span>
@@ -240,10 +244,11 @@ const Dashboard: React.FC = () => {
           completedDays={user.completedDays}
           missedDays={user.missedDays}
           totalDays={user.totalDays}
+          className="order-4"
         />
 
         {/* Streak Rail - 3D */}
-        <div className="card-raised p-5 shadow-raised animate-slide-up-fade" style={{ animationDelay: '100ms' }}>
+        <div className="order-4 card-raised p-5 shadow-raised animate-slide-up-fade" style={{ animationDelay: '100ms' }}>
           <StreakRail
             currentStreak={streak}
             longestStreak={longest}
@@ -254,7 +259,7 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Achievements & Standing - Side by side with depth */}
-        <div className="grid lg:grid-cols-2 gap-4">
+        <div className="order-4 grid lg:grid-cols-2 gap-4">
           <div className="card-raised p-5 shadow-raised animate-slide-up-fade" style={{ animationDelay: '150ms' }}>
             <div className="flex items-center justify-between mb-4">
               <div>
@@ -360,7 +365,7 @@ const Dashboard: React.FC = () => {
 
         {/* Missed Days Summary */}
         {missedCount > 0 && !recovery.isSubmitted && (
-          <div className="card-recessed p-4 border border-red-800/30 bg-red-900/20 shadow-inner-deep animate-slide-up-fade">
+          <div className="order-4 card-recessed p-4 border border-red-800/30 bg-red-900/20 shadow-inner-deep animate-slide-up-fade">
             <div className="flex items-center gap-2 text-sm text-red-400">
               <span className="text-red-400" aria-hidden="true">⚠</span>
               <span>Missed {missedCount} day{missedCount > 1 ? 's' : ''}: {user.missedDays.join(', ')}</span>

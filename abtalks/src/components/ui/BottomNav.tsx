@@ -1,21 +1,6 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Home, LayoutDashboard, Calendar, Trophy, User } from 'lucide-react';
-
-export interface NavItem {
-  path: string;
-  label: string;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
-  badge?: number | string;
-}
-
-export const NAV_ITEMS: NavItem[] = [
-  { path: '/', label: 'Home', icon: Home },
-  { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/day/1', label: 'Today', icon: Calendar },
-  { path: '/leaderboard', label: 'Leaderboard', icon: Trophy },
-  { path: '/profile', label: 'Profile', icon: User },
-];
+import { NAV_ITEMS, type NavItem } from './navItems';
 
 interface BottomNavProps {
   items?: NavItem[];

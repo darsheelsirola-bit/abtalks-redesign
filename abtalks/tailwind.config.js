@@ -16,7 +16,7 @@ export default {
             200: '#d1ff8f',
             300: '#adff47',
             400: '#8eff0d',
-            500: '#78e800',  // Primary electric lime
+            500: '#9BEF24',  // Primary signal lime
             600: '#5ec700',
             700: '#479900',
             800: '#387300',
@@ -39,21 +39,21 @@ export default {
         },
         // Dark surfaces - layered near-black charcoal for 3D depth
         surface: {
-          950: '#030303',  // Deepest background (page background)
-          900: '#090909',  // Main background
-          850: '#0c0c0c',  // Recessed sections
-          800: '#111111',  // Base panels
-          750: '#151515',  // Raised panels
-          700: '#1a1a1a',  // Interactive elements
-          650: '#222222',  // Elevated cards
-          600: '#2a2a2a',  // Borders/dividers
-          500: '#3d3d3d',  // Muted elements
+          950: '#050605',
+          900: '#090B09',
+          850: '#0D0F0D',
+          800: '#111411',
+          750: '#151815',
+          700: '#1A1E1A',
+          650: '#202520',
+          600: '#293027',
+          500: '#41483F',
         },
         // Text hierarchy
         text: {
-          primary: '#fafafa',      // Near-white
-          secondary: '#a3a3a3',    // Muted gray
-          muted: '#737373',        // Subtle/disabled
+          primary: '#F2F4EE',
+          secondary: '#B7BCB2',
+          muted: '#858B81',
           inverse: '#050505',      // For on-accent text
         },
         // Semantic - using brand colors (restrained)
@@ -86,13 +86,13 @@ export default {
         '2xs': ['0.625rem', { lineHeight: '1rem', letterSpacing: '0.02em' }],     // 10px
         xs: ['0.75rem', { lineHeight: '1.25rem', letterSpacing: '0.01em' }],       // 12px
         sm: ['0.8125rem', { lineHeight: '1.375rem', letterSpacing: '0.01em' }],    // 13px
-        base: ['0.875rem', { lineHeight: '1.5rem', letterSpacing: '0' }],           // 14px
+        base: ['0.9375rem', { lineHeight: '1.55rem', letterSpacing: '0' }],         // 15px
         lg: ['1rem', { lineHeight: '1.5rem', letterSpacing: '-0.01em' }],           // 16px
         xl: ['1.125rem', { lineHeight: '1.625rem', letterSpacing: '-0.01em' }],     // 18px
         '2xl': ['1.25rem', { lineHeight: '1.625rem', letterSpacing: '-0.02em' }],   // 20px
         '3xl': ['1.5rem', { lineHeight: '1.75rem', letterSpacing: '-0.02em' }],     // 24px
-        '4xl': ['1.875rem', { lineHeight: '2rem', letterSpacing: '-0.03em' }],      // 30px
-        '5xl': ['2.25rem', { lineHeight: '2.25rem', letterSpacing: '-0.04em' }],    // 36px
+        '4xl': ['2rem', { lineHeight: '2.15rem', letterSpacing: '-0.035em' }],
+        '5xl': ['2.75rem', { lineHeight: '2.75rem', letterSpacing: '-0.05em' }],
         // Special display sizes
         'display-sm': ['clamp(1.75rem, 5vw, 2.25rem)', { lineHeight: '1.1', letterSpacing: '-0.04em' }],
         'display-md': ['clamp(2.25rem, 7vw, 3rem)', { lineHeight: '1.05', letterSpacing: '-0.04em' }],

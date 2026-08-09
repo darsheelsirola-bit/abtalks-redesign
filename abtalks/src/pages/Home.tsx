@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Clock3, TrendingUp, Users } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { Flame } from 'lucide-react';
 import { Code2 } from 'lucide-react';
@@ -22,17 +22,17 @@ const Home: React.FC = () => {
           </nav>
           <button
             type="button"
-            className="md:hidden px-4 py-2 text-sm font-medium transition-all duration-fast focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-surface-950 active:scale-[0.98] bg-transparent text-text-primary hover:bg-surface-800 active:bg-surface-700 rounded-lg"
+            className="md:hidden min-h-11 px-4 py-2 text-sm font-medium transition-all duration-fast focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-surface-950 active:translate-y-px bg-transparent text-text-primary hover:bg-surface-800 active:bg-surface-700 rounded-lg"
           >
             Join
           </button>
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 pt-8 lg:pt-12 pb-20 space-y-12 lg:space-y-16 xl:space-y-20">
+      <main className="max-w-6xl mx-auto px-4 sm:px-5 pt-6 lg:pt-10 pb-20 space-y-10 lg:space-y-16">
         {/* Hero - with depth */}
-        <section className="text-center space-y-6 lg:space-y-8 pt-4 lg:pt-8 animate-slide-down-fade" aria-labelledby="hero-title">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 mb-4 animate-slide-up-fade">
+        <section className="relative text-center space-y-5 lg:space-y-7 pt-4 pb-4 lg:pt-8 lg:pb-10 animate-slide-down-fade" aria-labelledby="hero-title">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-850 border border-border mb-1 animate-slide-up-fade">
             <Flame className="w-3.5 h-3.5 text-brand-orange-500" aria-hidden="true" />
             <span className="text-sm font-medium mono text-white tracking-wide">60 DAY CHALLENGE</span>
           </div>
@@ -43,16 +43,16 @@ const Home: React.FC = () => {
             <span className="text-brand-lime-500">NO HIDING.</span>
           </h1>
           
-          <p className="text-lg lg:text-xl xl:text-2xl text-text-secondary max-w-3xl mx-auto animate-slide-up-fade leading-relaxed" style={{ animationDelay: '200ms' }}>
+          <p className="text-base sm:text-lg lg:text-xl text-text-secondary max-w-2xl mx-auto animate-slide-up-fade leading-relaxed" style={{ animationDelay: '200ms' }}>
             Build something every day. Commit it. Share it publicly.<br />
             By Day 60, your work speaks before your résumé does.
           </p>
           
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2 animate-slide-up-fade" style={{ animationDelay: '300ms' }}>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-1 animate-slide-up-fade" style={{ animationDelay: '300ms' }}>
             <button
               type="button"
               onClick={() => (window.location.href = '/dashboard')}
-              className="group w-full sm:w-auto px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-fast focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-surface-950 active:scale-[0.98] active:translate-y-0.5 bg-white text-black hover:bg-gray-200 active:bg-gray-300 shadow-[0_4px_12px_-2px_rgba(0,0,0,0.4),0_2px_4px_-2px_rgba(0,0,0,0.3),0_0_0_1px_rgba(120,232,0,0.3)] hover:shadow-[0_8px_24px_-4px_rgba(0,0,0,0.5),0_4px_12px_-2px_rgba(0,0,0,0.3),0_0_0_1px_rgba(120,232,0,0.4)] hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0.5 transition-all duration-fast min-h-[56px] min-w-[180px]"
+              className="group w-full sm:w-auto px-8 min-h-[52px] rounded-lg font-semibold text-base transition-all duration-fast focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime-500 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-950 bg-brand-lime-500 text-surface-950 hover:-translate-y-0.5 active:translate-y-px shadow-raised min-w-[180px]"
             >
               <span className="flex items-center justify-center gap-2">
                 Start Building
@@ -62,7 +62,7 @@ const Home: React.FC = () => {
             <button
               type="button"
               onClick={() => (window.location.href = '/day/12')}
-              className="w-full sm:w-auto px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-fast focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-surface-950 active:scale-[0.98] bg-transparent text-white border border-white/20 hover:bg-white/5 active:bg-white/10 hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-fast min-h-[56px] min-w-[180px]"
+              className="w-full sm:w-auto px-8 min-h-[52px] rounded-lg font-semibold text-base transition-all duration-fast focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime-500 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-950 bg-transparent text-text-primary border border-border hover:bg-surface-800 active:translate-y-px min-w-[180px]"
             >
               See Day 12 Mission
             </button>
@@ -145,13 +145,13 @@ const Home: React.FC = () => {
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 animate-stagger-in">
             {[
-              { icon: <span className="w-7 h-7" aria-hidden="true">⏱</span>, value: '15–60 min', label: 'Daily Commitment' },
-              { icon: <span className="w-7 h-7" aria-hidden="true">🔥</span>, value: '72%', label: 'Streak Retention' },
-              { icon: <span className="w-7 h-7" aria-hidden="true">📈</span>, value: '3.2×', label: 'Portfolio Views' },
-              { icon: <span className="w-7 h-7" aria-hidden="true">👥</span>, value: '12K+', label: 'Builders Joined' },
+              { icon: <Clock3 className="w-6 h-6" aria-hidden="true" />, value: '15–60 min', label: 'Daily Commitment' },
+              { icon: <Flame className="w-6 h-6 text-brand-orange-500" aria-hidden="true" />, value: '72%', label: 'Streak Retention' },
+              { icon: <TrendingUp className="w-6 h-6" aria-hidden="true" />, value: '3.2×', label: 'Portfolio Views' },
+              { icon: <Users className="w-6 h-6" aria-hidden="true" />, value: '12K+', label: 'Builders Joined' },
             ].map((s, i) => (
-              <div key={i} className="card-floating p-6 text-center hover:shadow-floating hover:-translate-y-1 transition-all duration-fast">
-                <div className="w-14 h-14 mx-auto mb-4 rounded-2xl flex items-center justify-center bg-white/5">
+              <div key={i} className="border-t border-border pt-5 text-center lg:text-left">
+                <div className="w-10 h-10 mx-auto lg:mx-0 mb-4 rounded-lg flex items-center justify-center bg-surface-800 border border-border text-text-secondary">
                   {s.icon}
                 </div>
                 <div className="text-4xl font-extrabold mono text-text-primary">{s.value}</div>

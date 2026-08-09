@@ -21,16 +21,6 @@ const variantStyles = {
   subtle: 'bg-white/5 text-white/60',
 };
 
-const variantStylesLight = {
-  default: 'bg-gray-200 text-gray-700',
-  primary: 'bg-gray-100 text-gray-900 border border-gray-300',
-  success: 'bg-green-100 text-green-800 border border-green-300',
-  warning: 'bg-yellow-100 text-yellow-800 border border-yellow-300',
-  danger: 'bg-red-100 text-red-800 border border-red-300',
-  outline: 'bg-transparent text-gray-600 border border-gray-300',
-  subtle: 'bg-gray-100 text-gray-600',
-};
-
 const sizeStyles: Record<'xs' | 'sm' | 'md', string> = {
   xs: 'px-2 py-0.5 text-xs gap-1',
   sm: 'px-2.5 py-1 text-xs gap-1.5',
@@ -45,8 +35,7 @@ export const Badge: React.FC<BadgeProps> = ({
   className = '',
   ...props
 }) => {
-  const isDark = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
-  const variantClass = isDark ? variantStyles[variant] : variantStylesLight[variant];
+  const variantClass = variantStyles[variant];
 
   return (
     <span className={`${base} ${variantClass} ${sizeStyles[size]} ${className}`} {...props}>

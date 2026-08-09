@@ -13,7 +13,6 @@
 
   html {
     @apply scroll-smooth;
-    perspective: 1000px;
   }
 
   #how, #proof, #progress {
@@ -22,14 +21,11 @@
 
   body {
     @apply bg-surface-950 text-text-primary antialiased;
+    font-size: 15px;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     background-image: 
       radial-gradient(ellipse 80% 50% at 50% -20%, rgba(120, 232, 0, 0.03) 0%, transparent 50%),
       radial-gradient(ellipse 60% 40% at 100% 100%, rgba(249, 115, 22, 0.02) 0%, transparent 50%);
-  }
-
-  .light body {
-    @apply bg-white text-gray-900;
   }
 
   #root {
@@ -109,11 +105,12 @@
   }
 
   .card-raised {
-    @apply bg-surface-750 rounded-xl border border-border/30 shadow-raised;
+    @apply bg-surface-750 rounded-xl border border-border/60 shadow-surface;
   }
 
   .card-floating {
-    @apply bg-surface-700 rounded-xl border border-border/20 shadow-floating;
+    @apply bg-surface-750 rounded-xl border border-border shadow-raised;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.045), 0 10px 30px rgba(0,0,0,0.2);
   }
 
   /* 3D Button depth */
@@ -246,6 +243,10 @@
     @apply font-mono tabular-nums;
   }
 
+  .section-kicker {
+    @apply font-mono text-xs font-medium uppercase tracking-[0.16em] text-brand-lime-500;
+  }
+
   /* Text clamp utilities */
   .clamp-1 { @apply truncate; }
   .clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -288,11 +289,6 @@
 }
 
 /* Keyframe animations for 3D feel */
-@keyframes pulse-subtle {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(1.02); }
-}
-
 @keyframes slide-up-fade {
   from { opacity: 0; transform: translateY(8px) scale(0.98); }
   to { opacity: 1; transform: translateY(0) scale(1); }
@@ -330,10 +326,7 @@
 }
 
 /* Staggered entrance animations */
-.animate-stagger-in > * {
-  opacity: 0;
-  animation: slide-up-fade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
+.animate-stagger-in > * { opacity: 1; }
 
 .animate-stagger-in > *:nth-child(1) { animation-delay: 0ms; }
 .animate-stagger-in > *:nth-child(2) { animation-delay: 40ms; }
@@ -358,6 +351,4 @@
 }
 
 /* Prevent flash of light content on dark mode load */
-html.dark {
-  background-color: #030303;
-}
+html.dark { background-color: #050605; }

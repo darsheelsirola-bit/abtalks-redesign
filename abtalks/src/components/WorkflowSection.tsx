@@ -37,10 +37,10 @@ const workflowSteps: WorkflowStep[] = [
 
 function WorkflowPanel({ step }: { step: typeof workflowSteps[0] }) {
   return (
-    <div className="relative bg-surface-800/60 border border-surface-600/50 rounded-xl p-6 transition-all duration-normal hover:shadow-[0_16px_40px_rgba(0,0,0,0.35)] hover:border-surface-500/30 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-all duration-300">
+    <div className="relative border-t border-surface-600 p-4 sm:p-5 transition-all duration-normal lg:hover:-translate-y-0.5">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent -mx-1 rounded-t-xl" aria-hidden="true" />
       <div className="flex items-start gap-4">
-        <div className="flex-shrink-0 w-11 h-11 rounded-lg bg-white/5 flex items-center justify-center ring-1 ring-white/10 flex-shrink-0">
+        <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-surface-800 flex items-center justify-center border border-border text-brand-lime-500">
           {step.icon}
         </div>
         <div className="flex-1 min-w-0 pt-1">
@@ -54,18 +54,18 @@ function WorkflowPanel({ step }: { step: typeof workflowSteps[0] }) {
 
 export const WorkflowSection: React.FC = () => {
   return (
-    <section id="how" className="relative py-16 lg:py-24" aria-labelledby="loop-title">
+    <section id="how" className="relative py-10 lg:py-16" aria-labelledby="loop-title">
       {/* Section Header */}
-      <div className="max-w-6xl mx-auto px-4 mb-16 lg:mb-20">
+      <div className="max-w-6xl mx-auto px-0 mb-8 lg:mb-12">
         <div className="text-center mb-8">
-          <p className="text-xs text-text-muted uppercase tracking-wider mb-3">THE LOOP</p>
-          <h2 id="loop-title" className="text-4xl lg:text-5xl font-extrabold text-text-primary tracking-tight">
+          <p className="section-kicker mb-3">THE LOOP</p>
+          <h2 id="loop-title" className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-text-primary tracking-[-0.04em] text-balance">
             BUILD → COMMIT → SHARE → REPEAT
           </h2>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="max-w-6xl mx-auto px-0">
         {/* DESKTOP LAYOUT (>= lg) */}
         <div className="hidden lg:block">
           <div className="grid grid-cols-[minmax(0,1fr)_40px_minmax(0,1fr)] gap-y-10 lg:gap-y-12 gap-x-0">
@@ -126,7 +126,7 @@ export const WorkflowSection: React.FC = () => {
 
         {/* MOBILE LAYOUT (<= 640px) */}
         <div className="lg:hidden block">
-          <div className="grid grid-cols-[32px_1fr] gap-y-10 gap-x-0">
+          <div className="grid grid-cols-[28px_1fr] gap-y-3 gap-x-0">
             {workflowSteps.map((step, index) => (
               <React.Fragment key={step.id}>
                 {/* Rail node */}

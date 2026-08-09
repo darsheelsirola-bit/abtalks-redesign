@@ -4,10 +4,16 @@ import { Badge } from '@/components/ui/Badge';
 import { Progress } from '@/components/ui/Progress';
 import { Input } from '@/components/ui/Input';
 import { ArrowLeft, GitBranch, Link, CheckCircle2, AlertCircle, CheckCircle, ExternalLink } from 'lucide-react';
+import { Link as RouterLink, useParams } from 'react-router-dom';
+import { challenges } from '@/data/challenges';
 
 const zodSchema = "z.object({ subject: z.string().min(1), duration: z.number().positive(), date: z.string().datetime() })";
 
-const Day12: React.FC = () => {
+const Day: React.FC = () => {
+  const { day } = useParams();
+  const parsedDay = Number(day);
+  const dayNumber = Number.isInteger(parsedDay) && parsedDay >= 1 && parsedDay <= 60 ? parsedDay : 12;
+  const challenge = challenges[dayNumber - 1];
   const [githubUrl, setGithubUrl] = useState('');
   const [linkedinUrl, setLinkedinUrl] = useState('');
   const [githubStatus, setGithubStatus] = useState<'idle' | 'validating' | 'success' | 'error'>('idle');
@@ -65,56 +71,51 @@ const Day12: React.FC = () => {
     <div className="page">
       {/* Top Bar - with depth */}
       <header className="sticky top-0 z-30 bg-surface-900/80 backdrop-blur-sm border-b border-border-subtle shadow-ambient">
-        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => window.history.back()}
-            className="p-2 rounded-lg card-raised hover:shadow-raised transition-all duration-fast text-text-secondary hover:text-text-primary"
+        <div className="max-w-6xl mx-auto px-4 sm:px-5 py-3 flex items-center gap-3">
+          <RouterLink
+            to="/dashboard"
+            className="min-h-11 px-3 rounded-lg card-raised hover:shadow-raised transition-all duration-fast text-text-secondary hover:text-text-primary inline-flex items-center gap-2"
             aria-label="Back to dashboard"
           >
             <ArrowLeft className="w-5 h-5" aria-hidden="true" />
-          </button>
+            <span className="text-sm font-medium hidden sm:inline">Dashboard</span>
+          </RouterLink>
           <div className="flex-1 flex items-center justify-center gap-3">
             <div className="text-center">
-              <p className="text-xs text-text-muted uppercase tracking-wider">Day 12 of 60</p>
-              <Progress value={12} max={60} size="xs" variant="primary" className="mt-1 w-32 mx-auto progress-3d" />
+              <p className="text-xs text-text-muted uppercase tracking-wider">Day {dayNumber} of 60</p>
+              <Progress value={dayNumber} max={60} size="xs" variant="primary" className="mt-1 w-32 mx-auto progress-3d" />
             </div>
             <div className="w-10" />
           </div>
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 py-4 space-y-5 lg:grid lg:grid-cols-2 lg:gap-6 lg:py-8">
+      <main className="max-w-6xl mx-auto px-4 sm:px-5 py-5 space-y-5 lg:grid lg:grid-cols-[1.08fr_0.92fr] lg:gap-6 lg:py-8">
         {/* Left Column - Mission */}
         <div className="space-y-4 lg:order-1 animate-slide-up-fade">
-          {/* Mission Header - Floating card */}
-          <div className="card-floating p-5 animate-slide-up-fade" style={{ animationDelay: '50ms' }}>
+          {/* Mission Header */}
+          <div className="card-raised p-5 sm:p-6 animate-slide-up-fade" style={{ animationDelay: '50ms' }}>
             <div className="flex items-start justify-between gap-3 mb-4">
               <div className="min-w-0">
                 <div className="flex items-center gap-2 text-xs text-text-muted mb-2">
-                  <span className="font-mono font-medium text-brand-lime-500">DAY 12</span>
+                  <span className="font-mono font-medium text-brand-lime-500">DAY {dayNumber} / 60</span>
                 </div>
-                <h1 className="text-2xl font-bold text-text-primary leading-tight">REST API WITH EXPRESS + TYPESCRIPT</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold text-text-primary leading-tight tracking-[-0.025em]">{challenge.title.replace(/^Day \d+:\s*/, '')}</h1>
               </div>
               <div className="flex-shrink-0 flex items-center gap-2">
                 <span className="px-3 py-1.5 bg-white/10 text-white text-xs font-mono rounded-lg border border-white/20 flex items-center gap-1">
-                  <span style={{fontFamily: 'monospace'}}>60 MIN</span>
+                  <span className="mono">{challenge.estimatedMinutes} MIN</span>
                 </span>
               </div>
             </div>
 
-            <p className="text-text-secondary mb-5">
-              Create a tiny Study Tracker API: CRUD endpoints for sessions (subject, duration, date). 
-              Use Express, TypeScript, and an in-memory array for storage. Add input validation with Zod 
-              and return proper HTTP status codes.
-            </p>
+            <p className="text-text-secondary mb-5 leading-relaxed">{challenge.description}</p>
 
             {/* Tags */}
             <div className="flex flex-wrap gap-1.5 mb-5">
-              <Badge variant="outline" size="xs">backend</Badge>
-              <Badge variant="outline" size="xs">express</Badge>
-              <Badge variant="outline" size="xs">typescript</Badge>
-              <Badge variant="outline" size="xs">validation</Badge>
+              {challenge.tags.map((tag) => (
+                <Badge key={tag} variant="outline" size="xs">{tag}</Badge>
+              ))}
             </div>
 
             {/* Learning Objectives */}
@@ -142,7 +143,7 @@ const Day12: React.FC = () => {
             </details>
           </div>
 
-          {/* Ship Requirements - Floating cards */}
+          {/* Ship Requirements */}
           <div className="card-floating p-5 animate-slide-up-fade" style={{ animationDelay: '100ms' }}>
             <div className="flex items-center justify-between mb-4">
               <div>
@@ -165,7 +166,7 @@ const Day12: React.FC = () => {
 
         {/* Right Column - Proof & Complete */}
         <div className="space-y-4 lg:order-2 animate-slide-up-fade" style={{ animationDelay: '100ms' }}>
-          {/* GitHub Proof - Floating card */}
+          {/* GitHub Proof */}
           <div className="card-floating p-5">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-lg card-raised flex items-center justify-center shadow-raised">
@@ -212,10 +213,10 @@ const Day12: React.FC = () => {
                   <CheckCircle2 className="w-5 h-5 text-brand-lime-500" aria-hidden="true" />
                   <span className="font-medium text-brand-lime-500">Proof Verified</span>
                 </div>
-                <div className="space-y-1 text-xs text-gray-300 font-mono">
-                  <div><span className="text-gray-500">Repo:</span> {githubData.repo}</div>
-                  <div><span className="text-gray-500">Commit:</span> {githubData.commit}</div>
-                  <div><span className="text-gray-500">Files:</span> {githubData.files} changed</div>
+                <div className="space-y-1 text-xs text-text-secondary font-mono">
+                  <div><span className="text-text-muted">Repo:</span> {githubData.repo}</div>
+                  <div><span className="text-text-muted">Commit:</span> {githubData.commit}</div>
+                  <div><span className="text-text-muted">Files:</span> {githubData.files} changed</div>
                 </div>
                 <Button variant="ghost" size="sm" className="mt-3" onClick={() => window.open(`https://github.com/${githubData.repo}`, '_blank')}>
                   <ExternalLink className="w-3.5 h-3.5 mr-1" aria-hidden="true" /> View on GitHub
@@ -229,7 +230,7 @@ const Day12: React.FC = () => {
             )}
           </div>
 
-          {/* LinkedIn Proof - Floating card */}
+          {/* LinkedIn Proof */}
           <div className="card-floating p-5 animate-slide-up-fade" style={{ animationDelay: '100ms' }}>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-lg card-raised flex items-center justify-center shadow-raised">
@@ -284,14 +285,14 @@ const Day12: React.FC = () => {
             )}
           </div>
 
-          {/* Complete CTA - Floating card */}
+          {/* Complete CTA */}
           <div className="card-floating p-5 animate-slide-up-fade" style={{ animationDelay: '150ms' }}>
             {isCompleted ? (
               <div className="text-center space-y-4 animate-scale-in">
                 <div className="mx-auto w-20 h-20 rounded-full bg-white/10 flex items-center justify-center shadow-[0_0_24px_rgba(120,232,0,0.3)]">
                   <CheckCircle className="w-10 h-10 text-brand-lime-500" aria-hidden="true" />
                 </div>
-                <h2 className="text-xl font-bold text-text-primary">DAY 12 COMPLETED!</h2>
+                <h2 className="text-xl font-bold text-text-primary">DAY {dayNumber} COMPLETED!</h2>
                 <p className="text-text-secondary">Your streak continues. See you tomorrow.</p>
                 <Button size="xl" fullWidth onClick={() => window.location.href = '/dashboard'}>
                   Back to Dashboard
@@ -300,7 +301,7 @@ const Day12: React.FC = () => {
             ) : (
               <div className="space-y-4">
                 <div className="text-center">
-                  <h2 className="text-lg font-bold text-text-primary mb-1">Ready to Complete Day 12?</h2>
+                  <h2 className="text-lg font-bold text-text-primary mb-1">Ready to Complete Day {dayNumber}?</h2>
                   <p className="text-sm text-text-secondary">Submit both proofs above, then finish the day.</p>
                 </div>
                 <Button
@@ -311,7 +312,7 @@ const Day12: React.FC = () => {
                   variant={canComplete ? 'primary' : 'outline'}
                 >
                   <CheckCircle className="w-5 h-5 mr-2" aria-hidden="true" />
-                  Complete Day 12
+                  Complete Day {dayNumber}
                 </Button>
                 {!canComplete && (
                   <p className="text-center text-xs text-text-muted">
@@ -329,4 +330,4 @@ const Day12: React.FC = () => {
   );
 };
 
-export default Day12;
+export default Day;
