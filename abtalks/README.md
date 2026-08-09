@@ -38,6 +38,10 @@ src/
 ## Deployment
 Deployable on Vercel (zero-config for Vite + React).
 
+## AI Usage
+
+The complete AI-assisted development log is available in [PROMPTS.md](../PROMPTS.md).
+
 ## Notes
 - Designed mobile‑first for 390px width.
 - No backend, database, or authentication – mocked data only.
