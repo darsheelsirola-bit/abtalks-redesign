@@ -278,6 +278,7 @@ const Dashboard: React.FC = () => {
             currentStreak={displayedStreak}
             longestStreak={displayedLongest}
             currentDay={user.currentDay}
+            totalDays={user.totalDays}
             completedDays={completedDays}
             missedDays={user.missedDays}
           />

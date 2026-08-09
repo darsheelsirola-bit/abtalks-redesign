@@ -5,6 +5,7 @@ interface StreakRailProps {
   currentStreak: number;
   longestStreak: number;
   currentDay: number;
+  totalDays: number;
   completedDays: number[];
   missedDays: number[];
   className?: string;
@@ -14,14 +15,11 @@ export const StreakRail: React.FC<StreakRailProps> = ({
   currentStreak,
   longestStreak,
   currentDay,
+  totalDays,
   completedDays,
   missedDays,
   className = '',
 }) => {
-  // Show last 14 days for the rail
-  const daysToShow = 14;
-  const startDay = Math.max(1, currentDay - daysToShow + 1);
-
   return (
     <div className={className}>
       {/* Header */}
@@ -45,9 +43,9 @@ export const StreakRail: React.FC<StreakRailProps> = ({
 
       {/* Streak Rail - 3D cells */}
       <div className="w-full min-w-0">
-        <div className="grid w-full min-w-0 grid-cols-7 sm:grid-cols-[repeat(14,minmax(0,1fr))] gap-1.5">
-          {Array.from({ length: 14 }, (_, i) => {
-            const dayNum = startDay + i;
+        <div className="mx-auto grid w-fit max-w-full min-w-0 grid-cols-[repeat(6,minmax(0,2.5rem))] gap-1.5 sm:grid-cols-[repeat(10,minmax(0,2.5rem))] lg:grid-cols-[repeat(15,minmax(0,2.5rem))]">
+          {Array.from({ length: totalDays }, (_, i) => {
+            const dayNum = i + 1;
             const isCompleted = completedDays.includes(dayNum);
             const isMissed = missedDays.includes(dayNum);
             const isToday = dayNum === currentDay;
