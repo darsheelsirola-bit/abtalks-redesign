@@ -71,10 +71,10 @@ export const ChallengeProgress: React.FC<ChallengeProgressProps> = ({
 
   return (
     <div className={`w-full min-w-0 ${className}`}>
-      <div className="w-full max-w-[850px] min-w-0 mx-auto">
+      <div className="w-full min-w-0 mx-auto">
       {/* 60-day grid */}
       <div
-        className="grid w-fit max-w-full mx-auto grid-cols-[repeat(6,minmax(0,2.75rem))] gap-2.5 md:grid-cols-[repeat(8,minmax(0,2.75rem))] md:gap-3 lg:grid-cols-[repeat(10,minmax(0,2.75rem))] lg:gap-3.5"
+        className="grid w-fit max-w-full mx-auto grid-cols-[repeat(6,minmax(0,2.75rem))] gap-2.5 md:grid-cols-[repeat(8,minmax(0,3.25rem))] md:gap-3 lg:grid-cols-[repeat(10,minmax(0,4rem))] lg:gap-4"
         role="img"
         aria-label={`${completedCount} of ${totalDays} days completed`}
       >
@@ -86,7 +86,7 @@ export const ChallengeProgress: React.FC<ChallengeProgressProps> = ({
               key={dayNum}
               type="button"
               disabled
-              className={`relative aspect-square w-11 min-w-0 box-border rounded-md border flex items-center justify-center transition-colors duration-fast ${getDayClass(state)}`}
+              className={`relative aspect-square w-11 md:w-[3.25rem] lg:w-16 min-w-0 box-border rounded-md border flex items-center justify-center transition-colors duration-fast ${getDayClass(state)}`}
               aria-label={`Day ${dayNum}: ${state}`}
             >
               {getDayContent(state, dayNum)}

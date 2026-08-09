@@ -192,12 +192,6 @@ const Dashboard: React.FC = () => {
           </div>
 
           <div className="mt-6 border-t border-border/50 pt-6">
-            <div className="mb-5 flex items-center justify-between gap-3">
-              <p className="text-xs uppercase tracking-wider text-text-muted">Challenge Progress</p>
-              <p className="mono text-sm text-text-secondary">
-                <span className="font-bold text-brand-lime-500">{completedCount}</span> / {user.totalDays}
-              </p>
-            </div>
             <ChallengeProgress
               currentDay={user.currentDay}
               completedDays={completedDays}
