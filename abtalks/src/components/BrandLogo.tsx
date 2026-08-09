@@ -20,10 +20,10 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({ size = 'md', showText = tr
 
   return (
     <div className="flex items-center gap-2">
-      <div className={`relative ${sizeClasses[size]} rounded-lg bg-surface-750 border border-surface-600 flex items-center justify-center shadow-raised`}>
+      <div className={`relative ${sizeClasses[size] || sizeClasses.md} rounded-lg bg-surface-750 border border-surface-600 flex items-center justify-center shadow-raised`}>
         {/* Subtle top edge highlight */}
         <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-white/10 to-transparent -mx-1 rounded-t-lg" aria-hidden="true" />
-        <span className={`font-bold mono text-text-primary relative z-10 ${textSizeClasses[size]}`}>AB</span>
+        <span className={`font-bold mono text-text-primary relative z-10 ${textSizeClasses[size] || textSizeClasses.md}`}>AB</span>
         {/* Subtle lime accent on the B */}
         <span className="absolute bottom-1 right-1 w-1.5 h-1.5 rounded-full bg-brand-lime-500" aria-hidden="true" />
       </div>
