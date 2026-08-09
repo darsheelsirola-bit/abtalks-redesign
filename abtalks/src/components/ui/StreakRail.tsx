@@ -44,8 +44,8 @@ export const StreakRail: React.FC<StreakRailProps> = ({
       </div>
 
       {/* Streak Rail - 3D cells */}
-      <div className="overflow-x-auto pb-2">
-        <div className="flex gap-1.5 min-w-max">
+      <div className="w-full min-w-0">
+        <div className="grid w-full min-w-0 grid-cols-7 sm:grid-cols-[repeat(14,minmax(0,1fr))] gap-1.5">
           {Array.from({ length: 14 }, (_, i) => {
             const dayNum = startDay + i;
             const isCompleted = completedDays.includes(dayNum);
@@ -71,7 +71,7 @@ export const StreakRail: React.FC<StreakRailProps> = ({
             return (
               <div
                 key={dayNum}
-                className={`relative w-10 h-10 rounded flex items-center justify-center text-xs font-medium mono transition-all duration-fast ${getDayClass()}`}
+                className={`relative aspect-square w-full max-w-10 min-w-0 box-border justify-self-center border border-transparent rounded flex items-center justify-center text-xs font-medium mono transition-all duration-fast ${getDayClass()}`}
                 title={`Day ${dayNum}${isToday ? ' (Today)' : ''}`}
               >
                 {getContent()}
@@ -82,7 +82,7 @@ export const StreakRail: React.FC<StreakRailProps> = ({
       </div>
 
       {/* Stats */}
-      <div className="flex items-center justify-between mt-4 pt-4 border-t border-border/50">
+      <div className="flex flex-wrap items-center justify-between gap-2 mt-4 pt-4 border-t border-border/50">
         <div className="flex items-center gap-2 text-sm text-text-secondary">
           <CalendarDays className="w-4 h-4 text-text-muted" aria-hidden="true" />
           <span>{completedDays.length} completed</span>

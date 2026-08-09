@@ -9,10 +9,6 @@ interface ChallengeProgressProps {
   className?: string;
 }
 
-// 60 days = ~8.5 weeks. Show as 9 weeks x 7 days = 63 cells (3 buffer)
-const WEEKS = 9;
-const DAYS_PER_WEEK = 7;
-
 export const ChallengeProgress: React.FC<ChallengeProgressProps> = ({
   currentDay,
   completedDays,
@@ -49,23 +45,33 @@ export const ChallengeProgress: React.FC<ChallengeProgressProps> = ({
     }
   };
 
-  const getDayContent = (state: string) => {
+  const getDayContent = (state: string, day: number) => {
     switch (state) {
       case 'completed':
-        return <CircleCheck className="w-3 h-3 text-surface-950" aria-hidden="true" />;
+        return <>
+          <span className="font-mono text-xs font-bold tabular-nums text-surface-950">{day}</span>
+          <CircleCheck className="absolute right-1 top-1 w-2.5 h-2.5 text-surface-950" aria-hidden="true" />
+        </>;
       case 'missed':
-        return <CircleX className="w-3 h-3 text-danger-500" aria-hidden="true" />;
+        return <>
+          <span className="font-mono text-xs font-semibold tabular-nums text-red-300">{day}</span>
+          <CircleX className="absolute right-1 top-1 w-2.5 h-2.5 text-danger-500" aria-hidden="true" />
+        </>;
       case 'today':
-        return <span className="font-mono font-semibold text-brand-lime-500 text-[10px]">●</span>;
+        return <>
+          <span className="font-mono text-xs font-bold tabular-nums text-brand-lime-500">{day}</span>
+          <span className="absolute bottom-1.5 w-1 h-1 rounded-full bg-brand-lime-500" aria-hidden="true" />
+        </>;
       default:
-        return null;
+        return <span className="font-mono text-xs tabular-nums text-text-muted">{day}</span>;
     }
   };
 
   const completedCount = completedDays.length;
 
   return (
-    <div className={className}>
+    <div className={`w-full min-w-0 ${className}`}>
+      <div className="w-full max-w-[850px] min-w-0 mx-auto">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
@@ -103,33 +109,25 @@ export const ChallengeProgress: React.FC<ChallengeProgressProps> = ({
 
       {/* 60-day grid */}
       <div
-        className="grid grid-cols-[1.5rem_repeat(7,1.75rem)] gap-1.5"
+        className="grid w-fit max-w-full mx-auto grid-cols-[repeat(6,minmax(0,2.75rem))] gap-2 md:grid-cols-[repeat(8,minmax(0,2.75rem))] md:gap-2.5 lg:grid-cols-[repeat(10,minmax(0,2.75rem))] lg:gap-3"
         role="img"
         aria-label={`${completedCount} of ${totalDays} days completed`}
       >
-        {Array.from({ length: WEEKS }, (_, weekIndex) => (
-          <React.Fragment key={weekIndex}>
-            <span className="h-7 text-right text-text-muted mono text-xs font-medium leading-7 pr-1">
-              W{weekIndex + 1}
-            </span>
-            {Array.from({ length: DAYS_PER_WEEK }, (_, dayIndex) => {
-              const dayNum = weekIndex * DAYS_PER_WEEK + dayIndex + 1;
-              if (dayNum > totalDays) return <span key={dayNum} className="size-7" aria-hidden="true" />;
-              const state = getDayState(dayNum);
-              return (
-                <button
-                  key={dayNum}
-                  type="button"
-                  disabled
-                  className={`relative size-7 box-border rounded-md border flex items-center justify-center transition-colors duration-fast ${getDayClass(state)}`}
-                  aria-label={`Day ${dayNum}: ${state}`}
-                >
-                  {getDayContent(state)}
-                </button>
-              );
-            })}
-          </React.Fragment>
-        ))}
+        {Array.from({ length: totalDays }, (_, dayIndex) => {
+          const dayNum = dayIndex + 1;
+          const state = getDayState(dayNum);
+          return (
+            <button
+              key={dayNum}
+              type="button"
+              disabled
+              className={`relative aspect-square w-11 min-w-0 box-border rounded-md border flex items-center justify-center transition-colors duration-fast ${getDayClass(state)}`}
+              aria-label={`Day ${dayNum}: ${state}`}
+            >
+              {getDayContent(state, dayNum)}
+            </button>
+          );
+        })}
       </div>
 
       {/* Legend */}
@@ -150,6 +148,7 @@ export const ChallengeProgress: React.FC<ChallengeProgressProps> = ({
           <span className="w-3 h-3 rounded bg-surface-600/50" aria-hidden="true"></span>
           Upcoming
         </div>
+      </div>
       </div>
     </div>
   );
