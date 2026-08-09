@@ -3,17 +3,23 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Progress } from '@/components/ui/Progress';
 import { Input } from '@/components/ui/Input';
-import { ArrowLeft, GitBranch, Link, CheckCircle2, AlertCircle, CheckCircle, ExternalLink } from 'lucide-react';
-import { Link as RouterLink, useParams } from 'react-router-dom';
+import { ArrowLeft, GitBranch, Link, CheckCircle2, AlertCircle, CheckCircle, ExternalLink, Lightbulb } from 'lucide-react';
+import { Link as RouterLink, useParams, useSearchParams } from 'react-router-dom';
 import { challenges } from '@/data/challenges';
 
 const zodSchema = "z.object({ subject: z.string().min(1), duration: z.number().positive(), date: z.string().datetime() })";
 
 const Day: React.FC = () => {
   const { day } = useParams();
+  const [searchParams] = useSearchParams();
   const parsedDay = Number(day);
   const dayNumber = Number.isInteger(parsedDay) && parsedDay >= 1 && parsedDay <= 60 ? parsedDay : 12;
   const challenge = challenges[dayNumber - 1];
+  const requestedVariant = searchParams.get('variant');
+  const variant = requestedVariant && ['active', 'firstDay', 'missedPrev', 'emptyProfile'].includes(requestedVariant)
+    ? requestedVariant
+    : 'active';
+  const dashboardHref = `/dashboard?variant=${variant}`;
   const [githubUrl, setGithubUrl] = useState('');
   const [linkedinUrl, setLinkedinUrl] = useState('');
   const [githubStatus, setGithubStatus] = useState<'idle' | 'validating' | 'success' | 'error'>('idle');
@@ -53,39 +59,38 @@ const Day: React.FC = () => {
 
   const canComplete = githubStatus === 'success' && linkedinStatus === 'success';
   const handleComplete = () => {
-    if (canComplete) setIsCompleted(true);
+    if (canComplete) {
+      window.localStorage.setItem(`abtalks:completed:${variant}:${dayNumber}`, 'true');
+      setIsCompleted(true);
+    }
   };
 
-  const checklist = [
-    'Express server runs on localhost:3000',
-    'GET /sessions returns array',
-    'POST /sessions creates session with validation',
-    'GET /sessions/:id returns single session',
-    'PATCH /sessions/:id updates session',
-    'DELETE /sessions/:id removes session',
-    'Zod schema validates subject, duration, date',
-    'Proper 201, 400, 404 status codes',
-  ];
+  const isDayTwelve = dayNumber === 12;
+  const learningObjectives = isDayTwelve
+    ? ['Build a RESTful API with Express & TypeScript', 'Validate input with Zod schemas', 'Return correct HTTP status codes', 'Structure routes & controllers cleanly']
+    : [`Practice ${challenge.tags.join(' and ')} in a focused build`, 'Finish a working version within the estimated time', 'Commit the result with a clear message', 'Explain one learning in your public reflection'];
+  const checklist = isDayTwelve
+    ? ['Express server runs on localhost:3000', 'GET /sessions returns array', 'POST /sessions creates session with validation', 'GET /sessions/:id returns single session', 'PATCH /sessions/:id updates session', 'DELETE /sessions/:id removes session', 'Zod schema validates subject, duration, date', 'Proper 201, 400, 404 status codes']
+    : ['Project runs locally without errors', 'Core behavior matches the challenge prompt', 'Code is committed to a public GitHub repository', 'LinkedIn reflection explains what you built and learned'];
 
   return (
     <div className="page">
       {/* Top Bar - with depth */}
       <header className="sticky top-0 z-30 bg-surface-900/80 backdrop-blur-sm border-b border-border-subtle shadow-ambient">
-        <div className="max-w-6xl mx-auto px-4 sm:px-5 py-3 flex items-center gap-3">
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-5 py-3 flex items-center">
           <RouterLink
-            to="/dashboard"
+            to={dashboardHref}
             className="min-h-11 px-3 rounded-lg card-raised hover:shadow-raised transition-all duration-fast text-text-secondary hover:text-text-primary inline-flex items-center gap-2"
             aria-label="Back to dashboard"
           >
             <ArrowLeft className="w-5 h-5" aria-hidden="true" />
-            <span className="text-sm font-medium hidden sm:inline">Dashboard</span>
+            <span className="text-sm font-medium">Dashboard</span>
           </RouterLink>
-          <div className="flex-1 flex items-center justify-center gap-3">
+          <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center">
             <div className="text-center">
               <p className="text-xs text-text-muted uppercase tracking-wider">Day {dayNumber} of 60</p>
               <Progress value={dayNumber} max={60} size="xs" variant="primary" className="mt-1 w-32 mx-auto progress-3d" />
             </div>
-            <div className="w-10" />
           </div>
         </div>
       </header>
@@ -122,23 +127,22 @@ const Day: React.FC = () => {
             <div className="space-y-3 mb-5 pt-4 border-t border-border/50">
               <p className="text-xs text-text-muted uppercase tracking-wider mb-3">Learning Objectives</p>
               <ul className="space-y-2 text-sm text-text-secondary">
-                <li className="flex items-center gap-2">Build a RESTful API with Express & TypeScript</li>
-                <li className="flex items-center gap-2">Validate input with Zod schemas</li>
-                <li className="flex items-center gap-2">Return correct HTTP status codes</li>
-                <li className="flex items-center gap-2">Structure routes & controllers cleanly</li>
+                {learningObjectives.map((objective) => <li key={objective}>{objective}</li>)}
               </ul>
             </div>
 
             {/* Hint */}
             <details className="group">
               <summary className="flex items-center gap-2 text-sm text-text-muted cursor-pointer list-none">
-                <span className="w-4 h-4 text-text-muted" aria-hidden="true">💡</span>
+                <Lightbulb className="w-4 h-4 text-brand-orange-500" aria-hidden="true" />
                 <span>Hint / Details</span>
               </summary>
               <div className="mt-3 p-4 card-recessed rounded-lg text-sm text-text-secondary space-y-2">
-                <p>Use <code className="card-recessed px-1.5 py-0.5 rounded font-mono text-xs">express.Router()</code> for modular routes.</p>
-                <p>Zod schema: <code className="card-recessed px-1.5 py-0.5 rounded font-mono text-xs">{zodSchema}</code></p>
-                <p>Return <code className="card-recessed px-1.5 py-0.5 rounded font-mono text-xs">res.status(201).json(session)</code> on create.</p>
+                {isDayTwelve ? <>
+                  <p>Use <code className="card-recessed px-1.5 py-0.5 rounded font-mono text-xs">express.Router()</code> for modular routes.</p>
+                  <p>Zod schema: <code className="card-recessed px-1.5 py-0.5 rounded font-mono text-xs">{zodSchema}</code></p>
+                  <p>Return <code className="card-recessed px-1.5 py-0.5 rounded font-mono text-xs">res.status(201).json(session)</code> on create.</p>
+                </> : <p>Start with the smallest working version, then commit before adding optional polish.</p>}
               </div>
             </details>
           </div>
@@ -294,7 +298,7 @@ const Day: React.FC = () => {
                 </div>
                 <h2 className="text-xl font-bold text-text-primary">DAY {dayNumber} COMPLETED!</h2>
                 <p className="text-text-secondary">Your streak continues. See you tomorrow.</p>
-                <Button size="xl" fullWidth onClick={() => window.location.href = '/dashboard'}>
+                <Button size="xl" fullWidth onClick={() => window.location.href = dashboardHref}>
                   Back to Dashboard
                 </Button>
               </div>

@@ -44,7 +44,7 @@ const Home: React.FC = () => {
           </h1>
           
           <p className="text-base sm:text-lg lg:text-xl text-text-secondary max-w-2xl mx-auto animate-slide-up-fade leading-relaxed" style={{ animationDelay: '200ms' }}>
-            Build something every day. Commit it. Share it publicly.<br />
+            Build every day. Commit to GitHub. Share on LinkedIn.<br />
             By Day 60, your work speaks before your résumé does.
           </p>
           

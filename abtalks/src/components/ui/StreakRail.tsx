@@ -1,5 +1,5 @@
 import React from 'react';
-import { CalendarDays } from 'lucide-react';
+import { CalendarDays, Flame } from 'lucide-react';
 
 interface StreakRailProps {
   currentStreak: number;
@@ -28,7 +28,7 @@ export const StreakRail: React.FC<StreakRailProps> = ({
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center shadow-[0_0_12px_rgba(249,115,22,0.2)]">
-            <span className="text-xl" aria-hidden="true">🔥</span>
+            <Flame className="w-5 h-5 text-brand-orange-500" aria-hidden="true" />
           </div>
           <div>
             <p className="text-xs text-text-muted uppercase tracking-wider">Current Streak</p>

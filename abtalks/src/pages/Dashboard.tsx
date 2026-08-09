@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ChallengeProgress } from '@/components/ui/ChallengeProgress';
 import { StreakRail } from '@/components/ui/StreakRail';
 import { RecoveryPanel } from '@/components/ui/RecoveryPanel';
 import { userVariants, type UserVariantKey } from '@/data/users';
 import { challenges } from '@/data/challenges';
-import { Flame } from 'lucide-react';
+import { ArrowUpRight, Code2, Flame, GitBranch, LockKeyhole, Share2, Trophy, Zap } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import { BrandLogo } from '@/components/BrandLogo';
 import { calculateCurrentStreak } from '@/utils/streak';
@@ -15,20 +15,27 @@ const Dashboard: React.FC = () => {
   const variant: UserVariantKey = variantParam && variantParam in userVariants ? variantParam as UserVariantKey : 'active';
   const user = userVariants[variant];
   const todayChallenge = challenges[user.currentDay - 1];
+  const completionStorageKey = `abtalks:completed:${variant}:${user.currentDay}`;
+  const locallyCompleted = typeof window !== 'undefined' && window.localStorage.getItem(completionStorageKey) === 'true';
+  const completedDays = locallyCompleted && !user.completedDays.includes(user.currentDay)
+    ? [...user.completedDays, user.currentDay]
+    : user.completedDays;
+  const todayCompleted = completedDays.includes(user.currentDay);
 
   // Check if yesterday was missed
   const yesterday = user.currentDay - 1;
   const isYesterdayMissed = user.missedDays.includes(yesterday);
 
   // Derived values from single source of truth
-  const completedCount = user.completedDays.length;
+  const completedCount = completedDays.length;
   const missedCount = user.missedDays.length;
-  const streak = calculateCurrentStreak(user.completedDays);
+  const streak = calculateCurrentStreak(completedDays);
   const completionPercentage = Math.round((completedCount / user.totalDays) * 100);
   const longest = user.longestStreak;
   const percentile = user.standingPercentile;
+  const weeklyGain = ({ active: 3, firstDay: 0, missedPrev: 1, emptyProfile: 2 } as const)[variant];
 
-const isFirstDay = user.currentDay === 1 && completedCount === 0 && streak === 0;
+  const isFirstDay = user.currentDay === 1 && completedCount === 0 && streak === 0;
 
   // Mock recovery state
   interface RecoveryState {
@@ -39,7 +46,7 @@ const isFirstDay = user.currentDay === 1 && completedCount === 0 && streak === 0
   }
 
   const [recovery, setRecovery] = useState<RecoveryState>({
-    challengeCompleted: user.completedDays.includes(user.currentDay),
+    challengeCompleted: todayCompleted,
     proofSubmitted: false,
     reflection: '',
     isSubmitted: false,
@@ -47,14 +54,32 @@ const isFirstDay = user.currentDay === 1 && completedCount === 0 && streak === 0
 
   const [showRecovery, setShowRecovery] = useState(isYesterdayMissed && !recovery.isSubmitted);
 
-  const canRecover = recovery.challengeCompleted && recovery.proofSubmitted && recovery.reflection.trim().length >= 20;
-
   const handleRecoverySubmit = () => {
-    if (canRecover && !recovery.isSubmitted) {
-      setRecovery(prev => ({ ...prev, isSubmitted: true }));
-      setShowRecovery(false);
-    }
+    setRecovery(prev => ({ ...prev, isSubmitted: true }));
   };
+
+  useEffect(() => {
+    setRecovery({
+      challengeCompleted: todayCompleted,
+      proofSubmitted: false,
+      reflection: '',
+      isSubmitted: false,
+    });
+    setShowRecovery(isYesterdayMissed);
+  }, [isYesterdayMissed, todayCompleted, user.currentDay, user.id]);
+
+  const displayedStreak = recovery.isSubmitted ? streak + 1 : streak;
+  const displayedLongest = Math.max(longest, displayedStreak);
+
+  const proofPresentation = (status: typeof user.githubProofStatus) => ({
+    pending: { label: 'Not submitted', dot: 'bg-surface-500' },
+    submitted: { label: 'Submitted', dot: 'bg-brand-orange-500' },
+    verified: { label: 'Verified', dot: 'bg-brand-lime-500' },
+    rejected: { label: 'Needs revision', dot: 'bg-danger-500' },
+  })[status];
+
+  const githubProof = proofPresentation(user.githubProofStatus);
+  const linkedinProof = proofPresentation(user.linkedinProofStatus);
 
   const handleVariantChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newVariant = e.target.value as UserVariantKey;
@@ -80,7 +105,7 @@ const isFirstDay = user.currentDay === 1 && completedCount === 0 && streak === 0
               <select
                 value={variant}
                 onChange={handleVariantChange}
-                className="text-xs text-text-secondary bg-surface-800 border border-border rounded px-2 py-1"
+                className="min-h-11 text-xs text-text-secondary bg-surface-800 border border-border rounded-lg px-2 py-1"
                 aria-label="Select mock user variant"
               >
                 {Object.entries(userVariants).map(([key, u]) => (
@@ -92,7 +117,7 @@ const isFirstDay = user.currentDay === 1 && completedCount === 0 && streak === 0
               <div className="flex items-center gap-1.5 px-3 py-1.5 bg-surface-750 rounded-lg border border-border/30 shadow-raised">
                 <Flame className="w-4 h-4 text-brand-orange-500" aria-hidden="true" />
                 <span className="font-mono font-bold tabular-nums text-brand-orange-500">
-                  {isFirstDay ? '—' : streak}
+                  {isFirstDay ? '—' : displayedStreak}
                 </span>
               </div>
             </div>
@@ -154,7 +179,7 @@ const isFirstDay = user.currentDay === 1 && completedCount === 0 && streak === 0
           {/* Stats Row - 3 cards with depth */}
           <div className="grid grid-cols-3 gap-3 pt-4 border-t border-border/50">
             <div className="card-raised p-4 text-center shadow-raised">
-              <p className="text-2xl font-bold mono text-brand-orange-500">{streak}</p>
+              <p className="text-2xl font-bold mono text-brand-orange-500">{displayedStreak}</p>
               <p className="text-xs text-text-muted">Streak</p>
             </div>
             <div className="card-raised p-4 text-center shadow-raised">
@@ -199,18 +224,18 @@ const isFirstDay = user.currentDay === 1 && completedCount === 0 && streak === 0
           {/* CTA - Primary button with depth */}
           <button
             type="button"
-            onClick={() => window.location.href = `/day/${user.currentDay}`}
-            className="group w-full px-6 py-4 rounded-lg font-medium text-base transition-all duration-fast focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime-500 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-950 active:scale-[0.98] active:translate-y-0.5 bg-white text-black hover:bg-gray-200 active:bg-gray-300 shadow-[0_4px_12px_-2px_rgba(0,0,0,0.4),0_2px_4px_-2px_rgba(0,0,0,0.3),0_0_0_1px_rgba(120,232,0,0.3)] hover:shadow-[0_8px_24px_-4px_rgba(0,0,0,0.5),0_4px_12px_-2px_rgba(0,0,0,0.3),0_0_0_1px_rgba(120,232,0,0.4)] hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0.5 transition-all duration-fast"
+            onClick={() => window.location.href = `/day/${user.currentDay}?variant=${variant}`}
+            className="group w-full min-h-14 px-6 rounded-lg font-semibold text-base bg-brand-lime-500 text-surface-950 border border-brand-lime-400/50 shadow-raised transition-all duration-fast hover:bg-brand-lime-400 hover:-translate-y-0.5 active:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime-500 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-950"
           >
             <span className="flex items-center justify-center gap-2">
-              {user.completedDays.includes(user.currentDay) ? (
+              {todayCompleted ? (
                 <>
-                  <span className="w-5 h-5" aria-hidden="true">↗</span>
+                  <ArrowUpRight className="w-5 h-5" aria-hidden="true" />
                   Continue Building
                 </>
               ) : (
                 <>
-                  <span className="w-5 h-5" aria-hidden="true">🎯</span>
+                  <Code2 className="w-5 h-5" aria-hidden="true" />
                   Start Building
                 </>
               )}
@@ -221,17 +246,17 @@ const isFirstDay = user.currentDay === 1 && completedCount === 0 && streak === 0
           <div className="mt-5 pt-4 border-t border-border/50">
             <div className="grid grid-cols-2 gap-3">
               <div className="flex items-center gap-2 text-xs">
-                <span className="w-3.5 h-3.5 github-icon" aria-hidden="true"></span>
+                <GitBranch className="w-4 h-4 text-text-muted" aria-hidden="true" />
                 <div className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-surface-600" aria-hidden="true"></span>
-                  <span className="text-text-secondary">Not submitted</span>
+                  <span className={`w-2.5 h-2.5 rounded-full ${githubProof.dot}`} aria-hidden="true"></span>
+                  <span className="text-text-secondary">{githubProof.label}</span>
                 </div>
               </div>
               <div className="flex items-center gap-2 text-xs">
-                <span className="w-3.5 h-3.5 linkedin-icon" aria-hidden="true"></span>
+                <Share2 className="w-4 h-4 text-text-muted" aria-hidden="true" />
                 <div className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-surface-600" aria-hidden="true"></span>
-                  <span className="text-text-secondary">Not submitted</span>
+                  <span className={`w-2.5 h-2.5 rounded-full ${linkedinProof.dot}`} aria-hidden="true"></span>
+                  <span className="text-text-secondary">{linkedinProof.label}</span>
                 </div>
               </div>
             </div>
@@ -241,7 +266,7 @@ const isFirstDay = user.currentDay === 1 && completedCount === 0 && streak === 0
         {/* Challenge Progress Grid - 3D grid */}
         <ChallengeProgress
           currentDay={user.currentDay}
-          completedDays={user.completedDays}
+          completedDays={completedDays}
           missedDays={user.missedDays}
           totalDays={user.totalDays}
           className="order-4"
@@ -250,16 +275,16 @@ const isFirstDay = user.currentDay === 1 && completedCount === 0 && streak === 0
         {/* Streak Rail - 3D */}
         <div className="order-4 card-raised p-5 shadow-raised animate-slide-up-fade" style={{ animationDelay: '100ms' }}>
           <StreakRail
-            currentStreak={streak}
-            longestStreak={longest}
+            currentStreak={displayedStreak}
+            longestStreak={displayedLongest}
             currentDay={user.currentDay}
-            completedDays={user.completedDays}
+            completedDays={completedDays}
             missedDays={user.missedDays}
           />
         </div>
 
         {/* Achievements & Standing - Side by side with depth */}
-        <div className="order-4 grid lg:grid-cols-2 gap-4">
+        <div className={`order-4 grid gap-4 ${isFirstDay ? '' : 'lg:grid-cols-2'}`}>
           <div className="card-raised p-5 shadow-raised animate-slide-up-fade" style={{ animationDelay: '150ms' }}>
             <div className="flex items-center justify-between mb-4">
               <div>
@@ -293,9 +318,9 @@ const isFirstDay = user.currentDay === 1 && completedCount === 0 && streak === 0
                       }`}
                       aria-hidden="true"
                     >
-                      {achievement.icon === 'Trophy' && <span className="text-xl">🏆</span>}
-                      {achievement.icon === 'Flame' && <span className="text-xl">🔥</span>}
-                      {achievement.icon === 'Zap' && <span className="text-xl">⚡</span>}
+                      {achievement.icon === 'Trophy' && <Trophy className="w-5 h-5" />}
+                      {achievement.icon === 'Flame' && <Flame className="w-5 h-5" />}
+                      {achievement.icon === 'Zap' && <Zap className="w-5 h-5" />}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
@@ -314,7 +339,7 @@ const isFirstDay = user.currentDay === 1 && completedCount === 0 && streak === 0
                       <p className="text-sm text-text-secondary mt-1">{achievement.description}</p>
                     </div>
                     {!isUnlocked && (
-                      <span className="w-5 h-5 text-text-muted" aria-hidden="true">🔒</span>
+                      <LockKeyhole className="w-5 h-5 text-text-muted" aria-hidden="true" />
                     )}
                   </div>
                 );
@@ -322,7 +347,7 @@ const isFirstDay = user.currentDay === 1 && completedCount === 0 && streak === 0
             </div>
           </div>
 
-          <div className="card-raised p-5 shadow-raised animate-slide-up-fade" style={{ animationDelay: '200ms' }}>
+          {!isFirstDay && <div className="card-raised p-5 shadow-raised animate-slide-up-fade" style={{ animationDelay: '200ms' }}>
             <div className="flex items-center justify-between mb-4">
               <div>
                 <p className="text-xs text-text-muted uppercase tracking-wider mb-1">Your Standing</p>
@@ -357,10 +382,10 @@ const isFirstDay = user.currentDay === 1 && completedCount === 0 && streak === 0
             </div>
             <p className="text-xs text-text-muted">of active builders</p>
             <div className="mt-4 pt-4 border-t border-border/50 flex items-center justify-between text-sm">
-              <span className="text-text-secondary">{percentile}th percentile</span>
-              <span className="text-brand-lime-500 mono font-medium">+{Math.max(1, Math.floor(Math.random() * 5))} this week</span>
+              <span className="text-text-secondary">{formatOrdinal(percentile)} percentile</span>
+              <span className="text-brand-lime-500 mono font-medium">+{weeklyGain} this week</span>
             </div>
-          </div>
+          </div>}
         </div>
 
         {/* Missed Days Summary */}
@@ -373,24 +398,18 @@ const isFirstDay = user.currentDay === 1 && completedCount === 0 && streak === 0
           </div>
         )}
 
-        {/* Dev Variant Selector (bottom, dev only) */}
-        {import.meta.env.DEV && (
-          <div className="fixed bottom-4 right-4 z-50 card-raised p-2 shadow-floating">
-            <select
-              value={variant}
-              onChange={handleVariantChange}
-              className="text-xs text-text-secondary bg-surface-800 border border-border rounded px-2 py-1"
-              aria-label="Select mock user variant"
-            >
-              {Object.entries(userVariants).map(([key, u]) => (
-                <option key={key} value={key}>{u.name} – Day {u.currentDay}</option>
-              ))}
-            </select>
-          </div>
-        )}
       </main>
     </div>
   );
 };
 
 export default Dashboard;
+
+function formatOrdinal(value: number) {
+  const mod100 = value % 100;
+  if (mod100 >= 11 && mod100 <= 13) return `${value}th`;
+  if (value % 10 === 1) return `${value}st`;
+  if (value % 10 === 2) return `${value}nd`;
+  if (value % 10 === 3) return `${value}rd`;
+  return `${value}th`;
+}

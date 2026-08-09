@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Check, MessageSquareText, TriangleAlert } from 'lucide-react';
 
 interface RecoveryPanelProps {
   isVisible: boolean;
@@ -49,7 +50,7 @@ export const RecoveryPanel: React.FC<RecoveryPanelProps> = ({
         <div className="flex items-start justify-between gap-3 mb-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-brand-orange-500/15 flex items-center justify-center">
-              <span className="text-brand-orange-500 text-xl" aria-hidden="true">⚠</span>
+              <TriangleAlert className="w-5 h-5 text-brand-orange-500" aria-hidden="true" />
             </div>
             <div>
               <p className="text-xs text-text-muted uppercase tracking-wider">Streak Paused</p>
@@ -84,7 +85,7 @@ export const RecoveryPanel: React.FC<RecoveryPanelProps> = ({
               </p>
               <p className="text-xs text-text-muted">Build and commit your solution</p>
             </div>
-            <label className="cursor-pointer">
+            <label className="cursor-pointer w-11 h-11 flex items-center justify-center -mr-2">
               <input
                 type="checkbox"
                 checked={challengeCompleted}
@@ -108,7 +109,7 @@ export const RecoveryPanel: React.FC<RecoveryPanelProps> = ({
               </p>
               <p className="text-xs text-text-muted">Paste URLs on the Day page</p>
             </div>
-            <label className="cursor-pointer">
+            <label className="cursor-pointer w-11 h-11 flex items-center justify-center -mr-2">
               <input
                 type="checkbox"
                 checked={proofSubmitted}
@@ -136,7 +137,7 @@ export const RecoveryPanel: React.FC<RecoveryPanelProps> = ({
                   placeholder="What happened? What did you learn?"
                   value={reflection}
                   onChange={(e) => setReflection(e.target.value)}
-                  className="mt-2 w-full px-3 py-2 text-sm bg-surface-800 text-text-primary border border-border rounded-lg placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand-lime-500 focus:border-brand-lime-500 disabled:opacity-40 disabled:pointer-events-none"
+                  className="mt-2 min-h-11 w-full px-3 py-2 text-sm bg-surface-800 text-text-primary border border-border rounded-lg placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand-lime-500 focus:border-brand-lime-500 disabled:opacity-40 disabled:pointer-events-none"
                   aria-label="Recovery reflection"
                 />
               </div>
@@ -156,17 +157,17 @@ export const RecoveryPanel: React.FC<RecoveryPanelProps> = ({
           <span className="flex items-center justify-center gap-2">
             {isSubmitted ? (
               <>
-                <span className="w-5 h-5" aria-hidden="true">✓</span>
+                <Check className="w-5 h-5" aria-hidden="true" />
                 Streak Restored — {currentStreak + 1} Days
               </>
             ) : canRecover ? (
               <>
-                <span className="w-5 h-5" aria-hidden="true">✓</span>
+                <Check className="w-5 h-5" aria-hidden="true" />
                 Recover Streak to {currentStreak + 1} Days
               </>
             ) : (
               <>
-                <span className="w-5 h-5" aria-hidden="true">💬</span>
+                <MessageSquareText className="w-5 h-5" aria-hidden="true" />
                 Complete All Steps to Recover
               </>
             )}
@@ -183,7 +184,7 @@ export const RecoveryPanel: React.FC<RecoveryPanelProps> = ({
           <button
             type="button"
             onClick={onDismiss}
-            className="mt-4 w-full text-xs text-text-muted hover:text-text-secondary transition-colors"
+            className="mt-3 min-h-11 w-full text-sm text-text-muted hover:text-text-secondary transition-colors"
           >
             Dismiss for now
           </button>
