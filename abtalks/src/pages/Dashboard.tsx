@@ -179,16 +179,31 @@ const Dashboard: React.FC = () => {
           <div className="grid grid-cols-3 gap-2 sm:gap-3 pt-4 border-t border-border/50">
             <div className="card-raised min-h-24 p-3 sm:p-4 text-center shadow-raised flex flex-col items-center justify-center">
               <p className="text-2xl leading-none font-bold mono tabular-nums text-brand-orange-500">{displayedStreak}</p>
-              <p className="mt-2 text-xs leading-none text-text-muted">Streak</p>
+              <p className="mt-2 text-xs leading-none text-text-muted">Current Streak</p>
             </div>
             <div className="card-raised min-h-24 p-3 sm:p-4 text-center shadow-raised flex flex-col items-center justify-center">
-              <p className="text-2xl leading-none font-bold mono tabular-nums text-text-primary">{completedCount}</p>
-              <p className="mt-2 text-xs leading-none text-text-muted">Completed</p>
+              <p className="text-2xl leading-none font-bold mono tabular-nums text-text-primary">{displayedLongest}</p>
+              <p className="mt-2 text-xs leading-none text-text-muted">Longest Streak</p>
             </div>
             <div className="card-raised min-h-24 p-3 sm:p-4 text-center shadow-raised flex flex-col items-center justify-center">
               <p className="text-2xl leading-none font-bold mono tabular-nums text-text-secondary">{user.totalDays - completedCount}</p>
               <p className="mt-2 text-xs leading-none text-text-muted">Remaining</p>
             </div>
+          </div>
+
+          <div className="mt-6 border-t border-border/50 pt-6">
+            <div className="mb-5 flex items-center justify-between gap-3">
+              <p className="text-xs uppercase tracking-wider text-text-muted">Challenge Progress</p>
+              <p className="mono text-sm text-text-secondary">
+                <span className="font-bold text-brand-lime-500">{completedCount}</span> / {user.totalDays}
+              </p>
+            </div>
+            <ChallengeProgress
+              currentDay={user.currentDay}
+              completedDays={completedDays}
+              missedDays={user.missedDays}
+              totalDays={user.totalDays}
+            />
           </div>
         </div>
 
@@ -261,17 +276,6 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
         </div>
-
-        {/* Challenge Progress Grid - 3D grid */}
-        <ChallengeProgress
-          currentDay={user.currentDay}
-          completedDays={completedDays}
-          missedDays={user.missedDays}
-          totalDays={user.totalDays}
-          currentStreak={displayedStreak}
-          longestStreak={displayedLongest}
-          className="order-4"
-        />
 
         {/* Achievements & Standing - Side by side with depth */}
         <div className={`order-4 grid gap-4 ${showStanding ? 'lg:grid-cols-2' : ''}`}>

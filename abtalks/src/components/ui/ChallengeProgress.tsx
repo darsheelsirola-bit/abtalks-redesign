@@ -1,13 +1,11 @@
 import React from 'react';
-import { CircleCheck, CircleX, Flame } from 'lucide-react';
+import { CircleCheck, CircleX } from 'lucide-react';
 
 interface ChallengeProgressProps {
   currentDay: number;
   completedDays: number[];
   missedDays: number[];
   totalDays: number;
-  currentStreak: number;
-  longestStreak: number;
   className?: string;
 }
 
@@ -16,8 +14,6 @@ export const ChallengeProgress: React.FC<ChallengeProgressProps> = ({
   completedDays,
   missedDays,
   totalDays,
-  currentStreak,
-  longestStreak,
   className = '',
 }) => {
   const isCompleted = (day: number) => completedDays.includes(day);
@@ -76,62 +72,6 @@ export const ChallengeProgress: React.FC<ChallengeProgressProps> = ({
   return (
     <div className={`w-full min-w-0 ${className}`}>
       <div className="w-full max-w-[850px] min-w-0 mx-auto">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-4">
-        <div>
-          <p className="text-xs text-text-muted uppercase tracking-wider mb-1">Challenge Progress</p>
-          <div className="flex items-baseline gap-3">
-            <span className="text-2xl font-bold mono text-brand-lime-500">{completedCount}</span>
-            <span className="text-text-muted">/ {totalDays}</span>
-          </div>
-        </div>
-        <div className="text-right">
-          <p className="text-2xl font-bold mono text-text-primary">{Math.round((completedCount / totalDays) * 100)}%</p>
-          <p className="text-xs text-text-muted">Complete</p>
-        </div>
-      </div>
-
-      {/* Streak summary */}
-      <div className="mb-5 grid grid-cols-2 gap-3">
-        <div className="flex min-h-20 min-w-0 items-center gap-3 rounded-lg border border-border/50 bg-surface-800/50 px-4 py-3">
-          <Flame className="h-5 w-5 shrink-0 text-brand-orange-500" aria-hidden="true" />
-          <div className="min-w-0">
-            <p className="text-[11px] uppercase tracking-wider text-text-muted">Current streak</p>
-            <p className="mono text-xl font-bold leading-tight text-white">
-              {currentStreak} <span className="text-xs font-normal text-text-muted">days</span>
-            </p>
-          </div>
-        </div>
-        <div className="flex min-h-20 min-w-0 items-center px-4 py-3 rounded-lg border border-border/50 bg-surface-800/50">
-          <div className="min-w-0">
-            <p className="text-[11px] uppercase tracking-wider text-text-muted">Longest streak</p>
-            <p className="mono text-xl font-bold leading-tight text-text-primary">
-              {longestStreak} <span className="text-xs font-normal text-text-muted">days</span>
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Progress bar */}
-      <div className="mb-6">
-        <div className="relative h-2 bg-surface-600 rounded-full overflow-hidden">
-          <div
-            className="h-full bg-brand-lime-500 rounded-full transition-all duration-normal ease-out"
-            style={{ width: `${Math.round((completedCount / totalDays) * 100)}%` }}
-          />
-          {/* Today marker */}
-          <div
-            className="absolute top-1/2 -translate-y-1/2 w-0.5 h-2.5 bg-brand-lime-500 animate-pulse-subtle"
-            style={{ left: `${Math.min(((currentDay - 1) / totalDays) * 100, 100)}%` }}
-            aria-hidden="true"
-          />
-        </div>
-        <div className="flex justify-between text-xs text-text-muted mono">
-          <span>Day 1</span>
-          <span>Day {totalDays}</span>
-        </div>
-      </div>
-
       {/* 60-day grid */}
       <div
         className="grid w-fit max-w-full mx-auto grid-cols-[repeat(6,minmax(0,2.75rem))] gap-2.5 md:grid-cols-[repeat(8,minmax(0,2.75rem))] md:gap-3 lg:grid-cols-[repeat(10,minmax(0,2.75rem))] lg:gap-3.5"
@@ -156,7 +96,7 @@ export const ChallengeProgress: React.FC<ChallengeProgressProps> = ({
       </div>
 
       {/* Legend */}
-      <div className="flex flex-wrap items-center gap-4 mt-6 pt-4 border-t border-border">
+      <div className="flex flex-wrap items-center justify-center gap-4 mt-6 pt-4 border-t border-border">
         <div className="flex items-center gap-2 text-xs text-text-muted">
           <span className="w-3 h-3 rounded bg-brand-lime-500" aria-hidden="true"></span>
           Completed
