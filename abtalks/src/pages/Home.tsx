@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Flame } from 'lucide-react';
 import { Code2 } from 'lucide-react';
 import { WorkflowSection } from '@/components/WorkflowSection';
+import { BrandLogo } from '@/components/BrandLogo';
 
 const Home: React.FC = () => {
   return (
@@ -11,10 +12,7 @@ const Home: React.FC = () => {
       {/* Header - with depth */}
       <header className="sticky top-0 z-40 bg-surface-950/80 backdrop-blur-sm border-b border-border-subtle shadow-ambient">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl font-bold mono text-brand-lime-500">AB</span>
-            <span className="text-sm text-text-muted uppercase tracking-wider hidden sm:block">TALKS</span>
-          </div>
+          <BrandLogo size="md" showText />
           <nav className="hidden md:flex items-center gap-8 text-base text-text-secondary">
             <a href="#how" className="hover:text-brand-lime-500 transition-colors">How it works</a>
             <a href="#proof" className="hover:text-brand-lime-500 transition-colors">Proof</a>

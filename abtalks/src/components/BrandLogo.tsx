@@ -7,26 +7,18 @@ interface BrandLogoProps {
 
 export const BrandLogo: React.FC<BrandLogoProps> = ({ size = 'md', showText = true }) => {
   const sizeClasses = {
-    sm: 'w-8 h-8 text-sm',
-    md: 'w-10 h-10 text-base',
-    lg: 'w-12 h-12 text-lg',
-  };
-
-  const textSizeClasses = {
-    sm: 'text-xs',
-    md: 'text-sm',
-    lg: 'text-base',
+    sm: 'w-[51px] h-8',
+    md: 'w-16 h-10',
+    lg: 'w-[77px] h-12',
   };
 
   return (
     <div className="flex items-center gap-2">
-      <div className={`relative ${sizeClasses[size] || sizeClasses.md} rounded-lg bg-surface-750 border border-surface-600 flex items-center justify-center shadow-raised`}>
-        {/* Subtle top edge highlight */}
-        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-white/10 to-transparent -mx-1 rounded-t-lg" aria-hidden="true" />
-        <span className={`font-bold mono text-text-primary relative z-10 ${textSizeClasses[size] || textSizeClasses.md}`}>AB</span>
-        {/* Subtle lime accent on the B */}
-        <span className="absolute bottom-1 right-1 w-1.5 h-1.5 rounded-full bg-brand-lime-500" aria-hidden="true" />
-      </div>
+      <img
+        src="/ab-logo.png"
+        alt="AB"
+        className={`${sizeClasses[size] || sizeClasses.md} object-contain shrink-0`}
+      />
       {showText && (
         <span className="text-xs text-text-muted uppercase tracking-wider hidden sm:block font-medium text-text-secondary">
           TALKS
