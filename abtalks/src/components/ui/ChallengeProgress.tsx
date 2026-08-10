@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { CircleCheck, CircleX } from 'lucide-react';
 
 interface ChallengeProgressProps {
@@ -9,15 +9,19 @@ interface ChallengeProgressProps {
   className?: string;
 }
 
-export const ChallengeProgress: React.FC<ChallengeProgressProps> = ({
+export const ChallengeProgress: React.FC<ChallengeProgressProps> = React.memo(({
   currentDay,
   completedDays,
   missedDays,
   totalDays,
   className = '',
 }) => {
-  const isCompleted = (day: number) => completedDays.includes(day);
-  const isMissed = (day: number) => missedDays.includes(day);
+  // Optimize array lookups inside the render loop by converting them to Sets (O(1) lookup instead of O(N))
+  const completedDaysSet = useMemo(() => new Set(completedDays), [completedDays]);
+  const missedDaysSet = useMemo(() => new Set(missedDays), [missedDays]);
+
+  const isCompleted = (day: number) => completedDaysSet.has(day);
+  const isMissed = (day: number) => missedDaysSet.has(day);
   const isToday = (day: number) => day === currentDay;
   const isUpcoming = (day: number) => day > currentDay;
 
@@ -117,7 +121,7 @@ export const ChallengeProgress: React.FC<ChallengeProgressProps> = ({
       </div>
     </div>
   );
-};
+});
 
 // Subtle pulse animation for today marker
 const style = document.createElement('style');
